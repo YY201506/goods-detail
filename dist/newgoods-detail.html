@@ -606,7 +606,7 @@
                                                 "asin": "B014JZWYE6"
                                             }
                                         ],
-                                        "allow":[[0,1,2,6],[0,1]],
+                                        "allow":[[0,1,2,6],[0,1,4,5]],
                                         "jsondata": "[39808,39811]"
                                     },
                                     {
@@ -1168,35 +1168,18 @@
                             console.log("click:"+a);
 
                             for(var i =0;i<obj.all_attr_val.length;i++){
-                                if(i = groupindex){return false;}
-                                $("#btn_attribute"+i+" li").removeClass("selection-invalid");
+                                if(i == groupindex){ }else {
+                                    $("#btn_attribute"+i+" li").removeClass("selection-invalid");
+                                    for(var s =0;s<array[i].length;s++){
+                                        $("#btn_attribute"+i+" li").eq(array[i][s]).addClass("selection-invalid");
+                                    }
+                                }
                             }
-
-                            var dataStrArr;
-                            var dataIntArr=[];
-                            if (allowdata.indexOf(',') > -1)
-                            {
-                                dataStrArr=allowdata.split(",");
-                                dataStrArr.forEach(function(data){
-                                    dataIntArr.push(+data);
-                                });
-                            }
-                            else
-                            {
-                                dataStrArr =Number(allowdata);
-                                dataIntArr.push(+dataStrArr);
-                            }
-
-                            $("#btn_Size li").removeClass("selection-invalid");
-                            for(var i =0;i<dataIntArr.length;i++){
-                                $("#btn_Size li").eq(dataIntArr[i]).addClass("selection-invalid");
-                            }
-
                         });
                     });
-
-                    $("#btn_Size li").eq(obj.hasselect[0]).click();
-                    $("#btn_color li").eq(obj.hasselect[1]).click();
+                    for(var i =0;i<obj.hasselect.length;i++){
+                        $("#btn_attribute"+i+" li").eq(obj.hasselect[i]).click();
+                    }
 
                     function selectVuale (a,b){
                         console.log(a);
