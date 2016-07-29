@@ -5,8 +5,8 @@
     <meta charset="UTF-8">
     <meta http-equiv="refresh" content="600">
     <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"/>
-    <link rel="stylesheet" href="../dist/css/main.css?v=14"/>
-    <link rel="stylesheet" href="../dist/css/swiper.min.css?v=7"/>
+    <link rel="stylesheet" href="css/main.css?v=14"/>
+    <link rel="stylesheet" href="css/swiper.min.css?v=7"/>
     <title>Jack Rogers 女士民族风坡跟鞋</title>
     <meta name="Keywords" content="Jack Rogers 女士民族风坡跟鞋"/>
     <meta name="Description" content="跟高约4.5厘米~"/>
@@ -168,9 +168,9 @@
         </div>
     </div>
 </div>
-<script src="../dist/js/zepto.min.js"></script>
-<script src="../dist/js/swiper.min.js"></script>
-<script src="../dist/js/ponto.js?v=4"></script>
+<script src="js/zepto.min.js"></script>
+<script src="js/swiper.min.js"></script>
+<script src="js/ponto.js?v=4"></script>
 <script>
     $(document).ready(function() {
         function getQueryString(name) {
@@ -185,17 +185,19 @@
             type: "post",
             dataType: 'JSONP',
             data:{
-                intertype:100,
+                intertype:"100",
                 id:Val_id,
-                deviceid:86001
+                deviceid:"86001"
             },
             success: function(data){
-                 alert(data);
+                 console.log(data);
+                coloursgoods(data);
+                addOnce(data);
             }
         });
 
         /*一次性加载的数据*/
-        var OnceObject = {
+        /*var OnceObject = {
             "type":["41DGQjTSYfL._SL750_.jpg","41DGQjTSYfL._SL750_.jpg","41DGQjTSYfL._SL750_.jpg","41DGQjTSYfL._SL750_.jpg"],
             "goodidinfo":["17815","15","52","455"],
             "cheaper":2,
@@ -230,9 +232,8 @@
             "one_flow_img":"../dist/images/logistics@2x.png",
             "one_beforebuy":["下单后：由于库存实时更新，且部分国外网站限制购买数量，如出现缺货或限制购买的情况，蜜赞会在7个工作日内将您支付的金额返回到您原支付的账户。","修改订单：因海外采购的关系，及海外大多数品牌官网规定，订单一旦生成，即不允许做任何更改，发货后不能撤销订单。请您在下单前仔细核对您的商品"]
 
-        }
-        coloursgoods(OnceObject);
-        addOnce(OnceObject);
+        }*/
+
         function coloursgoods(goodsNew){
             var html = '';
             for (var i =0;i<goodsNew.goods[0].detail_num;i++){
