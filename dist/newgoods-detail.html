@@ -174,8 +174,14 @@
 <script>
 
     $(function () {
-        var Hash = window.location.hash;
-        console.log(Hash);
+        function getQueryString(name) {
+            var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
+            var r = window.location.search.substr(1).match(reg);
+            if (r != null) return unescape(r[2]); return null;
+        }
+        console.log("参数"+getQueryString("id"));
+        console.log("参数"+getQueryString("info"));
+
         /*链接参数*/
 
         var goodsNew ={
@@ -1137,9 +1143,13 @@
                 buyPage.show();
                 for(var n=0;n<obj.all_attr_val.length;n++){
 
-                    var attributehtml = '<div class=selection-items><div class=selection-title>'+obj.all_attr_val[n].attr_name+':</div><ul class="selection-list" id="btn_attribute'+n+'">';
+                    var attributehtml = '<div class=selection-items><div class=selection-title>'+obj.all_attr_val[n].attr_name+':</div><ul class="selection-list" data-attrgroup="'+n+'" id="btn_attribute'+n+'">';
                     for(var i =0;i<obj.all_attr_val[n].attr_value.name.length;i++){
-                        attributehtml +='<li class="selection-valid" data-allowdata="'+obj.all_attr_val[n].attr_value.onevalue[i].allow+'" data-infoid="'+obj.all_attr_val[n].attr_value.onevalue[i].info_id+'" data-xuhao="'+i+'">'+obj.all_attr_val[n].attr_value.name[i]+'</li>';
+                        var AllowData =[];
+                        for(var c = 0;c<obj.all_attr_val.length;c++){
+                            AllowData[c]=obj.all_attr_val[n].attr_value.onevalue[i].allow[c];
+                        }
+                        attributehtml +='<li class="selection-valid" data-allowdata="'+JSON.stringify(AllowData)+'" data-infoid="'+obj.all_attr_val[n].attr_value.onevalue[i].info_id+'" data-xuhao="'+i+'">'+obj.all_attr_val[n].attr_value.name[i]+'</li>';
                     }
                     attributehtml +='</ul></div>';
                     $("#add_attributeBtn").append(attributehtml);
@@ -1149,11 +1159,19 @@
                         $(this).bind("click",function(){
 
                             $(this).parent().children("li").removeClass("selection-active");
+                            var groupindex=$(this).parent().data("attrgroup");
                             $(this).addClass("selection-active");
-                            selectVuale (1,2);
 
                             var allowdata =String($(this).data("allowdata"));
-                            console.log(allowdata);
+                            var array = eval(allowdata); //转换成数组
+
+                            console.log("click:"+a);
+
+                            for(var i =0;i<obj.all_attr_val.length;i++){
+                                if(i = groupindex){return false;}
+                                $("#btn_attribute"+i+" li").removeClass("selection-invalid");
+                            }
+
                             var dataStrArr;
                             var dataIntArr=[];
                             if (allowdata.indexOf(',') > -1)
