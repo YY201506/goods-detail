@@ -180,15 +180,19 @@
         }
         var Val_id = getQueryString("id");//12
         var infoval = getQueryString("info");
-        $.post("***",
-                { intertype:100,
-                    id:Val_id
-                },
-                function(data){
-                    console.log(data);
-                },
-                "json"
-        );
+        $.ajax({
+            url: "http://115.29.51.240:84/goods_interface.php",
+            type: "post",
+            dataType: 'JSONP',
+            data:{
+                intertype:100,
+                id:Val_id,
+                deviceid:86001
+            },
+            success: function(data){
+                 alert(data);
+            }
+        });
 
         /*一次性加载的数据*/
         var OnceObject = {
