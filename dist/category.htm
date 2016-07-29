@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html class="fullscreen">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"/>
+    <link rel="stylesheet" href="/dist/css/main.min.css?v=8"/>
+    <link rel="stylesheet" href="/dist/css/swiper.min.css"/>
+<script src="/dist/js/zepto.min.js"></script>
+<script src="/dist/js/swiper.js"></script>
+<script src="/dist/js/ponto.js" ></script>     
+    <title>尖货</title>
+</head>
+<body >
+<!-- 
+<form id="searchForm" name="searchForm" method="get" action="search.html" onSubmit="return checkSearchForm()" >
+<div class="tg-searchArea category-searchArea rowflex">
+    <div class="searchArea rowflex">
+        <span></span>
+        <input type="text" name="keywords" id="keywords" placeholder="搜索商品/品牌"/>
+    </div>
+    <input type="hidden" name="device_id" value="{$device_id}">
+		<input type="hidden" name="token" value="{$token}">
+    <a href="#" onclick="if( checkSearchForm() ) searchForm.submit();" class="searchMore"></a>
+</div>
+</form>
+-->
+
+<div class="tp-nav-dropdowns category-nav-dropdowns" >
+    <div class="tp-nav-dropdown active" >
+        <ul class="tp-nav-dropdown-menu">
+        		<!-- {foreach from=$cat_list item=cat key=ckey} -->
+            <li><a href="#">{$cat.cat_name}</a></li>
+            <!-- {/foreach} -->
+        </ul>
+        
+        <div class="tp-nav-dropdown-subs">
+        	<!-- {foreach from=$all_goods_list item=goods_list key=ckey} -->	
+            <div class="tp-nav-dropdown-sub-wrapper">
+                <div class="groupBtn-wrapper">
+                    <div class="groupBtn">
+                        <div class="groupBtn-left active">分类</div>
+                        <div class="groupBtn-right">品牌</div>
+                    </div>
+                </div>
+                <ul class="tp-nav-dropdown-sub category-nav-brand">
+                	<!-- {foreach from=$goods_list.brand item=brand key=bkey} -->	
+                    <li class="hasBrandLogo" turl="{$brand.top_brand_url}" namegoods="{$brand.brand_name}"><a href="#"><img class="brand-logo" src="{$brand.brand_logo}" alt="{$brand.brand_name}">{$brand.brand_name}</a>
+                    </li>
+                  <!-- {/foreach} -->
+                </ul>
+                <ul class="category-nav-cate">
+                	 <!-- {foreach from=$goods_list.category.second item=scategory key=skey} -->	
+                    <li>
+                        <h4 turl="{$scategory.second.second_top_url}" namegoods="{$scategory.second.second_cat_name}" >{$scategory.second.second_cat_name}</h4>
+                        <ol>
+                        		<!-- {foreach from=$scategory.third item=tcategory key=tkey} -->
+                            <li turl="{$tcategory.third_top_url}" namegoods="{$tcategory.third_cat_name}" ><a  href="#">{$tcategory.third_cat_name}</a></li>
+                            <!-- {/foreach} -->
+                        </ol>
+                    </li>
+                    <!-- {/foreach} -->
+                </ul>
+            </div>
+         <!-- {/foreach} -->
+        </div>
+<input type="hidden" name="device_id" id="device_id" value="{$device_id}" />
+    </div>
+</div>
+
+
+<script>
+	    $(function () {
+
+    						  Ponto.invoke(
+                    "Messaging",
+                    "refreshable",
+                    {isfresh:false},
+                    null,
+                    null); 
+    $('.groupBtn-left').each(function () {
+        var $this = $(this);
+        $this.click(function () {
+            $this.siblings().removeClass('active');
+            $this.addClass('active');
+            $this.parent().parent().siblings('ul').removeClass('active')
+                    .siblings('.category-nav-cate').addClass('active');
+        });
+    });
+
+    $('.groupBtn-right').each(function () {
+        var $this = $(this);
+        $this.click(function () {
+            $this.siblings().removeClass('active');
+            $this.addClass('active');
+            $this.parent().parent().siblings('ul').removeClass('active')
+                    .siblings('.category-nav-brand').addClass('active');
+        });
+    });
+    
+    $('.category-nav-cate li ol li').each(function () {
+    		var $this = $(this);
+        $this.click(function () {
+        		$this.siblings().removeClass('active');
+            $this.addClass('active');
+    						  Ponto.invoke(
+                    "Messaging",
+                    "goToUrl",
+                    {"url":$(this).attr("turl"),"name":$(this).attr("namegoods"),"hideNav":1},
+                    null,
+                    null);             
+        });
+    });
+
+    $('.category-nav-cate li h4').each(function () {
+    		var $this = $(this);
+        $this.click(function () {
+        		//$this.siblings().removeClass('active');
+            //$this.addClass('active');
+    						  Ponto.invoke(
+                    "Messaging",
+                    "goToUrl",
+                    {"url":$(this).attr("turl"),"name":$(this).attr("namegoods"),"hideNav":1},
+                    null,
+                    null);             
+        });
+    });
+
+
+    $('.hasBrandLogo').each(function () {
+    		var $this = $(this);
+        $this.click(function () {
+        		//$this.siblings().removeClass('active');
+            //$this.addClass('active');
+    						  Ponto.invoke(
+                    "Messaging",
+                    "goToUrl",
+                    {"url":$(this).attr("turl"),"name":$(this).attr("namegoods"),"hideNav":1},
+                    null,
+                    null);             
+        });
+    });
+
+    $('.tp-nav-dropdown-menu li').each(function (index) {
+        var $this = $(this),
+                sub = $('.tp-nav-dropdown-sub-wrapper').eq(index);
+        $this.click(function () {
+            $this.siblings().removeClass('active');
+            $this.addClass('active');
+            $('.tp-nav-dropdown-sub-wrapper').removeClass('active')
+                    .eq(index).addClass('active')
+                    .find('.category-nav-cate').addClass('active');
+        });
+    });
+    $('.tp-nav-dropdown-menu li').eq(0).click();
+    
+        });
+</script>
+
+<script>
+	function checkSearchForm()
+	{
+			if( $('#keywords') != "" )
+			{
+					return true;
+			}
+			return false;
+	}
+</script>
+
+
+</body>
+</html>

@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en" class="fullscreen">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"/>
+    <link rel="stylesheet" href="/dist/css/main.min.css?v=8"/>
+    <link rel="stylesheet" href="/dist/css/swiper.min.css?v=2"/>
+    <title>尖货</title>
+</head>
+<body>
+
+<div class="tg-searchArea rowflex">
+    <div class="searchArea rowflex">
+        <span></span>
+        <input type="text" placeholder="请输入蜜赞商品名称"/>
+    </div>
+    <a href="#" class="searchMore"></a>
+</div>
+
+<div class="tp-nav swiper-container tp-nav-slider">
+
+    <div class="swiper-wrapper">
+    		<!-- {foreach from=$cat_list item=cat key=ckey} -->
+        <div id="target-{$cat.cat_id}" class="swiper-slide"><a href="#">{$cat.cat_name}</a></div>
+				<!-- {/foreach} -->
+        <!-- 下面保留下个空的无用链接占位 -->
+        <div id="target-11" class="swiper-slide"><a href="#"></a></div>
+        <div id="target-12" class="swiper-slide"><a href="#"></a></div>
+    </div>
+</div>
+
+<a class="tp-nav-dropdown-btn" href="javascript:;"></a>
+<div class="tp-nav-dropdowns">
+<!-- {foreach from=$all_goods_list item=goods_list key=ckey} -->	
+    <div class="tp-nav-dropdown">
+        <ul class="tp-nav-dropdown-menu">
+            <li><a href="#">品牌</a></li>
+            <!-- {foreach from=$goods_list.category.second item=scategory key=skey} -->	
+            <li><a href="#">{$scategory.second_cat_name}</a></li>
+            <!-- {/foreach} -->
+        </ul>
+        <div class="tp-nav-dropdown-subs">
+            <ul class="tp-nav-dropdown-sub">
+            		<!-- {foreach from=$goods_list.brand item=brand key=bkey} -->	
+                <li class="hasBrandLogo"><a href="{$brand.top_brand_url}"><img class="brand-logo" src="{$brand.brand_logo}" alt="{$brand.brand_name}">{$brand.brand_name}</a>
+                </li>
+                <!-- {/foreach} -->
+            </ul>
+            <!-- {foreach from=$goods_list.category.third item=thcategory key=thkey} -->	
+            <ul class="tp-nav-dropdown-sub">
+            		<!-- {foreach from=$thcategory item=third_cate key=thirdkey} -->
+                <li><a href="{$third_cate.third_top_url}">{$third_cate.third_cat_name}</a></li>
+                <!-- {/foreach} -->
+            </ul>
+            <!-- {/foreach} -->
+        </div>
+    </div>
+<!-- {/foreach} -->
+    <div class="tp-nav-dropdowns-mark"></div>
+</div>
+
+<div class="top-goods-wrap hasTopnavBar swiper-container">
+    <div class="swiper-wrapper">
+    		<!-- {foreach from=$all_goods_list item=goods_list key=ckey} -->
+        <div id="{$goods_list.cat_id}" page="{$goods_list.start}" class="goodsList tp-goodsList swiper-slide">
+            <ul>
+            	<!-- {foreach from=$goods_list.goods item=goods key=lkey} -->
+                <li class="goods-item">
+                    <div class="goods-item-div">
+                        <div class="goods-item-pic">
+                            <img src="{$goods.goods_thumb}" alt="{$goods.goods_name}"/>
+                        </div>
+                        <p class="goods-items-name f11">{$goods.goods_name}</p>
+                        <p class="goods-items-price f11">{$goods.recomm_reason}</p>
+                        <p class="goods-items-from f12 colorred">¥ {$goods.target_promote_price}<!-- { if $goods.jd_price gt 0 } --><span class="otherPrice f11">京东:¥{$goods.jd_price}</span><!-- { else } --><!-- { if $goods.target_discount } --><span class="otherPrice f11">   <s>￥{$goods.target_market_price}</s></span><!-- {/if} --><!-- {/if} --></p>
+                    </div>
+                </li>
+							<!-- {/foreach} -->
+            </ul>
+            <input type="hidden" id="top_now_page_{$goods_list.cat_id}_{$goods_list.start}" value="{$goods_list.start}">
+            <div class="appendContentContainer"></div>
+            <div class="loader"></div>
+        </div>
+        <!-- {/foreach} -->
+    </div>
+</div>
+<input type="hidden" id="deviceid" value="{$device_id}">
+<input type="hidden" id="token" value="{$token}">
+<input type="hidden" id="user_id" value="{$user_id}">
+<script src="/dist/js/zepto.min.js"></script>
+<script src="/dist/js/swiper.min.js"></script>
+<script src="/dist/js/ponto.js" ></script> 
+<script>
+	    $(function () {
+	    				alert('21');
+					  	Ponto.invoke(
+                    "Messaging",
+                    "refreshable",
+                    {isfresh:false},
+                    null,
+                    null);
+
+    var centertpNav = (function () {
+        var $nav = $('.tp-nav-slider'),
+                $wrapper = $nav.find('.swiper-wrapper'),
+                wrapperWidth = $wrapper.width(),
+                $slides = $nav.find('.swiper-slide'),
+                slidesTranslate = [],
+                totalWidth = 0;
+        $slides.each(function (index) {
+            var $this = $(this),
+                    half = (window.innerWidth - $this.width()) / 2;
+            slidesTranslate[index] = 0;
+            totalWidth += $this.width();
+            if (totalWidth - $this.width() > half) {
+                slidesTranslate[index] = -(totalWidth - $this.width() - half);
+            }
+        }).each(function (index) {
+            var $this = $(this),
+                    half = (window.innerWidth - $this.width()) / 2;
+            if (totalWidth - (Math.abs(slidesTranslate[index]) + half + $this.width()) < half) {
+                slidesTranslate[index] = window.innerWidth - totalWidth;
+            }
+        });
+
+        return function () {
+            var index = $nav.find('.active').index();
+
+            $wrapper.css({
+                '-webkit-transform': 'translate(' + slidesTranslate[index] + 'px, 0)',
+                '-moz-transform': 'translate(' + slidesTranslate[index] + 'px, 0)',
+                '-ms-transform': 'translate(' + slidesTranslate[index] + 'px, 0)',
+                '-o-transform': 'translate(' + slidesTranslate[index] + 'px, 0)',
+                'transform': 'translate(' + slidesTranslate[index] + 'px, 0)',
+                '-webkit-transition-duration': '300ms',
+                '-moz-transition-duration': '300ms',
+                '-ms-transition-duration': '300ms',
+                '-o-transition-duration': '300ms',
+                'transition-duration': '300ms'
+            });
+
+        }
+    })();
+
+    var topGoodsWrap = new Swiper('.top-goods-wrap', {
+        slidesPerView: 1,
+        onSlideChangeEnd: function (swiper) {
+            var nav = $('#target-' + swiper.slides[swiper.activeIndex].getAttribute('id'));
+            nav.siblings().removeClass('active');
+            nav.addClass('active');
+            selectNavIndex = swiper.activeIndex;
+            centertpNav();
+        }
+    });
+
+    $('.tp-nav .swiper-slide:first-child').addClass('active');
+    centertpNav();
+
+    $('.tp-nav-dropdown').each(function () {
+        var $dropdown = $(this);
+        $dropdown.find('.tp-nav-dropdown-menu li').each(function (index) {
+            var $this = $(this),
+                    sub = $dropdown.find('.tp-nav-dropdown-sub').eq(index);
+            $this.click(function () {
+                $this.siblings().removeClass('active');
+                $this.addClass('active');
+                $dropdown.find('.tp-nav-dropdown-sub').removeClass('active');
+                sub.addClass('active');
+            });
+        });
+        $dropdown.find('.tp-nav-dropdown-menu li').eq(0).click();
+    });
+    var isDropdownShow = false,
+            selectNavIndex = 0;
+    function showDropdown() {
+        $('.tp-nav-dropdown').removeClass('active');
+        $('.tp-nav-dropdowns-mark').removeClass('active');
+        if (isDropdownShow) {
+            $('.tp-nav-dropdown').eq(selectNavIndex).addClass('active');
+            $('.tp-nav-dropdowns-mark').addClass('active');
+        }
+    }
+    $('.tp-nav-dropdown-btn').click(function () {
+        isDropdownShow = !isDropdownShow;
+        if (isDropdownShow) {
+            $(this).addClass('active');
+        } else {
+            $(this).removeClass('active');
+        }
+        showDropdown();
+    });
+    $('.tp-nav-dropdowns-mark').click(function () {
+        isDropdownShow = false;
+        showDropdown();
+    });
+
+    $('.tp-nav .swiper-slide').click(function () {
+        var $this = $(this);
+        $('.tp-nav .swiper-slide').removeClass('active');
+        $this.addClass('active');
+        centertpNav();
+        selectNavIndex = $('#' + $this.attr('id').replace('target-', '')).index();
+        topGoodsWrap.slideTo(selectNavIndex);
+        showDropdown();
+        return false;
+    });
+
+    function tpSliderInit(context) {
+        var $list = context ? $.grep(context, function (item) {
+            if ($(item).hasClass('tp-slider')) return true;
+            return false;
+        }) : $('.tp-slider');
+
+        if (!$list.each) $list = $($list);
+        $list.each(function () {
+            var $this = $(this);
+
+            new Swiper($this, {
+                loop: true,
+                autoplay: 5000,
+                pagination: $this.find('.swiper-pagination')
+            });
+        });
+    }
+    tpSliderInit();
+
+    function childrenTotalHeight(el) {
+        var ret = 0;
+        el.children().each(function () {
+            ret += $(this).height();
+        });
+
+        return ret;
+    }
+    function loader(obj) {
+        var self = {
+            state: 0 // 0:未加载, 1:加载中, 2:无内容
+        };
+        var $this = obj ? $(obj) : $(this);
+        self.$loader = $this.find('.loader');
+        var minInterval = 500,
+                startTime = null,
+                endTime = null,
+                canHide = true,
+                funcArr = [];
+
+        function wrapFn(state, fn) {
+            return function () {
+                fn && fn();
+                startTime = null;
+                endTime = null;
+                self.state = state;
+                self.$loader.hide();
+            }
+        }
+
+        self.set = function (state, fn) {
+            if (state === 1) {
+                self.state = 1;
+                startTime = new Date;
+                canHide = false;
+                self.$loader.show();
+                fn && fn();
+                setTimeout(function () {
+                    while (funcArr.length > 0) {
+                        funcArr.shift()();
+                    }
+                    canHide = true;
+                }, minInterval);
+            } else {
+                if (canHide) {
+                    fn && fn();
+                    startTime = null;
+                    endTime = null;
+                    self.state = state;
+                    self.$loader.hide();
+                } else if (fn) {
+                    funcArr.push(wrapFn(state, fn));
+                }
+            }
+        };
+
+        return self;
+    }
+
+    $('.tp-goodsList').each(function (index) {
+        var $this = $(this),
+                totalHeight = childrenTotalHeight($this);
+        var screenHeight = $this.height(),
+                distance = 100,
+                loading = false,
+                scrollLoading = loader(this),
+                appendContent = (function () {
+                    var $container = $this.find('.appendContentContainer');
+                    return function (response) {
+                        var $data = $(response);
+                        scrollLoading.set(0, function () {
+                            $container.append($data);
+                            tpSliderInit($data);
+                            totalHeight = childrenTotalHeight($this);
+                        });
+                    }
+                }());
+
+        var cat_id = $this.attr('id');
+        $this.scroll(function () {
+            if (totalHeight - $this.scrollTop() - screenHeight < distance && scrollLoading.state === 0) {
+                scrollLoading.set(1);
+                var taken = $("#token").val();
+                var devid = $("#deviceid").val();
+                var start = parseInt($this.attr('page')) + 1;
+								$this.attr("page", start);	
+                //alert(start );
+                $.get('http://115.29.51.240:84/topgoodspb.php?start=' + start + '&token=' + taken + '&device_id=' + devid + '&cat_id=' + cat_id, {}, function (response) {
+                    if (response === '' || response.toString().toLowerCase() === 'false') {
+                        scrollLoading.set(2, function () {
+                            $this.find('.appendContentContainer')
+                                    .append('<div style="text-align: center;padding-bottom: 10px;color: #666;">已经看到最后啦</div>');
+                        });
+                    } else {
+                        appendContent(response);
+                    }
+                });
+            }
+        });
+    });
+    
+			});
+</script>
+</body>
+</html>

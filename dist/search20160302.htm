@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"/>
+    <link rel="stylesheet" href="/dist/css/swiper.min.css">
+    <link rel="stylesheet" href="/dist/css/main.css?v=4"/>
+    <title>搜索结果</title>
+</head>
+<body>
+<div style="height: 0px;width: 100%;"></div>
+<ul class="search-order-item">
+    <li <!-- { if $sort_index eq 0 } -->class="active"<!-- { /if } -->><a href="#">新品</a></li>
+    <li <!-- { if $sort_index eq 1 } -->class="active"<!-- { /if } -->><a href="#">人气</a></li>
+    <li <!-- { if $sort_index eq 2 } -->class="active"<!-- { /if } -->><a href="#">价格<i class="search-order-price search-order-price-up"></i></a></li>
+    <!-- <li><a href="#">筛选<i class="search-order-filter"></i> </a></li> -->
+</ul>
+<a class="search-totop" href="javascript:;"></a>
+<ul class="search-list">
+		<!-- {foreach from=$goods_list item=goods key=ckey} -->
+    <li>
+        <a class="search-list-goods" idurl="{$goods.goods_url}" namegoods="{$goods.goods_name}">
+            <div class="search-list-goods-img">
+                <img src="{$goods.goods_thumb}" alt="{$goods.goods_name}">
+                <!-- { if $goods.is_recommend_goods eq 1 } -->
+                <span class="detailPic-swiper-best detailPic-swiper-best-m"></span>
+                <!-- { /if } -->
+            </div>
+            <div class="search-list-goods-content">
+                <p class="search-list-goods-name">{$goods.goods_name}</p>
+                <p class="search-list-goods-desc">{$goods.recomm_reason}</p>
+                <p class="f12 colorred">¥{$goods.target_promote_price}<!-- { if $goods.jd_price gt 0 } --><span class="otherPrice f11">京东:¥{$goods.jd_price}</span><!-- { else } --><!-- { if $goods.target_discount } --><span class="otherPrice f11">   <s>￥{$goods.target_market_price}</s></span><!-- {/if} --><!-- {/if} --></p>
+            </div>
+        </a>
+    </li>
+    <!-- {/foreach} -->
+</ul>
+    <input type="hidden" name="device_id" id="device_id" value="{$device_id}">
+		<input type="hidden" name="token" id="token" value="{$token}">
+		<input type="hidden" name="sort_by" id="sort_by" value="{$sort_by}">
+		<input type="hidden" name="sort_order" id="sort_order" value="{$sort_order}">
+		<input type="hidden" name="sort_index" id="sort_index" value="{$sort_index}">
+		<input type="hidden" name="keywords" id="keywords" value="{$keywords}">
+		<input type="hidden" name="third_cat_id" id="third_cat_id" value="{$third_cat_id}">
+		<input type="hidden" name="base_url" id="base_url" value="{$base_url}">
+<script src="/dist/js/zepto.min.js"></script>
+<script src="/dist/js/swiper.min.js"></script>
+<script src="/dist/js/ponto.js" ></script> 
+<script>  
+	  $(function () {
+		    $('.search-forwrad').each(function () {
+		        var $this = $(this);
+		        $this.click(function () {
+										 Ponto.invoke(
+                    "Messaging",
+                    "goBack",
+                    {},
+                    null,
+                    null);								
+		        });
+		    });	
+    
+				$('body').on('click','.search-list-goods',function() {
+					var $this = $(this);
+					//alert($(this).attr("idurl"));
+										 Ponto.invoke(
+                    "Messaging",
+                    "goToUrl",
+                    {"url":$(this).attr("idurl"),"name":$(this).attr("namegoods")},
+                    null,
+                    null);        	
+        }); 
+    
+    $('.search-order-item li').each(function () {
+    		var $this = $(this);
+        $this.click(function () {
+        		$this.siblings().removeClass('active');
+            $this.addClass('active');
+            if($this.index() != $('#sort_index').val())
+            {
+            		$('#sort_index').val($this.index());
+            		if( $this.index() == 0)
+            		{
+            				$('#sort_by').val("g.last_update");
+            		}
+            		if( $this.index() == 1)
+            		{
+            				$('#sort_by').val("g.click_count");
+            		}
+            		if( $this.index() == 2)
+            		{
+            				$('#sort_by').val("g.promote_price");
+            		}          		            		
+            }
+            if($this.index() == $('#sort_index').val())
+            {
+            		if( $('#sort_order').val() == "DESC" )
+            		{
+            				$('#sort_order').val("ASC");
+            		}else
+            		{
+            				$('#sort_order').val( "DESC");
+            		}
+            }
+            var targeurl = $('#base_url').val() + '/search.php?device_id=' + $('#device_id').val() + "&token=" + $('#token').val();
+            		targeurl += "&sort_by=" +  $('#sort_by').val() + "&sort_order=" + $('#sort_order').val() + "&keywords=" + $('#keywords').val() + "&third_cat_id=" + $('#third_cat_id').val();
+             //alert(targeurl);
+            location.replace(targeurl);
+        });
+    });
+      
+        $.fn.scrollTo =function(options){
+            var defaults = {
+                toT : 0,    //滚动目标位置
+                durTime : 300,  //过渡动画时间
+                delay : 16,     //定时器时间
+                callback:null   //回调函数
+            };
+            var opts = $.extend(defaults,options),
+                    timer = null,
+                    _this = this,
+                    curTop = _this.scrollTop(),//滚动条当前的位置
+                    subTop = opts.toT - curTop,    //滚动条目标位置和当前位置的差值
+                    index = 0,
+                    dur = Math.round(opts.durTime / opts.delay),
+                    smoothScroll = function(t){
+                        index++;
+                        var per = Math.round(subTop/dur);
+                        if(index >= dur){
+                            _this.scrollTop(t);
+                            window.clearInterval(timer);
+                            if(opts.callback && typeof opts.callback == 'function'){
+                                opts.callback();
+                            }
+                            return;
+                        }else{
+                            _this.scrollTop(curTop + index*per);
+                        }
+                    };
+            timer = window.setInterval(function(){
+                smoothScroll(opts.toT);
+            }, opts.delay);
+            return _this;
+        };
+
+        $('.search-totop').click(function () {
+            $('body').scrollTo();
+        });  
+     });       
+</script>
+</body>
+</html>

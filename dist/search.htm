@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"/>
+    
+    <link rel="stylesheet" href="/dist/css/swiper.min.css">
+    <link rel="stylesheet" href="/dist/css/main.min.css?v=7"/>
+    <title>搜索结果</title>
+</head>
+<body>
+<ul class="search-order-item">
+    <li class="active" data-order-by="new"><a href="javascript:;">新品</a></li>
+    <li data-order-by="hot"><a href="javascript:;">人气</a></li>
+    <li data-order-by="price"><a href="javascript:;">价格<i class="search-order-price"></i></a></li>
+</ul>
+<div class="search-order-item-contents swiper-container">
+    <div class="swiper-wrapper">
+    		<!-- {foreach from=$all_goods_list item=all_goods_info key=ckey} -->
+    		<!-- { if $all_goods_info.q eq 3 } -->
+        <div class="swiper-slide" page="{$start}" data-url-up="{$base_url}/searchpb.php?q=priceUp&device_id={$device_id}&token={$token}&sort_by={$all_goods_info.type}&keywords={$keywords}&third_cat_id={$third_cat_id}" data-url-down="{$base_url}/searchpb.php?q=priceDown&device_id={$device_id}&token={$token}&sort_by={$all_goods_info.type}&keywords={$keywords}&third_cat_id={$third_cat_id}">
+            <ul class="search-list">
+            	<!-- {foreach from=$all_goods_info.goods_list item=goods key=gkey} -->
+                <li>
+                    <a class="search-list-goods" idurl="{$goods.goods_url}" namegoods="{$goods.goods_name}">
+                        <div class="search-list-goods-img">
+                             <img src="{$goods.goods_thumb}" alt="{$goods.goods_name}">
+                             <!-- { if $goods.is_recommend_goods eq 1 } -->
+                             <span class="detailPic-swiper-best detailPic-swiper-best-m"></span>
+                             <!-- { /if } -->
+                        </div>
+                        <div class="search-list-goods-content">
+                            <p class="search-list-goods-name">{$goods.goods_name}</p>
+                            <p class="search-list-goods-desc">{$goods.recomm_reason}</p>
+                            <p class="f12 colorred">¥{$goods.target_promote_price}<!-- { if $goods.jd_price gt 0 } --><span class="otherPrice f11">京东:¥{$goods.jd_price}</span><!-- { else } --><!-- { if $goods.target_discount } --><span class="otherPrice f11">   <s>￥{$goods.target_market_price}</s></span><!-- {/if} --><!-- {/if} --></p>
+                        </div>
+                    </a>
+                </li>
+              <!-- {/foreach} -->
+            </ul>
+            <div class="loader"></div>
+        </div>
+        <!-- { else } -->
+        <div class="swiper-slide" page="{$start}" data-url="{$base_url}/searchpb.php?q={$all_goods_info.q}&device_id={$device_id}&token={$token}&sort_by={$all_goods_info.type}&keywords={$keywords}&third_cat_id={$third_cat_id}">
+            <ul class="search-list">
+            	<!-- {foreach from=$all_goods_info.goods_list item=goods key=gkey} -->
+                <li>
+                    <a class="search-list-goods" idurl="{$goods.goods_url}" namegoods="{$goods.goods_name}">
+                        <div class="search-list-goods-img">
+                             <img src="{$goods.goods_thumb}" alt="{$goods.goods_name}">
+                             <!-- { if $goods.is_recommend_goods eq 1 } -->
+                             <span class="detailPic-swiper-best detailPic-swiper-best-m"></span>
+                             <!-- { /if } -->
+                        </div>
+                        <div class="search-list-goods-content">
+                            <p class="search-list-goods-name">{$goods.goods_name}</p>
+                            <p class="search-list-goods-desc">{$goods.recomm_reason}</p>
+                            <p class="f12 colorred">¥{$goods.target_promote_price}<!-- { if $goods.jd_price gt 0 } --><span class="otherPrice f11">京东:¥{$goods.jd_price}</span><!-- { else } --><!-- { if $goods.target_discount } --><span class="otherPrice f11">   <s>￥{$goods.target_market_price}</s></span><!-- {/if} --><!-- {/if} --></p>
+                        </div>
+                    </a>
+                </li>
+              <!-- {/foreach} -->
+            </ul>
+            <div class="loader"></div>
+        </div>        
+        <!-- { /if } -->
+        <!-- {/foreach} -->
+    </div>
+</div>
+<a class="search-totop" href="javascript:;"></a>
+<script src="/dist/js/zepto.js"></script>
+<script src="/dist/js/swiper.min.js"></script>
+<script src="/dist/js/ponto.js" ></script> 
+<script type="text/javascript" src="/dist/js/lib.js"></script>
+<script>  
+	  $(function () {
+    		Ponto.invoke(
+                    "Messaging",
+                    "refreshable",
+                    {isfresh:false},
+                    null,
+                    null);  
+				$('body').on('click','.search-list-goods',function() {
+					var $this = $(this);
+					//alert($(this).attr("idurl"));
+										 Ponto.invoke(
+                    "Messaging",
+                    "goToUrl",
+                    {"url":$(this).attr("idurl"),"name":$(this).attr("namegoods")},
+                    null,
+                    null);        	
+        }); 
+    
+        var $orderContents = $('.search-order-item-contents');
+        var $orderContentsSlides = $orderContents.find('.swiper-slide');
+
+        // 类目变换
+        {
+            var $orderNav = $('.search-order-item li');
+            var priceSlide = $orderContents.find('.swiper-slide').eq(2);
+
+            function orderByChange(index) {
+                var $this = $orderNav.eq(index);
+                if ($this.hasClass('active')) return;
+                if ($this.find('.search-order-price').length > 0) {
+                    $orderNav.removeClass('active');
+                    if (!$this.hasClass('active1') && !$this.hasClass('active2')) {
+                        $this.addClass('active1');
+                        priceSlide.data('url', priceSlide.data('url-up'));
+                    } else if ($this.hasClass('active2')) {
+                        $this.removeClass('active2').addClass('active1');
+                        priceSlide.data('url', priceSlide.data('url-up'));
+                    } else if ($this.hasClass('active1')) {
+                        $this.removeClass('active1').addClass('active2');
+                        priceSlide.data('url', priceSlide.data('url-down'));
+                    }
+                } else {
+                    $orderNav.removeClass('active active1 active2');
+                    $this.addClass('active');
+                }
+            }
+
+            function slideTo(index) {
+                orderByChange(index);
+
+                $orderContentsSlides.hide();
+                $orderContentsSlides.eq(index).show();
+            }
+
+            // 新品 人气 价格
+            $orderNav.each(function(index) {
+                var $this = $(this);
+                $this.tap(function() {
+                    if ($this.hasClass('active')) return;
+                    if ($this.find('.search-order-price').length > 0 &&
+                            ($this.hasClass('active1') || $this.hasClass('active2'))) {
+                        orderByChange(index);
+                    } else {
+                        slideTo(index);
+                    }
+                });
+            });
+        }
+        // 瀑布流加载
+        $orderContents.find('.swiper-slide').each(function(index, el) {
+            var $this = $(el);
+            var page = parseInt($(this).attr('page'));
+            //alert(page);
+            var waterfall = new Waterfall({
+                scrollContainer: $this,
+                listContainer: $this.find('.search-list'),
+                loader: $this.find('.loader'),
+                loadDistance: 50,
+                minTime: 500
+            });
+
+            waterfall.getUrl = function() {
+                page++;
+               // alert(page);
+                $(this).attr('page',page);
+                return this.scrollContainer.data('url') + '&start=' + page;
+            };
+            
+            $this.hide();
+        });
+
+
+        $orderContents.find('.swiper-slide:eq(0)').show();
+
+        // 返回顶部
+        $('.search-totop').click(function() {
+            var scrollable = $('.swiper-slide').filter(function() {
+                return $(this).is(':visible');
+            });
+            scrollable.scrollTo();
+            console.log(scrollable);
+        });
+     });        
+</script>
+</body>
+</html>

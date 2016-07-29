@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"/>
+    <link rel="stylesheet" href="/dist/css/swiper.min.css">
+    <link rel="stylesheet" href="/dist/css/main.min.css?v=6"/>
+    
+    <title>品牌商品列表</title>
+</head>
+<body style="background: #fff">
+<div class="brandBrowse-wrap">
+    <div class="brand-intro">
+        <div class="brand-title">
+            <img src="{$brand_info.brand_logo}" alt="{$brand_info.brand_name}"/>
+            {$brand_info.brand_name}
+        </div>
+        <div class="brand-brief">
+            {$brand_info.brand_desc}
+        </div>
+    </div>
+    <div class="brandGoods-list ">
+    	<!-- { if $cat_list } -->
+        <div class="goodsList-nav swiper-container">
+            <ul class="swiper-wrapper">
+            	<!-- {foreach from=$cat_list item=cat key=ckey} -->
+                <li id="{$cat.cat_id}" class="swiper-slide<!-- { if $ckey eq 0 } --> nav-active<!-- {/if} -->">
+                    <a href="#" >{$cat.cat_name}</a>
+                </li>
+							<!-- {/foreach} -->
+            </ul>
+        </div>
+      <!-- { /if } -->
+        <div class="goodsList-wrap swiper-container">
+            <div class="swiper-wrapper">
+            	<!-- {foreach from=$cat_list item=cat key=ckey} -->
+                <div id="{$cat.cat_id}" class="goodsList swiper-slide" data-url="k3.html?q=hot">
+                    <ul>
+                    	<!-- {foreach from=$cat.goods_list item=goods key=lkey} -->
+                        <li class="goods-item" idurl="{$goods.goods_url}" namegoods="{$goods.goods_name}">
+                            <div class="goods-item-div">
+                                <div class="goods-item-pic">
+                                    <img src="{$goods.goods_thumb}" alt="{$goods.goods_name}"/>
+                                </div>
+                                <div class="goods-item-pic-content">
+                                    <p class="goods-items-name f11">{$goods.goods_name}</p>
+                                    <p class="goods-items-price f11">{$goods.recomm_reason}</p>
+                                    <p class="goods-items-from f12 colorred">¥ {$goods.target_promote_price}<!-- { if $goods.jd_price gt 0 } --><span class="otherPrice f11">  国内价格:¥{$goods.jd_price}</span><!-- { else } --><!-- { if $goods.target_discount } --><span class="otherPrice f11">   <s>¥{$goods.target_market_price}</s></span><!-- {/if} --><!-- {/if} -->
+                                    </p>
+                                </div>
+                            </div>
+                        </li>
+                        <!-- {/foreach} -->
+                    </ul>
+                    <div class="loader"></div>
+                </div>
+              <!-- {/foreach} -->
+            </div>
+        </div>
+
+    </div>
+    <div id="load" class="loader"></div>
+</div>
+<script src="/dist/js/zepto.js"></script>
+<script src="/dist/js/swiper.js"></script>
+<script src="/dist/js/lib.js"></script>
+<script>
+    $(function() {
+        // 类目变换
+        {
+            var $nav = $('.goodsList-nav');
+            var $navLis = $nav.find('li');
+            var $container = $('.brandGoods-list');
+            var $navContainer = $('.goodsList-wrap');
+            var navContainerSwiper;
+
+            function initHeight() {
+                $container.height(window.innerHeight);
+                $navContainer.height(window.innerHeight -
+                        parseInt($container.css('padding-top').replace('px', '')) -
+                        parseInt($container.css('padding-bottom').replace('px', '')) -
+                        $nav.height() -
+                        parseInt($nav.css('margin-bottom').replace('px', '')));
+            }
+            initHeight();
+
+            function navChange(index) {
+                console.log(index);
+                var $this = $navLis.eq(index);
+                $navLis.removeClass('nav-active');
+                $this.addClass('nav-active');
+            }
+
+            new Swiper($nav, {
+                spaceBetween: 12,
+                slidesPerView: 'auto'
+            });
+
+            navContainerSwiper = new Swiper($navContainer, {
+                onSlideChangeEnd: function(swiper) {
+                    navChange(swiper.activeIndex);
+                }
+            });
+
+            $navLis.each(function(index, el) {
+                var $this = $(el);
+                $this.click(function() {
+                    if (!navContainerSwiper) return;
+                    navContainerSwiper.slideTo(index);
+                });
+            });
+        }
+
+        // 瀑布流加载
+        {
+            $navContainer.find('.swiper-slide').each(function(index, el) {
+                var $this = $(el);
+                var waterfall = new Waterfall({
+                    scrollContainer: $this,
+                    listContainer: $this.find('ul'),
+                    loader: $this.find('.loader'),
+                    loadDistance: 50,
+                    minTime: 500
+                });
+            });
+        }
+
+        // 控制向下滚动
+        {
+            var $brandIntro = $('.brand-intro');
+        }
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html class="fullscreen">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"/>
+    <link rel="stylesheet" href="/dist/css/main.css?v=9"/>
+        <link rel="stylesheet" href="/dist/css/swiper.min.css">
+    <title>{$page_title}</title>
+<meta name="Keywords" content="{$keywords}" />
+<meta name="Description" content="{$description}" />
+</head>
+<body style="background: #f7f7f7" class="hasFooter">
+<div class="tp-nav swiper-container tp-nav-slider homepage">
+    <div class="swiper-wrapper">
+    	<!-- {foreach from=$cat_list item=cat key=ckey} -->
+        <div id="target-{$cat.cat_id}" class="swiper-slide active"><a href="#">{$cat.cat_name}</a></div>
+      <!-- {/foreach} -->
+    </div>
+</div>
+<div class="homepageMainWrapper hasTopBar swiper-container">
+    <div class="swiper-wrapper">
+    	<!-- {foreach from=$all_goods_list item=goods_list key=ckey} -->	
+        <div id="{$goods_list.cat_id}" page="{$goods_list.start}" class="swiper-slide page">
+         <!-- {foreach from=$goods_list.goods item=goods key=lkey} -->
+        	 <!-- { if $goods.brand_flag eq 0 } -->
+            <div class="main-goods" idurl="{$goods.goods_url}" namegoods="{$goods.goods_name}">
+                <div class="main-goodsPic" idurl="{$goods.goods_url}" namegoods="{$goods.goods_name}">
+                    <div class="main-goodsPic-img" idurl="{$goods.goods_url}" namegoods="{$goods.goods_name}"><img src="{$goods.goods_thumb}" alt="{$goods.goods_name}"/></div>
+                    <span class="detailPic-swiper-best"></span>
+                    <!--<div class="main-goodsLogo">-->
+                    <!--<span class="f29 fwb">特价</span>-->
+                    <!--<span class="f10 fwb">Special Offer</span>-->
+                    <!--</div>-->
+						        <!-- { if $goods.brand_name } -->
+						        <div class="main-goodsPic-brand" idurl="{$goods.brand_url}" brname="{$goods.brand_name}">
+						            <!-- { if $goods.brand_logo } --><div class="main-goodsPic-brand-pic"><img src="{$goods.brand_logo}" alt="{$goods.brand_name}"></div><!-- { /if } -->
+						            <div class="main-goodsPic-brand-name">{$goods.brand_name}</div>
+						        </div>
+						        <!-- { /if } -->                    
+                </div>
+						    <div class="mgoods-explain">
+						        <p class="explain-line1 f14"><!-- { if $goods.target_discount } --><span class="f18 colorred fwb">{$goods.target_discount}折</span><span class="line-bar">|</span><!-- {/if} -->{$goods.goods_name}</p>
+						        <p class="explain-line2 f12 grayfont">{$goods.recomm_reason}</p>
+						        <p class="explain-line3 colorred"><span class="f18 fwb colorred" style="margin-right: 5px;">¥{$goods.target_promote_price}</span><!-- { if $goods.jd_price gt 0 } --><span class="grayfont line-throungh">  国内价格:¥{$goods.jd_price}</span><!-- { else } --><!-- { if $goods.target_discount } --><span class="grayfont line-throungh">   ¥{$goods.target_market_price}</span><!-- {/if} --><!-- {/if} --></p>
+						        <div class="amazon-logo f10"><img class="flag" src="/dist/images/us.png" alt="">{$goods.network_name}直发</div>
+						    </div>   
+						    <!-- { if $goods.label_list  } -->
+						     <div class="swiper-container mgoods-tags">
+						        <div class="swiper-wrapper">
+						        		<!-- {foreach from=$goods.label_list item=label key=lkey} -->
+						            <div class="swiper-slide"><a href="#">{$label.label_value}</a></div>
+						            <!-- {/foreach} -->
+						        </div>
+						    </div>
+						    <!-- {/if} --> 
+						    <div class="mgoods-share">
+						        <ul>
+						            <li class="grayfont visited"><a href="javascript:;">{$goods.click_count}</a></li>
+						            <li class="li-bar grayfont">|</li>
+						            <li class="grayfont share" shareurl="{$goods.share_url}" idname="{$goods.goods_name}" reason="{$goods.recomm_reason}" thuml="{$goods.goods_thumb}"><a href="javascript:;">分享</a></li>
+						            <li class="li-bar grayfont">|</li>
+						            <li class="grayfont collection" gid="{$goods.goods_id}" ><a href="javascript:;">收藏</a></li>
+						        </ul>
+						    </div>            
+            </div>
+           <!-- {/if} -->
+					 <!-- { if $goods.brand_flag eq 1 } -->
+            <div class="recommend-brand">
+            	  <div class="main-goodsPic-brand" idurl="{$goods.brand_url}" brname="{$goods.brand_name}">
+						        <div class="main-goodsPic-brand-pic"><img src="{$goods.brand_logo}" alt=""></div>
+						        <div class="main-goodsPic-brand-flex">
+						            <div class="main-goodsPic-brand-name">{$goods.brand_name}</div>
+						            <div class="main-goodsPic-brand-desc"></div>
+						        </div>
+						    </div>
+                <div class="brand-goodsList swiper-container2">
+                    <ul class="swiper-wrapper">
+							        	<!-- {foreach from=$goods.brand_goods item=brgoods key=bkey} -->
+							            <li class="swiper-slide" >
+							                <div class="re-items-pic" idurl="{$brgoods.goods_url}" namegoods="{$brgoods.goods_name}">
+							                    <img src="{$brgoods.goods_thumb}" alt="{$brgoods.goods_name}"/>
+							                    <span class="detailPic-swiper-best detailPic-swiper-best-m"></span>
+							                </div>
+							                <p class="re-items-name f16">{$brgoods.goods_name}</p>
+							                <p class="re-items-price f18 fwb colorred">¥{$brgoods.target_promote_price}<!-- { if $brgoods.jd_price gt 0 } --><span class="grayfont">  国内价格:¥{$brgoods.jd_price}</span><!-- { else } --><!-- { if $brgoods.target_discount } --><span class="grayfont line-throungh">   ¥{$brgoods.target_market_price}</span><!-- {/if} --><!-- {/if} --></p>
+							                <p class="re-items-from grayfont"><img class="flag" src="/dist/images/us.png" alt="">{$goods.network_name}直发</p>
+							
+							            </li>
+												<!-- {/foreach} -->                    	
+                        <li class="swiper-slide">
+                            <a href="#">
+                                <div class="re-items-pic moreGoods">
+                                    <!--<img src="images/brand-items3.png" alt=""/>-->
+                                    <div>查看到多</div>
+                                    <div style="font-size: 8px;">MORE GOODS</div>
+                                </div>
+                                <!--<p class="re-items-name f16">卡瑞尔2015秋冬新款秋冬新款秋冬新款秋冬新款秋冬新款秋冬新款</p>-->
+                                <!--<p class="re-items-price f18 fwb colorred">¥284</p>-->
+                                <!--<p class="re-items-from grayfont">美国亚马逊直发</p>-->
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+           <!-- {/if} -->
+          <!-- {/foreach} -->  
+            <div class="appendContentContainer"></div>
+            <div class="loader"></div>
+        </div>
+			<!-- {/foreach} -->
+    </div>
+</div>
+
+        <input type="hidden" name="device_id" id="device_id" value="{$device_id}" />
+        <input type="hidden" name="token" id="token" value="{$token}" />
+<input type="hidden" id="top_now_page_{$start}" value="{$start}">
+<input type="hidden" id="top_next_page_{$start}" value="{$start}">
+<input type="hidden" id="ref_share_url" value="{$ref_urlflag}">
+<div id="appendContentContainer" token="{$token}" deviceid="{$device_id}" page="{$start}" listid="0" brandid="0"></div>
+<input type="hidden" id="home_list_id_{$start}" value="{$list_id}">
+<input type="hidden" id="home_brand_id_{$start}" value="{$brand_id}">
+<div id="load" class="loader"></div>
+<script src="/dist/js/zepto.min.js"></script>
+<script src="/dist/js/swiper.js"></script>
+<script src="/dist/js/ponto.js" ></script> 
+<script>
+    $(function () {
+    						  Ponto.invoke(
+                    "Messaging",
+                    "refreshable",
+                    {isfresh:false},
+                    null,
+                    null);    
+        var selectNavIndex = 0;
+        var $topbar = $('.tp-nav.homepage'),
+                $homepageTitle = $('.homepageTitle'),
+                $homepageMainWrapper = $('.homepageMainWrapper'),
+                changeDistance = 1000,
+                lastScrollTop = 0,
+                lastTime = new Date().getTime();
+        new Swiper('.tp-nav', {slidesPerView: 'auto'});
+        var centertpNav = (function () {
+            var $nav = $('.tp-nav-slider'),
+                    $wrapper = $nav.find('.swiper-wrapper'),
+                    wrapperWidth = $wrapper.width(),
+                    $slides = $nav.find('.swiper-slide'),
+                    slidesTranslate = [],
+                    totalWidth = 0;
+            $slides.each(function (index) {
+                var $this = $(this),
+                        half = (window.innerWidth - $this.width()) / 2;
+                slidesTranslate[index] = 0;
+                totalWidth += $this.width();
+                if (totalWidth - $this.width() > half) {
+                    slidesTranslate[index] = -(totalWidth - $this.width() - half);
+                }
+            }).each(function (index) {
+                var $this = $(this),
+                        half = (window.innerWidth - $this.width()) / 2;
+                if (totalWidth - (Math.abs(slidesTranslate[index]) + half + $this.width()) < half) {
+                    slidesTranslate[index] = window.innerWidth - totalWidth;
+                }
+            });
+
+            return function () {
+                var index = $nav.find('.active').index();
+
+                $wrapper.css({
+                    '-webkit-transform': 'translate(' + slidesTranslate[index] + 'px, 0)',
+                    '-moz-transform': 'translate(' + slidesTranslate[index] + 'px, 0)',
+                    '-ms-transform': 'translate(' + slidesTranslate[index] + 'px, 0)',
+                    '-o-transform': 'translate(' + slidesTranslate[index] + 'px, 0)',
+                    'transform': 'translate(' + slidesTranslate[index] + 'px, 0)',
+                    '-webkit-transition-duration': '300ms',
+                    '-moz-transition-duration': '300ms',
+                    '-ms-transition-duration': '300ms',
+                    '-o-transition-duration': '300ms',
+                    'transition-duration': '300ms'
+                });
+
+            }
+        })();
+        var mainWrapper = new Swiper('.homepageMainWrapper', {
+            slidesPerView: 1,
+            onSlideChangeEnd: function (swiper) {
+                var nav = $('#target-' + swiper.slides[swiper.activeIndex].getAttribute('id'));
+                lastScrollTop = $(swiper.slides[swiper.activeIndex]).scrollTop();
+                console.log(lastScrollTop);
+                nav.siblings().removeClass('active');
+                nav.addClass('active');
+                selectNavIndex = swiper.activeIndex;
+                centertpNav();
+            }
+        });
+        $('.tp-nav .swiper-slide').click(function () {
+            var $this = $(this);
+            $('.tp-nav .swiper-slide').removeClass('active');
+            $this.addClass('active');
+            centertpNav();
+            selectNavIndex = $('#' + $this.attr('id').replace('target-', '')).index();
+            mainWrapper.slideTo(selectNavIndex);
+//            showDropdown();
+            return false;
+        });
+        function sliderInit(context) {
+            var $list = $.grep(context, function (item) {
+                if ($(item).hasClass('recommend-brand')) return true;
+                return false;
+            });
+
+            if (!$list.each) $list = $($list);
+            $list.each(function () {
+                var $this = $(this).find('.swiper-container2');
+                ;
+
+                new Swiper($this, {
+                    slidesPerView: 2.2,
+                    spaceBetween: 12,
+                    freeMode: true
+                });
+            });
+        }
+
+        function childrenTotalHeight(el) {
+            var ret = 0;
+            el.children().each(function () {
+                ret += $(this).height();
+            });
+
+            return ret;
+        }
+
+        function loader(obj) {
+            var self = {
+                state: 0 // 0:未加载, 1:加载中, 2:无内容
+            };
+            var $this = obj ? $(obj) : $(this);
+            self.$loader = $this.find('.loader');
+            var minInterval = 500,
+                    startTime = null,
+                    endTime = null,
+                    canHide = true,
+                    funcArr = [];
+
+            function wrapFn(state, fn) {
+                return function () {
+                    fn && fn();
+                    startTime = null;
+                    endTime = null;
+                    self.state = state;
+                    self.$loader.hide();
+                }
+            }
+
+            self.set = function (state, fn) {
+                if (state === 1) {
+                    self.state = 1;
+                    startTime = new Date;
+                    canHide = false;
+                    self.$loader.show();
+                    fn && fn();
+                    setTimeout(function () {
+                        while (funcArr.length > 0) {
+                            funcArr.shift()();
+                        }
+                        canHide = true;
+                    }, minInterval);
+                } else {
+                    if (canHide) {
+                        fn && fn();
+                        startTime = null;
+                        endTime = null;
+                        self.state = state;
+                        self.$loader.hide();
+                    } else if (fn) {
+                        funcArr.push(wrapFn(state, fn));
+                    }
+                }
+            };
+
+            return self;
+        }
+
+        $homepageMainWrapper.find('.page').each(function (index) {
+            var $this = $(this),
+                    totalHeight = childrenTotalHeight($this);
+            var screenHeight = $this.height(),
+                    distance = 100,
+                    loading = false,
+                    scrollLoading = loader(this),
+                    appendContent = (function () {
+                        var $container = $this.find('.appendContentContainer');
+                        return function (response) {
+                            var $data = $(response);
+                            scrollLoading.set(0, function () {
+                                $container.append($data);
+                                sliderInit($data);
+                                totalHeight = childrenTotalHeight($this);
+                            });
+                        }
+                    }());
+
+            var cat_id = $this.attr('id');
+            $this.scroll(function () {
+                if (totalHeight - $this.scrollTop() - screenHeight < distance && scrollLoading.state === 0) {
+                    scrollLoading.set(1);
+                    $.get('/k.html' + '?cat_id=' + cat_id, {}, function (response) {
+                        if (response === '' || response.toString().toLowerCase() === 'false') {
+                            scrollLoading.set(2, function () {
+                                $this.find('.appendContentContainer')
+                                        .append('<div style="text-align: center;padding-bottom: 10px;color: #666;">已经看到最后啦</div>');
+                            });
+                        } else {
+                            appendContent(response);
+                        }
+                    });
+                }
+
+                var k = $this.scrollTop();
+                if (new Date().getTime() - lastTime > changeDistance) {
+                    if (k > lastScrollTop) {
+                        $topbar.addClass('hide');
+                        $homepageTitle.addClass('hide');
+                        $homepageMainWrapper.removeClass('hasTopBar').addClass('hasTopBar--2')
+                    } else {
+                        $topbar.removeClass('hide');
+                        $homepageTitle.removeClass('hide');
+                        $homepageMainWrapper.addClass('hasTopBar').removeClass('hasTopBar--2')
+
+                    }
+                    lastTime = new Date().getTime();
+                }
+                lastScrollTop = k;
+            });
+        });
+
+        function swiperFactory($this) {
+            if ($this.hasClass('swiper-container1')) {
+                new Swiper($this, {
+                    loop: true,
+                    slidesPerView: 3.2,
+                    spaceBetween: 10,
+                    freeMode: true
+                });
+            } else if ($this.hasClass('swiper-container2')) {
+                new Swiper($this, {
+                    slidesPerView: 2.2,
+                    spaceBetween: 12,
+                    freeMode: true
+                });
+            } else {
+                new Swiper($this, {
+                    width: 'auto',
+                    freeMode: true,
+                    spaceBetween: 10
+                });
+            }
+        }
+
+        function initSwiper(context) {
+            var selectors = ['.swiper-container1', '.swiper-container2', '.mgoods-tags'],
+                    $elems;
+            if (context) {
+                $elems = $(selectors.join(','), context);
+            } else {
+                $elems = $(selectors.join(','));
+            }
+            $elems.each(function () {
+                swiperFactory($(this));
+            });
+        }
+
+        initSwiper();
+
+
+        $('.tp-nav.homepage .swiper-slide').each(function () {
+            var $this = $(this);
+            $this.click(function () {
+                $win.scrollTop(0);
+            });
+        });
+
+        $('.saishare-nav.homepage li').each(function () {
+            var $this = $(this);
+            $this.click(function () {
+                $this.toggleClass('active');
+            });
+        })
+    });
+ 
+    
+</script>
+<script>
+
+	</script>
+</body>
+</html>

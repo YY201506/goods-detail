@@ -1,0 +1,907 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="refresh" content="600">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"/>
+    <link rel="stylesheet" href="/dist/css/main.css?v=7"/>
+    <link rel="stylesheet" href="/dist/css/swiper.min.css?v=3"/>
+    <title>{$goods.goods_name}</title>
+  <meta name="Keywords" content="{$keywords}" />
+	<meta name="Description" content="{$description}" />
+</head>
+<body>
+<!-- { if $device_id eq '' } -->
+<div class="downloadApp">
+  <div class="downloadLeft">
+    <img src="/dist/images/download.png" alt="">
+    <div class="colflex">
+      <div class="title">海外购APP</div>
+      <div class="subtitle">有态度的海购分享社区</div>
+    </div>
+  </div>
+  <a class="btn" href="http://a.app.qq.com/o/simple.jsp?pkgname=com.mizanwang.app">立即下载</a>
+</div>
+<!-- {/if} -->
+<div id="goods-detail" class="hasToolbar">
+		<!-- {foreach from=$pics_list item=pic_info key=dekey} -->
+    <div class="swiper-container detailPic-swiper">
+        <div class="swiper-wrapper">
+        	<!-- {foreach from=$pic_info.img_list item=pic key=dekey} -->
+            <div class="swiper-slide">
+                <a href="#">
+                    <img src="{$pic.img_url}" alt="{$goods.goods_name}">
+                </a>
+            </div>
+          <!-- {/foreach} -->
+        </div>
+        <div class="detailPic-swiper-index">1/5</div>
+        <!-- { if $goods.is_recommend_goods eq 1 } --><span class="detailPic-swiper-best"></span><!-- {/if} -->
+    </div>
+    <!-- {/foreach} -->
+    <!-- { if $pics_attr } -->
+    <div class="detail-images swiper-container">
+        <ul class="swiper-wrapper">
+        	<!-- {foreach from=$pics_list item=pic_info key=dekey} -->
+            <li class="swiper-slide" goodinfoid="{$dekey}"><img src="{$pic_info.home_img}" alt=""></li>
+          <!-- {/foreach} -->
+        </ul>
+    </div>
+    <!-- {/if } -->
+    <div class="detail-name container bd0">
+        <p id="nametitle" class="name-title"><!-- { if $goods.target_discount gt 0 } --><span class="name-redfont">{$goods.target_discount}折</span><!-- {/if} -->{$goods.goods_name}</p>
+
+        <p id="nameprice" class="name-price colorred">¥{$goods.target_promote_price}<!-- { if $goods.target_market_price gt 0.00 } --><span class="grayfont line-throungh">¥{$goods.target_market_price}</span><!-- {/if} --></p>
+
+        <!-- {if $goods.jd_price gt 0 } --><p class="name-referprice grayfont">京东价格:¥{$goods.target_jd_price}</p><!-- {/if} -->
+    </div>
+    <div class="detail-carriage rowflex container bd0">
+        <div id="mallweight" class="carriage-items">{$goods.mall_weight}Kg<br> <span class="grayfont">商品重量</span></div>
+        <div id="transitfee" class="carriage-items">运费:¥{$goods.transit_price}<br> <span class="grayfont">{$goods.suppliers_area}至中国</span></div>
+        <div class="carriage-items">{$goods.suppliers_name}<br> <span class="grayfont carriage-shipper">发货商</span></div>
+    </div>
+    <!-- {if $goods.goods_brief } -->
+    <div class="pointComment container bd0">
+    	 <div class="personal-points">
+            <div class="personal-name">
+                <div class="personal-img">
+                    <img src="{$goods.cat_title_url}" alt="">
+                </div>
+                <span>{$goods.cat_desc} 观点</span>
+                <span class="personal-tag">认证编辑</span>
+            </div>
+            <p>{$goods.goods_brief}</p>
+        </div>
+    </div>
+    <!-- {/if} -->
+    <!-- {if $goods.goods_dao } -->
+    <div class="goods-detail container bd0">
+        <div class="share-header after-scale">
+            商品详情
+        </div>
+        <div class="goods-detail-info">
+        <p>{$goods.goods_dao}</p>
+         </div>
+    </div>
+    <!-- {/if} -->
+    <!-- {if $goods.brand_name } -->
+    <div class="goods-detail-2 container bd0">
+        <div class="share-header">
+            <img class="goods-detail-brand" src="{$goods.brand_logo}" alt="{$goods.brand_name}">
+            {$goods.brand_name}
+            <!-- <a class="btn-more grayfont" href="#">23娴滈缚鐦庣拋?></a> -->
+        </div>
+        <div class="goods-detail-info">
+            {$goods.brand_desc}
+        </div>
+    </div>
+     <!-- {/if} -->
+
+    <div class="detail-process container bd0">
+        <img src="/dist/images/process-bg@3x.png" alt="">
+        <!--<h3>鐏忓繗婀濋崗銊炵敮顔藉亶濞村嘲顦荤拹顓犲⒖</h3>-->
+        <!---->
+        <!--<div class="rowflex">-->
+        <!--<div class="process-1 process-name grayfont">閸ヨ棄顦荤€规缍夐惄鏉戝絺</div>-->
+        <!--<div class="process-2 process-name grayfont">娣囨繄鏆€鐎规缍夌亸蹇曘偍閸滃瞼澧垮ù浣蜂繆閹?/div>-->
+        <!--<div class="process-3 process-name grayfont">闁浇鎻幃銊ф畱閹靛绗?/div>-->
+        <!--</div>-->
+
+        <h3>买前须知</h3>
+        <ol class="hide">
+            <li>
+                下单后：由于库存实时更新，且部分国外网站限制购
+                买数量，如出现缺货或限制购买的情况，蜜赞会在7个
+                工作日内将您支付的金额返回到您原支付的账户。
+            </li>
+            <li>
+                修改订单：因海外采购的关系，及海外大多数品牌官
+                网规定，订单一旦生成，即不允许做任何更改，发货
+                后不能撤销订单。请您在下单前仔细核对您的商品
+            </li>
+        </ol>
+
+        <a class="detail-process-more" href="#">阅读全文</a>
+    </div>
+   <div class="detail-buy rowflex before-scale">
+        <a class="buy-btn btn-scar" href="#"><span class="buytips buytips-up">成功加入购物车</span><span class="tag-num" <!-- { if $cart_goods_num eq 0 } -->style="display:none;" <!-- {/if} -->>{$cart_goods_num}</span>购物车</a>
+        <a class="buy-btn btn-collect" toggle-class="active" href="#">收藏</a>
+        <a class="buy-btn btn-share" reason="{$goods.recomm_reason}" idname="{$goods.goods_name}" thuml="{$goods.buy_small_img}"  href="#">分享</a>
+        <a class="buy-btn btn-shoppingCart"   >加入购物车</a>
+    </div>
+</div>
+
+<div id="buyPageInner">
+    <div class="buyPage-mark"></div>
+    <div class="colflex">
+        <div class="flextop">
+            <div class="goods-messages rowflex">
+            	<span class="btn-grayBar"></span>
+                <img id="goods_buy_small_image" src="{$goods.buy_small_img}" alt="{$goods.goods_name}"/>
+
+                <div class="messages-wrap">
+                		<p id="goods_buy_promote_price" class="f18" style="margin-bottom: 15px;margin-top: 10px;">¥{$goods.target_promote_price} <span class="grayfont line-throungh">¥{$goods.target_market_price}</span></p>
+										<p id="goods_child_mall_weight" class="f13 grayfont" style="margin-bottom: 15px;">重量{$goods.mall_weight}kg&nbsp;&nbsp;&nbsp;&nbsp;运费¥{$goods.transit_price}</p>
+										<p id="had_selected_attr_values" style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;"><!-- {if $selected_attr_value } -->已选<!-- {foreach from=$selected_attr_value item=sattr } -->{$sattr.attr_value},  <!-- {/foreach} --><!-- {/if} --></p>
+                </div>
+            </div>
+        </div>
+        <div class="flexcenter">
+        	  <div class="goods-tips">
+                <span>小蜜提示：</span>
+                以下信息均由海外官网提供，仅供参考。
+            </div>
+            <div class="goods-selection">
+            	<!-- { if $goods_attr } -->
+            	<!-- {foreach from=$goods_attr.spe item=spec key=spec_key} -->
+                <div class="selection-items">
+                    <div class="selection-title">{$spec.attr_name}:</div>
+                    <ul class="selection-list">
+                    		<!-- {foreach from=$spec.attr_value item=value key=value_key name=value} -->
+													<li class="selection-valid<!-- { if $value.selected eq 1 } --> selection-active<!-- {/if} -->" tdata='{$value.jsondata}' attr_id="{$spec_key}" value_index="{$value.value_index}"  id="attr_{$spec_key}_{$value.value_index}">{$value_key}</li>
+                        <!-- {/foreach} -->
+                    </ul>
+                </div>
+                <input type="hidden" name="goods_attr_info" id="goods_attr_info" value='{$goods_attr.all}' />
+              <!-- {/foreach} -->
+              <!-- { /if } -->
+                <div class="selection-items">
+                    <div class="selection-title">购买数量</div>
+                    <ul class="selection-num">
+                        <li class="num-subtract">-</li>
+                        <li class="num-bar"></li>
+                        <li class="number">{$cart_goods_num}</li>
+                        <li class="num-bar"></li>
+                        <li class="num-add">+</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <input type="hidden" name="goods_number" id="goods_number" value="{$cart_goods_num}" />
+        <input type="hidden" name="is_in_stock" id="is_in_stock" value="{$is_in_stock}" />
+        <input type="hidden" name="goods_sku_num" id="goods_sku_num" value="{$goods_sku_num}" />
+        <input type="hidden" name="goods_sku_count" id="goods_sku_count" value="{$goods_sku_count}" />
+        <input type="hidden" name="goods_name" id="goods_name" value="{$goods.goods_name}" />
+        <input type="hidden" name="goods_child_info" id="goods_child_info" value='{$goods_child_info}' />
+        <input type="hidden" name="user_login" id="user_login" value="{$user_login}" />
+        <input type="hidden" name="cart_id" id="cart_id" value="{$cart_id}" />
+        <input type="hidden" name="ref_share_url" id="ref_share_url" value="{$ref_urlflag}" />
+        <input type="hidden" name="share_url" id="share_url" value="{$goods.share_url}" />
+        <input type="hidden" name="goods_id" id="goods_id" value="{$goods.goods_id}" />
+        <input type="hidden" name="is_have_child" id="is_have_child" value="{$is_have_child}" />
+        <input type="hidden" name="device_id" id="device_id" value="{$device_id}" />
+        <input type="hidden" name="token" id="token" value="{$token}" />
+        <input type="hidden" name="goods_info_id"  id="goods_info_id" value='{$goods_attr.segoodinfo}' />
+        <input type="hidden" name="target_goods_info_id"  id="target_goods_info_id" value="{$goods.goods_info_id}" />
+				<input type="hidden" name="last_attr_id" id="last_attr_id" value='{$goods_attr.seattr}' />
+        <div class="flexbottom">
+            <div class="goods-selection">
+                <div class="selection-items">
+                    <div class="selection-title">目前有货</div>
+                    <a class="items-btnConfirm" href="#" >加入购物车</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="/dist/js/zepto.min.js"></script>
+<script src="/dist/js/swiper.min.js"></script>
+<script src="/dist/js/ponto.js?v=4" ></script> 
+<script>
+		
+    $(function () {
+    	//异步刷新价格
+        	$.ajax({
+					     //提交数据的类型 POST GET
+					     type:"POST",
+					     //提交的网址
+					     //url:"agetprice.html", 
+					     url:"agetprice.html",
+					     //提交的数据
+					     data:{goods_id:$("#goods_id").val()},
+					     async:true,
+					     //返回数据的格式
+					     datatype: "json",//"xml", "html", "script", "json", "jsonp", "text".
+					     //在请求之前调用的函数
+					     beforeSend:function(){},					     				     					     					                 
+					     //调用出错执行的函数
+					     error: function(){
+					        		Ponto.invoke(
+		                    "Messaging",
+		                    "toast",
+		                    {"title":'网络断了，请售后再试'},
+		                    null,
+		                    null);
+					     }         
+					  });
+
+            Ponto.invoke(
+            "Messaging",
+            "refreshable",
+            {isfresh:false},
+            null,
+            null);
+
+        var detailImage = $('.detail-images');
+        var detailImageLis = detailImage.find('li');
+        var screenWidth = window.innerWidth;
+        var detailPicSwiper = $('.detailPic-swiper');
+        var ret = 0;
+
+        $('.detailPic-swiper').each(function() {
+            var $this = $(this);
+            var $pager = $this.find('.detailPic-swiper-index');
+            new Swiper($this, {
+                loop: true,
+                autoplay: 5000,
+                pagination: $this.find('.swiper-pagination'),
+                onSlideChangeEnd: function(swiper) {
+                    $pager.html((parseInt(swiper.slides[swiper.activeIndex]
+                                    .getAttribute('data-swiper-slide-index')) + 1) +
+                            '/' + (swiper.slides.length - 2));
+                }
+            });
+
+            $this.hide();
+        });
+        
+        if ($('.detailPic-swiper').length === 1) {
+      		$('.detailPic-swiper').show();
+    		}
+        function imageChange(index) {
+            detailImageLis.removeClass('active');
+            detailImageLis.eq(index).addClass('active');
+            var child_data = JSON.parse($("#goods_child_info").val());
+						var skuid = detailImageLis.eq(index).attr('goodinfoid');
+						//alert(skuid);
+						//alert(typeof child_data[skuid].target_discount);
+						if (  typeof(child_data[skuid].target_discount) != "undefined" && parseInt(child_data[skuid].target_discount) > 0)
+						{
+								$("#nametitle").html('<span class="name-redfont">' + child_data[skuid].target_discount + '折</span>' + $("#goods_name").val());
+								$("#nameprice").html('￥' + child_data[skuid].target_promote_price + '<span class="grayfont line-throungh">￥' + child_data[skuid].target_market_price + '</span>');
+								
+						}else
+						{
+								$("#nameprice").html('￥' + child_data[skuid].target_promote_price);
+						}
+						$("#mallweight").html(child_data[skuid].mall_weight + 'Kg<br> <span class="grayfont">商品重量</span>');
+						
+						$("#transitfee").html('运费:￥' +  child_data[skuid].transit_price + '<br> <span class="grayfont">{$goods.suppliers_area}至中国</span>');
+						//alert(child_data[skuid].target_promote_price + 0);
+            detailPicSwiper.hide()
+            detailPicSwiper.eq(index).show();
+        }
+				if( $("#goods_sku_count").val() > 1 )
+				{
+        		imageChange($("#goods_sku_num").val());
+        }
+        
+
+        detailImageLis.each(function(index) {
+            var $this = $(this);
+            ret += $this.width();
+
+            $this.tap(function() {
+                if ($this.hasClass('active')) return;
+
+                imageChange(index);
+            });
+        });
+        if (ret + 20 > screenWidth) {
+            new Swiper(detailImage, {
+                slidesPerView: 'auto'
+            });
+        } else {
+            detailImage.addClass('center');
+        }
+
+        // 标签Swiper
+        $('.mgoods-tags').each(function(index, obj) {
+            new Swiper(obj, {
+                slidesPerView: 'auto',
+                spaceBetween: 12
+            });
+        });
+        
+          	
+        var detail = $('#goods-detail');
+        var buyPage = $('#buyPageInner');
+        var detailSelected = $('.detail-selected');
+        var btnGrayBar = $('.btn-grayBar');
+        var btncartshop = $('.btn-shoppingCart');
+        var btncartlist = $('.btn-scar');
+        detailSelected.click(function () {
+            detail.hide();
+            buyPage.show();
+					  Ponto.invoke(
+                    "Messaging",
+                    "refreshable",
+                    {isfresh:false},
+                    null,
+                    null);             
+        });
+        
+        var $bugpageTop = $('#buyPageInner .colflex .flextop');
+        $('#buyPage .colflex .flexcenter').on('scroll', function () {
+            if ($(this).scrollTop() > 10) {
+                $bugpageTop.addClass('shadow');
+            } else {
+                $bugpageTop.removeClass('shadow');
+            }
+        });
+       
+       
+        /*$('.detail-process-more').click(function () {
+            var ol = $('.detail-process ol'),
+                    arrow = $('.detail-process .detail-process-more'),
+                    height = 0;
+            if (ol.hasClass('hide')) {
+                ol.children().each(function () {
+                    console.log($(this).height());
+                    height += $(this).height();
+                });
+                ol.removeClass('hide').css('height', height);
+                arrow.addClass('up');
+            } else {
+                ol.addClass('hide').removeAttr('style');
+                arrow.removeClass('up');
+            }
+
+            return false;
+        });*/
+       
+        var btnShare = $('.btn-share');
+        btnShare.click( function() {
+        			//alert("31");
+        			var $this = $(this);
+        			var refurl = $('#share_url').val() + $('#ref_share_url').val();
+        			//alert(refurl);
+        			Ponto.invoke(
+                    "Messaging",
+                    "share",
+                    {url: refurl, title: $(this).attr("idname"), subTitle: $(this).attr("idname"), sImageUrl:$(this).attr("thuml") },
+                    null,
+                    null);      			
+        	});
+        
+        //添加收藏
+        var btnCollect = $('.btn-collect');
+        btnCollect.click(function () {
+        	  Ponto.invoke(
+                    "Messaging",
+                    "getToken",
+                    {userLogin:true},
+                    function (token) {
+                    	$("#user_login").val(1);
+											$("#token").val(token);
+                    },
+                    null);
+        	$.ajax({
+					     //提交数据的类型 POST GET
+					     type:"POST",
+					     //提交的网址
+					     url:"aaddcoll.html",
+					     //提交的数据
+					     data:{device_id:$("#device_id").val(),token:$("#token").val(),goods_id:$("#goods_id").val()},
+					     //返回数据的格式
+					     datatype: "json",//"xml", "html", "script", "json", "jsonp", "text".
+					     //在请求之前调用的函数
+					     beforeSend:function(){},
+					     //成功返回之后调用的函数             
+					     success:function(data){
+					    		//alert('31');        
+					     }   ,
+					     //调用执行后调用的函数
+					     complete: function(XMLHttpRequest, textStatus){
+					        //alert(XMLHttpRequest.responseText);
+					        if(XMLHttpRequest.responseText == 'ok')
+					        {
+					        		//alert("添加收藏成功");
+					        		Ponto.invoke(
+		                    "Messaging",
+		                    "toast",
+		                    {"title":"添加收藏成功"},
+		                    null,
+		                    null);
+					        }
+					        //alert(textStatus);
+					         //HideLoading();
+					     },
+					     //调用出错执行的函数
+					     error: function(){
+					        		Ponto.invoke(
+		                    "Messaging",
+		                    "toast",
+		                    {"title":'网络断了，请售后再试'},
+		                    null,
+		                    null);
+					     }         
+					  });
+        });
+        
+        //加入购物车
+        btncartshop.click(function () {
+        		//alert('211');
+        		if($("#is_in_stock").val() == 0 )
+        		{
+        				//alert("该商品已被抢光！");
+					       Ponto.invoke(
+		                    "Messaging",
+		                    "toast",
+		                    {"title":'该商品已被抢光了！'},
+		                    null,
+		                    null);        				
+        				return;
+        		}
+        		
+        		Ponto.invoke(
+                    "Messaging",
+                    "getToken",
+                    {userLogin:true},
+                    function (token) {
+                    	$("#user_login").val(1);
+											$("#token").val(token);
+											//购物车添加
+											//alert(token);
+            					if( $("#is_have_child").val() == 0 )
+					        	  {
+					        	  		var goodsnum = parseInt($("#goods_number").val()) + 1;
+					        	  		//alert(goodsnum);
+					        	  		add2Shopcar(goodsnum);
+					        	  		//alert(goodsnum);
+					        	  		$("#goods_number").val(goodsnum);
+					        	  }else
+					        	  {
+										  	Ponto.invoke(
+					                    "Messaging",
+					                    "refreshable",
+					                    {isfresh:false},
+					                    null,
+					                    null);   
+					                    //alert('31'); 
+					                    
+					                var goodsnum = parseInt($('.number').text()) + 1;
+													detail.hide();
+					                $('.number').text(goodsnum);
+					            		buyPage.show();   	  		
+           		
+					            }											
+											
+                    },
+                    null); 
+        });
+        //加入购物车
+       	var itembtncfim = $('.items-btnConfirm');
+       	itembtncfim.click(function () {
+       			$("#goods_number").val($('.number').text());
+						if( $('.number').text() <= 0 )
+						{
+									Ponto.invoke(
+				                    "Messaging",
+				                    "toast",
+				                    {"title":'请添加购买数量！'},
+				                    null,
+				                    null);
+								return false;
+						}
+						if( $("#target_goods_info_id").val() == 0 && $("#is_have_child").val() == 1 )
+						{
+									Ponto.invoke(
+				                    "Messaging",
+				                    "toast",
+				                    {"title":'请选择商品属性！'},
+				                    null,
+				                    null);
+								return false;
+						}
+						add2Shopcar(parseInt($('.number').text()));
+       	});
+        //跳转到购物车
+        btncartlist.click(function () {
+					 Ponto.invoke(
+                    "Messaging",
+                    "goToCart",
+                    {},
+                    null,
+                    null); 
+        });
+        btnGrayBar.click(function () {
+            detail.show();
+            buyPage.hide();
+            Ponto.invoke(
+                    "Messaging",
+                    "refreshable",
+                    {isfresh:true},
+                    null,
+                    null); 
+        });
+        $('.num-subtract').click(function () {
+            var value = parseInt($('.number').text()) - 1;
+            if (value <= 0) {
+                value = 0;
+            }
+            $('.number').text(value);
+        });
+        $('.num-add').click(function () {
+        		var valuenum = parseInt($('.number').text()) + 1;
+						$('.number').text(valuenum);
+        });
+
+        $('.selection-valid').click(function () {
+            var $this = $(this);
+            //alert('1');
+            JSONLength = function (obj) {
+	            	var size = 0;
+								for (var b in obj) {
+									 size++;
+								}
+								return size;
+            };
+						if ($this.hasClass('selection-invalid')) return;
+						
+						if ($this.hasClass('selection-active')) return;
+						
+            var attr_data = JSON.parse($(this).attr("tdata"));
+
+						var alldata = JSON.parse($("#goods_attr_info").val());
+						var attr_id =  $(this).attr("attr_id");
+						var value_index = $(this).attr("value_index");
+						for(var ta in alldata){
+								//非点击的一行的属性类型处理
+							  if( ta != attr_id)
+							  {
+							  		//属性对应取值
+										for(var tv in alldata[ta].attr_value)
+										{
+												//该属性对应的子商品信息
+												var is_find = 0;
+												for(var td in alldata[ta].attr_value[tv].info_id)
+												{
+														for(var tf in attr_data)
+														{
+																if( alldata[ta].attr_value[tv].info_id[td] == attr_data[tf] )
+																{
+																		
+																		var selection_index = 'attr_' + ta + '_' + alldata[ta].attr_value[tv].value_index;
+																		//alert(selection_index);
+																		is_find = 1; 
+																		if($("#"+ selection_index).hasClass('selection-invalid'))
+																		{
+																				//alert($('#'+ selection_index).attr('tdata'));
+																				$("#"+ selection_index).removeClass('selection-invalid');
+																				//$("#"+selection_index).addClass('selection-valid');
+																		}
+					
+																}
+																//alert();
+														}
+												}
+												if(is_find ==0)
+												{
+														var selection_index = 'attr_' + ta + '_' + alldata[ta].attr_value[tv].value_index;
+														//alert(selection_index);
+														if($("#"+ selection_index).hasClass('selection-active'))
+														{
+																$("#"+ selection_index).removeClass('selection-active');
+														}
+														
+            								$("#"+selection_index).addClass('selection-invalid');
+											 }
+										}
+								}
+								//点击属性类型的处理
+								else
+								{
+										for(var tv in alldata[ta].attr_value)
+										{
+												var selection_index = 'attr_' + ta + '_' + alldata[ta].attr_value[tv].value_index;
+												//alert(selection_index);
+												if($("#"+ selection_index).hasClass('selection-invalid'))
+												{
+														//alert($('#'+ selection_index).attr('tdata'));
+														$("#"+ selection_index).removeClass('selection-invalid');
+												}
+												if( selection_index == $(this).attr("id") )
+												{
+														var attr_info = new Array();
+														for( var info_i in alldata[ta].attr_value[tv].value )
+														{
+																$("#goods_buy_small_image").attr("src",alldata[ta].attr_value[tv].value[info_i].buy_small_img);
+																
+																//attr_info.push(alldata[ta].attr_value[tv].value[info_i].id);
+																var tmp_info = new Object();
+																tmp_info['info_id'] = alldata[ta].attr_value[tv].value[info_i].id;
+																tmp_info['in_price'] =  alldata[ta].attr_value[tv].value[info_i].promote_price;
+																tmp_info['out_price'] =  alldata[ta].attr_value[tv].value[info_i].market_price;
+																tmp_info['buy_img'] = alldata[ta].attr_value[tv].value[info_i].buy_small_img;
+																tmp_info['asin'] = alldata[ta].attr_value[tv].value[info_i].asin;
+																tmp_info['mall_weight'] = alldata[ta].attr_value[tv].value[info_i].mall_weight;
+																tmp_info['transit_fee'] = alldata[ta].attr_value[tv].value[info_i].transit_fee;
+																//tmp_info['value'] = tv;
+																attr_info.push(tmp_info);
+														}
+														if($("#goods_info_id").val() != "" )
+														{
+																var last_goods_info_id = JSON.parse($("#goods_info_id").val());
+																var had_found = 0;
+																//alert(last_goods_info_id);
+																for(var b in last_goods_info_id)
+																{
+																		if(b == ta)
+																		{
+																				last_goods_info_id[b] = attr_info;
+																				had_found = 1;
+																		}
+																		if(b != ta )
+																		{
+																				for(var c=0; c<last_goods_info_id[b].length; c++)
+																				{
+																						for(var d=0; d<attr_info.length;d++)
+																						{
+																								if(last_goods_info_id[b][c].info_id == attr_info[d].info_id)
+																								{
+																										//alert("22111 had " +  attr_info[d]);
+																										$("#target_goods_info_id").val(attr_info[d].info_id);
+																										$("#goods_buy_small_image").attr("src",attr_info[d].buy_img);
+																										$("#goods_buy_promote_price").html('¥' + attr_info[d].in_price + " <span class=" + '"grayfont line-throungh" ' + '>¥' +  attr_info[d].out_price  + '</span>');
+																										$("#goods_child_mall_weight").html('重量'+ attr_info[d].mall_weight + 'kg&nbsp;&nbsp;&nbsp;&nbsp;运费¥'+ attr_info[d].transit_fee + '');
+																								}
+																						}
+																				}
+																		}
+																}
+																if(had_found == 0 )
+																{
+																		last_goods_info_id[ta] = attr_info;
+																}
+																$("#goods_info_id").val(JSON.stringify(last_goods_info_id));
+														}
+														if( $("#goods_info_id").val() == "" )
+														{
+																var obj = new Object();
+																obj[ta] = attr_info; 
+																$("#goods_info_id").val(JSON.stringify(obj));
+														}
+														if( $("#last_attr_id").val() == "" )
+														{
+																var obj = new Object();
+																obj[ta] = tv;
+																$("#last_attr_id").val(JSON.stringify(obj));
+														}
+														if( $("#last_attr_id").val() != "" )
+														{
+																var tmp_attr = JSON.parse($("#last_attr_id").val());
+																var had_found = 0;
+																for(var f in tmp_attr)
+																{
+																		if(f == ta)
+																		{
+																				tmp_attr[f] = tv;
+																				had_found = 1;
+																		}
+																}
+																if( had_found == 0 )
+																{
+																		tmp_attr[ta] = tv;
+																}
+																$("#last_attr_id").val(JSON.stringify(tmp_attr));
+														}
+														var tmp_attr = JSON.parse($("#last_attr_id").val());
+														//had_selected_attr_values <p id="had_selected_attr_values" style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">已选 CheagBear ,10”White...</p>
+														var tmp_selected = "";
+														for( var g in tmp_attr)
+														{
+																tmp_selected += tmp_attr[g] + " ";
+														}
+														$("#had_selected_attr_values").html('<p id="had_selected_attr_values" style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">已选 ' + tmp_selected + '</p>');
+														//如果已经选中商品
+														if($("#goods_info_id").val() != "" && JSONLength(JSON.parse($("#goods_info_id").val())) == 1)
+														{
+																//alert("HAVE ONE " + JSONLength(JSON.parse($("#goods_info_id").val())) );
+																var goods_info = JSON.parse($("#goods_info_id").val());
+																for(var b in goods_info )
+																{
+																		//alert(goods_info[b][0].info_id);
+																		$("#target_goods_info_id").val(goods_info[b][0].info_id);
+																		$("#goods_buy_small_image").attr("src",goods_info[b][0].buy_img);
+																		$("#goods_buy_promote_price").html('¥' + goods_info[b][0].in_price + " <span class=" + '"grayfont line-throungh" ' + '>¥' +  goods_info[b][0].out_price  + '</span>');	
+																		$("#goods_child_mall_weight").html('重量'+ goods_info[b][0].mall_weight + 'kg&nbsp;&nbsp;&nbsp;&nbsp;运费¥'+  goods_info[b][0].transit_fee + '');																	
+																}
+
+														}
+												}
+										}
+								}								
+						}
+
+            $this.siblings().removeClass('selection-active');
+            $this.addClass('selection-active');
+        });
+
+        new Swiper('.detailPic-swiper', {
+            loop: true,
+            autoplay: 5000,
+            pagination: '.swiper-pagination',
+            onSlideChangeStart: function (swiper) {
+                console.log('fwfew');
+                $('.detailPic-swiper-index').text((parseInt($('.detailPic-swiper .swiper-slide-active').attr('data-swiper-slide-index')) + 1) +
+                        '/' + ($('.detailPic-swiper .swiper-slide').length - 2));
+            }
+        });
+        new Swiper('.swiper-detail-share', {
+            loop: true,
+            slidesPerView: 'auto',
+            pagination: '.swiper-pagination'
+        });
+        
+        
+        //购物车添加
+        var add2Shopcar = (function () {
+            var shopcarCounter = 0,
+                    $buytips = $('.buytips'),
+                    $tagnum = $('.tag-num'),
+                    fadeInDownTimer,
+                    add = function () {
+                        if ($buytips.hasClass('fadeInDown')) {
+                            $buytips.removeClass('fadeInDown');
+                            clearTimeout(fadeInDownTimer);
+                        }
+                        $buytips.show().addClass('fadeInDown');
+                        fadeInDownTimer = setTimeout(function () {
+                            $buytips.hide().removeClass('fadeInDown');
+                        }, 1500);
+                    },
+                    reduce = function () {
+
+                    };
+
+            shopcarCounter = parseInt($tagnum.text());
+            return function (count) {
+                shopcarCounter += count;
+                if (count == 0)  return;
+
+                count = parseInt(count);
+                if (shopcarCounter < 0) {
+                    shopcarCounter = 0;
+                }
+                
+                if (count > 0) {
+                    $.ajax({
+					            //提交数据的类型 POST GET
+					            type:"POST",
+					            //提交的网址
+					            url:"asavecart.html",
+					            
+					            async:true,
+					            //提交的数据
+					            data:{device_id:$("#device_id").val(),token:$("#token").val(),goods_id:$("#goods_id").val(),goods_number:count,target_goods_info_id:$("#target_goods_info_id").val(),is_have_child:$("#is_have_child").val()},
+					            //返回数据的格式
+					            datatype: "json",//"xml", "html", "script", "json", "jsonp", "text".
+					            //在请求之前调用的函数
+					            beforeSend:function(){},
+					            //成功返回之后调用的函数             
+					            success:function(data){    
+					            	//alert("成功调用了加入购物车"); 
+					           		buyPage.hide(); 
+					           		  
+					           		detail.show(); 
+					            }   ,
+					            //调用执行后调用的函数
+					            complete: function(XMLHttpRequest, textStatus){
+					            	//alert("1oook11");
+					               //alert(XMLHttpRequest.responseText);
+					               if( XMLHttpRequest.responseText == "ok" )
+					               {
+					               	  add();
+//					               	  var shopnum = parseInt($tagnum.text());
+//					               	  shopnum += count;
+					               	  $tagnum.text(count);
+                    				$('.tag-num').show();
+					               		Ponto.invoke(
+					                    "Messaging",
+					                    "addToCart",
+					                    {},
+					                    null,
+					                    null);
+					                  if( $('#cart_id').val() > 0 )
+					                  {
+					                  	Ponto.invoke(
+					                    "Messaging",
+					                    "modifCart",
+					                    {},
+					                    null,
+					                    null);
+					                  }
+					               }
+					               else if(XMLHttpRequest.responseText == "errlogin" )
+					               {
+															Ponto.invoke(
+													        "Messaging",
+													        "login",
+													        {},
+													        null,
+													        null);
+//													alert(XMLHttpRequest.responseText);
+					               }
+					               else if(XMLHttpRequest.responseText == "errgoods" )
+					               {
+					               		Ponto.invoke(
+				                    "Messaging",
+				                    "toast",
+				                    {"title":'商品已经抢光，请联系管理员！'},
+				                    null,
+				                    null);
+					               }
+					               else
+					               {
+					               		Ponto.invoke(
+				                    "Messaging",
+				                    "toast",
+				                    {"title": XMLHttpRequest.responseText},
+				                    null,
+				                    null);
+					               }
+					               
+					                //HideLoading();
+					            },
+					            //调用出错执行的函数
+					            error: function(){
+					                //请求出错处理
+					        		Ponto.invoke(
+		                    "Messaging",
+		                    "toast",
+		                    {"title":'网络断了，请售后再试'},
+		                    null,
+		                    null);					                
+					            }         
+					         });
+					         	Ponto.invoke(
+						                    "Messaging",
+						                    "refreshable",
+						                    {isfresh:true},
+						                    null,
+						                    null); 
+                } else {
+                    reduce();
+                }
+            };
+        }());
+    });
+    
+</script>
+<script>
+
+		function user_login_res(token)
+		{
+				//alert('21');
+				//alert(token);
+				$("#user_login").val(1);
+				$("#token").val(token);
+		}
+		
+</script>	
+
+</body>
+</html>
