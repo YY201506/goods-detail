@@ -56,7 +56,7 @@
             <div id="goods_news">
                 <div class="mm-upthedetailimg">
                     <div class="swiper-container detailPic-swiper">
-                        <div class="swiper-wrapper" style="background: #f5f5f5;">
+                        <div class="swiper-wrapper">
                             <!--细节图-->
                         </div>
                         <div class="detailPic-swiper-index">0/0</div>
@@ -181,7 +181,7 @@
         var Val_id = getQueryString("id");//12
         var infoval = getQueryString("info");
         $.ajax({
-            url: "http://115.29.51.240:84/goods_interface.php",
+            url: "**",
             type: "post",
             dataType: 'JSONP',
             data:{
@@ -191,13 +191,11 @@
             },
             success: function(data){
                  console.log(data);
-                coloursgoods(data);
-                addOnce(data);
             }
         });
 
         /*一次性加载的数据*/
-        /*var OnceObject = {
+        var OnceObject = {
             "type":["41DGQjTSYfL._SL750_.jpg","41DGQjTSYfL._SL750_.jpg","41DGQjTSYfL._SL750_.jpg","41DGQjTSYfL._SL750_.jpg"],
             "goodidinfo":["17815","15","52","455"],
             "cheaper":2,
@@ -232,7 +230,9 @@
             "one_flow_img":"../dist/images/logistics@2x.png",
             "one_beforebuy":["下单后：由于库存实时更新，且部分国外网站限制购买数量，如出现缺货或限制购买的情况，蜜赞会在7个工作日内将您支付的金额返回到您原支付的账户。","修改订单：因海外采购的关系，及海外大多数品牌官网规定，订单一旦生成，即不允许做任何更改，发货后不能撤销订单。请您在下单前仔细核对您的商品"]
 
-        }*/
+        }
+        coloursgoods(OnceObject);
+        addOnce(OnceObject);
 
         function coloursgoods(goodsNew){
             var html = '';
@@ -577,9 +577,9 @@
                                         "info_id": [
                                             39808,
                                             39811
-                                        ],
-                                        "selected": 0,
+                                        ],//在第一层第一个属性里有效的商品ID
                                         "value": [
+                                            {},{},{},
                                             {
                                                 "attr_id": "24",
                                                 "attr_name": "Size",
@@ -611,10 +611,36 @@
                                                 "transit_fee": "35.00",
                                                 "avail_ability": "",
                                                 "asin": "B014JZWYE6"
-                                            }
+                                            },
+                                            {
+                                                "attr_id": "24",
+                                                "attr_name": "Size",
+                                                "attr_value": "Small",
+                                                "attr_value_index": 1,
+                                                "id": "39811",
+                                                "selected": 0,
+                                                "promote_price": "285",
+                                                "market_price": "265",
+                                                "jd_price": "265",
+                                                "buy_small_img": "http://115.29.51.240:84//goods_images/41WkseG0AuL._AA300_.jpg",
+                                                "mall_weight": "0.19",
+                                                "transit_fee": "35.00",
+                                                "avail_ability": "",
+                                                "asin": "B014JZWYE6"
+                                            },
+                                            {}
                                         ],
-                                        "allow":[[0,1,2,6],[0,1,4,5]],
-                                        "jsondata": "[39808,39811]"
+                                        "allow":[[0,1,2,6],[0,1,4,5]],//[[第一层无效商品排序号],[第二层无效的商品排序号]]
+                                        "attr_value": "Small",
+                                        "attr_value_index": 1,
+                                        "id": "39808",
+                                        "selected": 0,
+                                        "promote_price": "285",
+                                        "market_price": "265",
+                                        "jd_price": "265",
+                                        "buy_small_img": "http://115.29.51.240:84//goods_images/41ULjAlRIbL._AA300_.jpg",
+                                        "mall_weight": "0.19",
+                                        "transit_fee": "35.00"
                                     },
                                     {
                                         "value_index": 2,
@@ -1173,6 +1199,13 @@
                             var array = eval(allowdata); //转换成数组
 
                             console.log("click:"+a);
+                            $("#promote_price").html(obj.all_attr_val[groupindex].attr_value.onevalue[a].promote_price);
+                            $("#market_price").html(obj.all_attr_val[groupindex].attr_value.onevalue[a].market_price);
+                            $("#had_selected_attr_values").html(obj.all_attr_val[groupindex].attr_value.onevalue[a].attr_value);
+                            $("#mall_weight").html(obj.all_attr_val[groupindex].attr_value.onevalue[a].mall_weight);
+                            $("#transit_fee").html(obj.all_attr_val[groupindex].attr_value.onevalue[a].transit_fee);
+                            $("#goods_buy_small_image").attr("src",obj.all_attr_val[groupindex].attr_value.onevalue[a].buy_small_img);
+
 
                             for(var i =0;i<obj.all_attr_val.length;i++){
                                 if(i == groupindex){ }else {
@@ -1184,6 +1217,7 @@
                             }
                         });
                     });
+
                     for(var i =0;i<obj.hasselect.length;i++){
                         $("#btn_attribute"+i+" li").eq(obj.hasselect[i]).click();
                     }
