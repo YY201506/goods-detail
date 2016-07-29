@@ -172,19 +172,26 @@
 <script src="../dist/js/swiper.min.js"></script>
 <script src="../dist/js/ponto.js?v=4"></script>
 <script>
-
-    $(function () {
+    $(document).ready(function() {
         function getQueryString(name) {
             var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
             var r = window.location.search.substr(1).match(reg);
             if (r != null) return unescape(r[2]); return null;
         }
-        console.log("参数"+getQueryString("id"));
-        console.log("参数"+getQueryString("info"));
+        var Val_id = getQueryString("id");//12
+        var infoval = getQueryString("info");
+        $.post("***",
+                { intertype:100,
+                    id:Val_id
+                },
+                function(data){
+                    console.log(data);
+                },
+                "json"
+        );
 
-        /*链接参数*/
-
-        var goodsNew ={
+        /*一次性加载的数据*/
+        var OnceObject = {
             "type":["41DGQjTSYfL._SL750_.jpg","41DGQjTSYfL._SL750_.jpg","41DGQjTSYfL._SL750_.jpg","41DGQjTSYfL._SL750_.jpg"],
             "goodidinfo":["17815","15","52","455"],
             "cheaper":2,
@@ -204,12 +211,24 @@
                         {"icon":"images/g2@2x.png","name":"12-15工作日"}
                     ],
                     "tag2":[
-                        /*{"icon":"images/g2@2x.png","name":"美国发货"},*/
+                        {"icon":"images/g2@2x.png","name":"美国发货"},
                     ]
                 }
-            ]
-        };
-        coloursgoods(goodsNew);
+            ],
+            "one_p1":"蜜赞观点",
+            "one_p2":"4.5厘米~跟高约4.5厘米~跟高约4.5厘米~跟高约4.5厘米~跟高约4.5厘米~跟高约4.5厘米~跟高约",
+            "one_detail_img":["http://115.29.51.240:82//includes/kindeditor/php/../../../images/upload/image/20160704/20160704122310_59445.png","http://115.29.51.240:82//includes/kindeditor/php/../../../images/upload/image/20160704/20160704122310_59445.png"],
+            "one_detail_p":["dfdffffffdf.jpd高约4.5厘米~跟高约4.5高约4.5厘米~跟高约4.5高约4.5厘米~跟高约4.5","dfssd"],
+            "one_server":[
+                {"img":"images/promit1.png","p1":"光复者直采","p2":"asdsda"},
+                {"img":"images/promit1.png","p1":"光复者直采","p2":"asdsda"}
+            ],
+            "one_flow_img":"../dist/images/logistics@2x.png",
+            "one_beforebuy":["下单后：由于库存实时更新，且部分国外网站限制购买数量，如出现缺货或限制购买的情况，蜜赞会在7个工作日内将您支付的金额返回到您原支付的账户。","修改订单：因海外采购的关系，及海外大多数品牌官网规定，订单一旦生成，即不允许做任何更改，发货后不能撤销订单。请您在下单前仔细核对您的商品"]
+
+        }
+        coloursgoods(OnceObject);
+        addOnce(OnceObject);
         function coloursgoods(goodsNew){
             var html = '';
             for (var i =0;i<goodsNew.goods[0].detail_num;i++){
@@ -266,6 +285,79 @@
             }
 
         }
+        function addOnce(obj){
+            console.log("addone");
+            var html = '';
+            /*if(typeof obj === "string") {
+             obj = {
+             content:obj
+             };
+             }*/
+            if(obj.one_p1){
+                html+='<div class="pointComment container bd0 mbottom"><div class="mizan-points"><div class="mm-commen-title"><p class="mm-hrline"></p><span>'+obj.one_p1+'</span></div><p class="deepgray">'+obj.one_p2+'</p></div></div>';
+
+            }else {
+
+            }
+            if(obj.one_detail_img||obj.one_detail_p){
+                html +='<div class="goods-detail container bd0 mbottom"><div class=mm-commen-title><p class=mm-hrline></p><span>商品详情</span></div><div class="goods-detail-info deepgray"><div style="text-align:center;">';
+                for(var i =0 ;i <obj.one_detail_img.length; i++){
+                    html +='<img src="'+obj.one_detail_img[i]+'"/>';
+                }
+                html +='<br></div>';
+                for (var i =0;i<obj.one_detail_p.length;i++){
+                    html +='<p>'+obj.one_detail_p[i]+'</p>';
+                }
+                html +='</div></div>';
+            }else{
+                html +='';
+            }
+            if(obj.one_server){
+                html +='<div class="goods-detail container bd0 mbottom"><div class=mm-commen-title><p class=mm-hrline></p><span>服务承诺</span></div><div class=goods-detail-info>';
+                for (var i =0;i<obj.one_server.length;i++){
+                    html +='<div class="promit promit1" style="background: url(&quot;'+obj.one_server[i].img+'&quot;) no-repeat top center;background-size: 40px 40px;"><p>'+obj.one_server[i].p1+'</p><p>'+obj.one_server[i].p2+'</p></div>';
+                }
+                html+='</div></div>';
+            }else{
+                html +='';
+            }
+            if(obj.one_flow_img||obj.one_beforebuy){
+                html +='<div class="detail-process container bd0 mbottom">';
+                if(obj.one_flow_img){
+                    html +='<div class=mm-commen-title><p class=mm-hrline></p><span>物流流程</span></div><img src="'+obj.one_flow_img+'" class=mbottom>';
+                }
+                if(obj.one_beforebuy){
+                    html +='<div class=mm-commen-title><p class=mm-hrline></p><span>买前须知</span></div><ol class=hide>';
+                    for (var i =0;i<obj.one_beforebuy.length;i++){
+                        html+='<li>'+obj.one_beforebuy[i]+'</li>';
+                    }
+                    html +='</ol><a class=detail-process-more href="#">阅读全文</a>';
+                }
+                html +='</div>';
+            }
+            $('#onecTime').append(html);
+
+            /*显示隐藏*/
+            $('.detail-process-more').click(function () {
+                var ol = $('.detail-process ol'),
+                        arrow = $('.detail-process .detail-process-more'),
+                        height = 0;
+                if (ol.hasClass('hide')) {
+                    ol.children().each(function () {
+                        console.log($(this).height());
+                        height += $(this).height();
+                    });
+                    ol.removeClass('hide').css('height', height);
+                    arrow.addClass('up');
+                } else {
+                    ol.addClass('hide').removeAttr('style');
+                    arrow.removeClass('up');
+                }
+                return false;
+            });
+
+        }
+        /*end*/
 
 
         var detailImage = $('.detail-images');
@@ -276,23 +368,23 @@
 
         var CliChooseType = '';
         $(".detail-images ul li").each(function(index){
-             $(this).click(function(){
-                 $(".detail-images ul li").removeClass("pink-border");
-                 $(this).addClass("pink-border");
-                 var goodinfoid = $(this).data("goodinfoid");
-                 console.log(goodinfoid);
-                 CliChooseType = index;
-                 console.log("点击的是哪个款式："+index);
+            $(this).click(function(){
+                $(".detail-images ul li").removeClass("pink-border");
+                $(this).addClass("pink-border");
+                var goodinfoid = $(this).data("goodinfoid");
+                console.log(goodinfoid);
+                CliChooseType = index;
+                console.log("点击的是哪个款式："+index);
                 /* $.ajax({
-                     type: "POST",
-                     url: "***",
-                     data:goodinfoid,
-                     success: function(msg){
-                        alert( msg );
-                     }
+                 type: "POST",
+                 url: "***",
+                 data:goodinfoid,
+                 success: function(msg){
+                 alert( msg );
+                 }
                  });*/
-                 imageChange (objDetail)
-             });
+                imageChange (objDetail)
+            });
         });
 
         //成功回调函数，更改图片信息
@@ -370,96 +462,6 @@
             }
 
         }
-
-
-        /*一次性加载的数据*/
-        var OnceObject = {
-            "one_p1":"蜜赞观点",
-            "one_p2":"4.5厘米~跟高约4.5厘米~跟高约4.5厘米~跟高约4.5厘米~跟高约4.5厘米~跟高约4.5厘米~跟高约",
-            "one_detail_img":["http://115.29.51.240:82//includes/kindeditor/php/../../../images/upload/image/20160704/20160704122310_59445.png","http://115.29.51.240:82//includes/kindeditor/php/../../../images/upload/image/20160704/20160704122310_59445.png"],
-            "one_detail_p":["dfdffffffdf.jpd高约4.5厘米~跟高约4.5高约4.5厘米~跟高约4.5高约4.5厘米~跟高约4.5","dfssd"],
-            "one_server":[
-                {"img":"images/promit1.png","p1":"光复者直采","p2":"asdsda"},
-                {"img":"images/promit1.png","p1":"光复者直采","p2":"asdsda"}
-            ],
-            "one_flow_img":"../dist/images/logistics@2x.png",
-            "one_beforebuy":["下单后：由于库存实时更新，且部分国外网站限制购买数量，如出现缺货或限制购买的情况，蜜赞会在7个工作日内将您支付的金额返回到您原支付的账户。","修改订单：因海外采购的关系，及海外大多数品牌官网规定，订单一旦生成，即不允许做任何更改，发货后不能撤销订单。请您在下单前仔细核对您的商品"]
-
-        }
-        addOnce(OnceObject);
-        function addOnce(obj){
-            console.log("addone");
-            var html = '';
-            /*if(typeof obj === "string") {
-                obj = {
-                    content:obj
-                };
-            }*/
-            if(obj.one_p1){
-                html+='<div class="pointComment container bd0 mbottom"><div class="mizan-points"><div class="mm-commen-title"><p class="mm-hrline"></p><span>'+obj.one_p1+'</span></div><p class="deepgray">'+obj.one_p2+'</p></div></div>';
-
-            }else {
-
-            }
-            if(obj.one_detail_img||obj.one_detail_p){
-                html +='<div class="goods-detail container bd0 mbottom"><div class=mm-commen-title><p class=mm-hrline></p><span>商品详情</span></div><div class="goods-detail-info deepgray"><div style="text-align:center;">';
-                for(var i =0 ;i <obj.one_detail_img.length; i++){
-                    html +='<img src="'+obj.one_detail_img[i]+'"/>';
-                }
-                html +='<br></div>';
-                for (var i =0;i<obj.one_detail_p.length;i++){
-                    html +='<p>'+obj.one_detail_p[i]+'</p>';
-                }
-                html +='</div></div>';
-            }else{
-                html +='';
-            }
-            if(obj.one_server){
-                html +='<div class="goods-detail container bd0 mbottom"><div class=mm-commen-title><p class=mm-hrline></p><span>服务承诺</span></div><div class=goods-detail-info>';
-                for (var i =0;i<obj.one_server.length;i++){
-                    html +='<div class="promit promit1" style="background: url(&quot;'+obj.one_server[i].img+'&quot;) no-repeat top center;background-size: 40px 40px;"><p>'+obj.one_server[i].p1+'</p><p>'+obj.one_server[i].p2+'</p></div>';
-                }
-                html+='</div></div>';
-           }else{
-                html +='';
-            }
-            if(obj.one_flow_img||obj.one_beforebuy){
-                html +='<div class="detail-process container bd0 mbottom">';
-                if(obj.one_flow_img){
-                    html +='<div class=mm-commen-title><p class=mm-hrline></p><span>物流流程</span></div><img src="'+obj.one_flow_img+'" class=mbottom>';
-                }
-                if(obj.one_beforebuy){
-                    html +='<div class=mm-commen-title><p class=mm-hrline></p><span>买前须知</span></div><ol class=hide>';
-                    for (var i =0;i<obj.one_beforebuy.length;i++){
-                        html+='<li>'+obj.one_beforebuy[i]+'</li>';
-                    }
-                    html +='</ol><a class=detail-process-more href="#">阅读全文</a>';
-                }
-                html +='</div>';
-            }
-            $('#onecTime').append(html);
-
-            /*显示隐藏*/
-            $('.detail-process-more').click(function () {
-                var ol = $('.detail-process ol'),
-                        arrow = $('.detail-process .detail-process-more'),
-                        height = 0;
-                if (ol.hasClass('hide')) {
-                    ol.children().each(function () {
-                        console.log($(this).height());
-                        height += $(this).height();
-                    });
-                    ol.removeClass('hide').css('height', height);
-                    arrow.addClass('up');
-                } else {
-                    ol.addClass('hide').removeAttr('style');
-                    arrow.removeClass('up');
-                }
-                return false;
-            });
-
-        }
-        /*end*/
 
 
         $('.detailPic-swiper').each(function() {
@@ -1382,9 +1384,6 @@
                 $bugpageTop.removeClass('shadow');
             }
         });
-
-
-
     });
 </script>
 <script>
