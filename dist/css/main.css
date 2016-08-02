@@ -1004,6 +1004,7 @@ img.owner-logo {
   width: 97px;
   height: 97px;
   margin-right: 17px;
+  font-size: 14px;
 }
 
 .messages-wrap {
@@ -1074,6 +1075,7 @@ img.owner-logo {
   border: none;
   color: #fff;
   background: #f22f4a;
+  pointer-events: none;
 }
 
 .selection-invalid {
@@ -4617,7 +4619,7 @@ li.collection {
   position: relative;
   padding: 0 10px;
   color: #333333;
-  font-size: 0.14rem;
+  font-size: 14px;
 }
 .mm-advice-hrline{
   height: 0px;
@@ -4633,7 +4635,7 @@ li.collection {
 .mm-upthedetailimg{
   position: relative;
 }
-.promit{display: inline-block;width: 32%;color: #999999;font-size: 10px;line-height: 17px; text-align: center;}
+.promit{display: inline-block;width: 33.3%;color: #999999;font-size: 10px;line-height: 17px; text-align: center;}
 .promit1{
   background-size: 40px 40px;
   padding-top: 45px;
@@ -4695,4 +4697,17 @@ li.collection {
   font-size: 12px;
   line-height: 1.5;
   text-align: left;
+}
+.not_on_sale {
+  position: fixed;
+  bottom: 50px;
+  left: 0;
+  right: 0;
+  font-size: 14px;
+  width: 100%;
+  text-align: center;
+  color: #fff;
+  padding: 10px;
+  background: rgba(0,0,0,0.40);
+  display: none;
 }
