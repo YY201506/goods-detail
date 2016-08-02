@@ -83,7 +83,7 @@
             <div class="detail-buy rowflex before-scale">
                 <a class="buy-btn btn-scar" href="#">
                     <span class="buytips buytips-up">成功加入购物车</span>
-                    <span class="tag-num" style="display:none;"></span>
+                    <span class="tag-num" style="display:none">0</span>
                     购物车
                 </a>
                 <a class="buy-btn btn-shoppingCart">加入购物车</a>
@@ -168,7 +168,7 @@
         });
         var chooseIDinfo;
         function coloursgoods(goodsNew){
-            var html = '';
+            var html = '',first ='';
             var lowest;
             var lowest_index;
             lowest = eval(goodsNew.lowest_goods_info_id);
@@ -177,9 +177,14 @@
                 for (var i =0;i<goodsNew.goods_child_info.length;i++){
                     if(eval(goodsNew.goods_child_info[i].goods_info_id) == lowest){
                         for(var u =0;u<goodsNew.goods_child_info[i].gallery_list.length;u++){
-                            html +='<div class=swiper-slide><a href="#"><img src="'+goodsNew.goods_child_info[i].gallery_list[u].thumb_url+'" alt="'+goodsNew.goods_child_info[i].gallery_list[u].thumb_desc+'"></a></div>'
+                            if(goodsNew.goods_child_info[i].gallery_list[u].is_home == 1){
+                                first ='<div class=swiper-slide><a href="#"><img src="'+goodsNew.goods_child_info[i].gallery_list[u].thumb_url+'" alt="'+goodsNew.goods_child_info[i].gallery_list[u].thumb_desc+'"></a></div>'
+                            }else{
+                                html +='<div class=swiper-slide><a href="#"><img src="'+goodsNew.goods_child_info[i].gallery_list[u].thumb_url+'" alt="'+goodsNew.goods_child_info[i].gallery_list[u].thumb_desc+'"></a></div>'
+                            }
                         }
                         lowest_index = i;
+                        html = first+html;
                     }
                 }
                 $(".detailPic-swiper .swiper-wrapper").append(html);
@@ -375,6 +380,7 @@
             var btncartshop = $('.btn-shoppingCart');
             lowest = eval(obj.lowest_goods_info_id);
             if(obj.is_on_sale == 1){
+                var goodsnum = 0;
                 btncartshop.click(function () {
                     //获取token后
                     if(lowest>0){
@@ -966,10 +972,18 @@
                          alert(data);
                          }
                          });*/
-                        var goodsnum = 1;
-                        add2Shopcar(goodsnum);
-
-                        $("#goods_number").val(goodsnum);
+                        add(2);
+                        function add(num){
+                            goodsnum = eval($('.tag-num').html())+ num;
+                            if ($('.buytips').hasClass('fadeInDown')) {
+                                $('.buytips').removeClass('fadeInDown');
+                            }
+                            $('.buytips').show().addClass('fadeInDown');
+                            setTimeout(function () {
+                                $('.buytips').hide().removeClass('fadeInDown');
+                            }, 1500);
+                           $('.tag-num').html(goodsnum).show();
+                        }
                     }
                 });
             }else { //已下架
@@ -1170,147 +1184,7 @@
             var valuenum = parseInt($('.number').text()) + 1;
             $('.number').text(valuenum);
         });
-        var add2Shopcar = (function () {
-            var shopcarCounter = 0,
-                    $buytips = $('.buytips'),
-                    $tagnum = $('.tag-num'),
-                    fadeInDownTimer,
-                    add = function () {
-                        if ($buytips.hasClass('fadeInDown')) {
-                            $buytips.removeClass('fadeInDown');
-                            clearTimeout(fadeInDownTimer);
-                        }
-                        $buytips.show().addClass('fadeInDown');
-                        fadeInDownTimer = setTimeout(function () {
-                            $buytips.hide().removeClass('fadeInDown');
-                        }, 1500);
-                    },
-                    reduce = function () {
 
-                    };
-
-            shopcarCounter = parseInt($tagnum.text());
-            return function (count) {
-                shopcarCounter += count;
-                if (count == 0)  return;
-
-                count = parseInt(count);
-                if (shopcarCounter < 0) {
-                    shopcarCounter = 0;
-                }
-
-                if (count > 0) {
-                    $.ajax({
-                        //提交数据的类型 POST GET
-                        type:"POST",
-                        //提交的网址
-                        url:"asavecart.html",
-
-                        async:true,
-                        //提交的数据
-                        data:{device_id:$("#device_id").val(),token:$("#token").val(),goods_id:$("#goods_id").val(),goods_number:count,target_goods_info_id:$("#target_goods_info_id").val(),is_have_child:$("#is_have_child").val()},
-                        //返回数据的格式
-                        datatype: "json",//"xml", "html", "script", "json", "jsonp", "text".
-                        //在请求之前调用的函数
-                        beforeSend:function(){},
-                        //成功返回之后调用的函数
-                        success:function(data){
-                            //alert("成功调用了加入购物车");
-                            buyPage.hide();
-
-                            detail.show();
-                        }   ,
-                        //调用执行后调用的函数
-                        complete: function(XMLHttpRequest, textStatus){
-                            //alert("1oook11");
-                            //alert(XMLHttpRequest.responseText);
-                            if( XMLHttpRequest.responseText == "ok" )
-                            {
-                                add();
-//					               	  var shopnum = parseInt($tagnum.text());
-//					               	  shopnum += count;
-                                $tagnum.text(count);
-                                $('.tag-num').show();
-                                Ponto.invoke(
-                                        "Messaging",
-                                        "addToCart",
-                                        {},
-                                        null,
-                                        null);
-                                if( $('#cart_id').val() > 0 )
-                                {
-                                    Ponto.invoke(
-                                            "Messaging",
-                                            "modifCart",
-                                            {},
-                                            null,
-                                            null);
-                                }
-                            }
-                            else if(XMLHttpRequest.responseText == "errlogin" )
-                            {
-                                Ponto.invoke(
-                                        "Messaging",
-                                        "login",
-                                        {},
-                                        null,
-                                        null);
-//													alert(XMLHttpRequest.responseText);
-                            }
-                            else if(XMLHttpRequest.responseText == "errgoods" )
-                            {
-                                Ponto.invoke(
-                                        "Messaging",
-                                        "toast",
-                                        {"title":'商品已经抢光，请联系管理员！'},
-                                        null,
-                                        null);
-                            }
-                            else
-                            {
-                                Ponto.invoke(
-                                        "Messaging",
-                                        "toast",
-                                        {"title": XMLHttpRequest.responseText},
-                                        null,
-                                        null);
-                            }
-
-                            //HideLoading();
-                        },
-                        //调用出错执行的函数
-                        error: function(){
-                            //请求出错处理
-                            Ponto.invoke(
-                                    "Messaging",
-                                    "toast",
-                                    {"title":'网络断了，请售后再试'},
-                                    null,
-                                    null);
-                        }
-                    });
-                    Ponto.invoke(
-                            "Messaging",
-                            "refreshable",
-                            {isfresh:true},
-                            null,
-                            null);
-                } else {
-                    reduce();
-                }
-            };
-        }());
-
-        /*totop*/
-        var $bugpageTop = $('#buyPageInner .colflex .flextop');
-        $('#buyPage .colflex .flexcenter').on('scroll', function () {
-            if ($(this).scrollTop() > 10) {
-                $bugpageTop.addClass('shadow');
-
-            } else {
-                $bugpageTop.removeClass('shadow');
-            }
-        });
     });
 </script>
 <script>
