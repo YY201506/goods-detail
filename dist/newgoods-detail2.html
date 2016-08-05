@@ -197,7 +197,7 @@
         var goods={
             "goods_id": "5040",
             "name": "日本 BROS 男士舒适平角内裤",
-            "is_on_sale": "0",
+            "is_on_sale": "1",
             "one_detail_p": "<p>  \t材质：聚酯95%，聚氨酯5%  </p>  <p>  \t前档立体剪裁，材质亲肤，整体穿着非常舒适，透气吸汗快干  </p>  <p align=\"center\">  \t<img src=\"http://115.29.51.240:82//images/upload/image/20160731/20160731213949_53293.png\" alt=\"\" />   </p>",
             "brand_logo": "http://115.29.51.240:84/data/brandlogo/",
             "brand_desc": "<p>BROS，日本内衣巨头wacoal（华歌尔）旗下的男士内裤品牌，有25年历史，整体做工优秀，设计带有浓浓的日系风格，简约，有家居味，又不失性感。适合成熟，追求品质的男士。</p>",
@@ -512,573 +512,220 @@
                         detail.hide();
                         $('.number').text(goodsnum);
                         buyPage.show();
-                        $.ajax({
+                        /*$.ajax({
                             type: "POST",
                             url: "",
                             data:{"id":""},
                             success: function(data){
                                 alert(data);
                             }
-                        });
-                        var goodsattr ={
-                            "all_attr_val":[
-                                {   "attr_index": 1,
-                                    "attr_name": "Size",
-                                    "attr_value": {
-                                        "name":["small price","Small Petite","Medium","Large","X-Large","XX-Large"],
-                                        "onevalue":[
+                        });*/
+                        var goodsattr = [
+                            {
+                                "attr_id": "3107",
+                                "attr_name": "Size",
+                                "attr_value_info": [
+                                    {
+                                        "attr_value": "L码",
+                                        "goods_info_list": [
                                             {
-                                                "value_index": 1,
-                                                "info_id": [
-                                                    39808,
-                                                    39811
-                                                ],
-                                                "selected": 0,
-                                                "value": [
-                                                    {
-                                                        "attr_id": "24",
-                                                        "attr_name": "Size",
-                                                        "attr_value": "Small",
-                                                        "attr_value_index": 1,
-                                                        "id": "39808",
-                                                        "selected": 0,
-                                                        "promote_price": "285",
-                                                        "market_price": "265",
-                                                        "jd_price": "265",
-                                                        "buy_small_img": "http://115.29.51.240:84//goods_images/41ULjAlRIbL._AA300_.jpg",
-                                                        "mall_weight": "0.19",
-                                                        "transit_fee": "35.00",
-                                                        "avail_ability": "",
-                                                        "asin": "B014JZ525O"
-                                                    },
-                                                    {
-                                                        "attr_id": "24",
-                                                        "attr_name": "Size",
-                                                        "attr_value": "Small",
-                                                        "attr_value_index": 1,
-                                                        "id": "39811",
-                                                        "selected": 0,
-                                                        "promote_price": "285",
-                                                        "market_price": "265",
-                                                        "jd_price": "265",
-                                                        "buy_small_img": "http://115.29.51.240:84//goods_images/41WkseG0AuL._AA300_.jpg",
-                                                        "mall_weight": "0.19",
-                                                        "transit_fee": "35.00",
-                                                        "avail_ability": "",
-                                                        "asin": "B014JZWYE6"
-                                                    }
-                                                ],
-                                                "allow":[[0,1,2,6],[0,1,4,5]],
-                                                "jsondata": "[39808,39811]"
+                                                "goods_info_id": "72702",
+                                                "buy_small_img": "http://115.29.51.240:84//goods_images/51Hcpe7-%2ByL._AA300_.jpg",
+                                                "promote_price": "108",
+                                                "market_price": "134",
+                                                "transit_fee": "40.00",
+                                                "is_selected": 0
                                             },
                                             {
-                                                "value_index": 2,
-                                                "info_id": [
-                                                    39813,
-                                                    39815,
-                                                    39817
-                                                ],
-                                                "selected": 1,
-                                                "value": [
-                                                    {
-                                                        "attr_id": "24",
-                                                        "attr_name": "Size",
-                                                        "attr_value": "Small Petite",
-                                                        "attr_value_index": 2,
-                                                        "id": "39813",
-                                                        "selected": 0,
-                                                        "promote_price": "199",
-                                                        "market_price": "0",
-                                                        "jd_price": "0",
-                                                        "buy_small_img": "http://115.29.51.240:84//goods_images/51oDroRP3sL._AA300_.jpg",
-                                                        "mall_weight": "0.39",
-                                                        "transit_fee": "35.00",
-                                                        "avail_ability": "",
-                                                        "asin": "B004HIVAHS"
-                                                    },
-                                                    {
-                                                        "attr_id": "24",
-                                                        "attr_name": "Size",
-                                                        "attr_value": "Small Petite",
-                                                        "attr_value_index": 2,
-                                                        "id": "39815",
-                                                        "selected": 1,
-                                                        "promote_price": "198",
-                                                        "market_price": "0",
-                                                        "jd_price": "0",
-                                                        "buy_small_img": "http://115.29.51.240:84//goods_images/41D70LVJybL._AA300_.jpg",
-                                                        "mall_weight": "0.19",
-                                                        "transit_fee": "35.00",
-                                                        "avail_ability": "",
-                                                        "asin": "B004CQZMWE"
-                                                    },
-                                                    {
-                                                        "attr_id": "24",
-                                                        "attr_name": "Size",
-                                                        "attr_value": "Small Petite",
-                                                        "attr_value_index": 2,
-                                                        "id": "39817",
-                                                        "selected": 0,
-                                                        "promote_price": "199",
-                                                        "market_price": "0",
-                                                        "jd_price": "0",
-                                                        "buy_small_img": "http://115.29.51.240:84//goods_images/41ER-1KxbvL._AA300_.jpg",
-                                                        "mall_weight": "0.33",
-                                                        "transit_fee": "35.00",
-                                                        "avail_ability": "",
-                                                        "asin": "B0047NJONK"
-                                                    }
-                                                ],
-                                                "allow":[[0,1,2,6],[1]],
-                                                "jsondata": "[39813,39815,39817]"
-                                            },
+                                                "goods_info_id": "72703",
+                                                "buy_small_img": "http://115.29.51.240:84//goods_images/41V952Q7iEL._AA300_.jpg",
+                                                "promote_price": "108",
+                                                "market_price": "134",
+                                                "transit_fee": "40.00",
+                                                "is_selected": 0
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "attr_value": "M码",
+                                        "goods_info_list": [
                                             {
-                                                "value_index": 3,
-                                                "info_id": [
-                                                    39818,
-                                                    39821,
-                                                    39822
-                                                ],
-                                                "selected": 0,
-                                                "value": [
-                                                    {
-                                                        "attr_id": "24",
-                                                        "attr_name": "Size",
-                                                        "attr_value": "Medium",
-                                                        "attr_value_index": 3,
-                                                        "id": "39818",
-                                                        "selected": 0,
-                                                        "promote_price": "285",
-                                                        "market_price": "265",
-                                                        "jd_price": "265",
-                                                        "buy_small_img": "http://115.29.51.240:84//goods_images/41ULjAlRIbL._AA300_.jpg",
-                                                        "mall_weight": "0.19",
-                                                        "transit_fee": "35.00",
-                                                        "avail_ability": "",
-                                                        "asin": "B014JZ557E"
-                                                    },
-                                                    {
-                                                        "attr_id": "24",
-                                                        "attr_name": "Size",
-                                                        "attr_value": "Medium",
-                                                        "attr_value_index": 3,
-                                                        "id": "39821",
-                                                        "selected": 0,
-                                                        "promote_price": "285",
-                                                        "market_price": "265",
-                                                        "jd_price": "265",
-                                                        "buy_small_img": "http://115.29.51.240:84//goods_images/41WkseG0AuL._AA300_.jpg",
-                                                        "mall_weight": "0.19",
-                                                        "transit_fee": "35.00",
-                                                        "avail_ability": "",
-                                                        "asin": "B014JZX15C"
-                                                    },
-                                                    {
-                                                        "attr_id": "24",
-                                                        "attr_name": "Size",
-                                                        "attr_value": "Medium",
-                                                        "attr_value_index": 3,
-                                                        "id": "39822",
-                                                        "selected": 0,
-                                                        "promote_price": "298",
-                                                        "market_price": "265",
-                                                        "jd_price": "265",
-                                                        "buy_small_img": "http://115.29.51.240:84//goods_images/41uDJUIH3iL._AA300_.jpg",
-                                                        "mall_weight": "0.19",
-                                                        "transit_fee": "35.00",
-                                                        "avail_ability": "",
-                                                        "asin": "B014JZVZXW"
-                                                    }
-                                                ],
-                                                "allow":[[4],[0]],
-                                                "jsondata": "[39818,39821,39822]"
-                                            },
-                                            {
-                                                "value_index": 4,
-                                                "info_id": [
-                                                    39824,
-                                                    39827
-                                                ],
-                                                "selected": 0,
-                                                "value": [
-                                                    {
-                                                        "attr_id": "24",
-                                                        "attr_name": "Size",
-                                                        "attr_value": "Large",
-                                                        "attr_value_index": 4,
-                                                        "id": "39824",
-                                                        "selected": 0,
-                                                        "promote_price": "285",
-                                                        "market_price": "265",
-                                                        "jd_price": "265",
-                                                        "buy_small_img": "http://115.29.51.240:84//goods_images/41ULjAlRIbL._AA300_.jpg",
-                                                        "mall_weight": "0.19",
-                                                        "transit_fee": "35.00",
-                                                        "avail_ability": "",
-                                                        "asin": "B014JZ58D0"
-                                                    },
-                                                    {
-                                                        "attr_id": "24",
-                                                        "attr_name": "Size",
-                                                        "attr_value": "Large",
-                                                        "attr_value_index": 4,
-                                                        "id": "39827",
-                                                        "selected": 0,
-                                                        "promote_price": "232",
-                                                        "market_price": "265",
-                                                        "jd_price": "265",
-                                                        "buy_small_img": "http://115.29.51.240:84//goods_images/41uDJUIH3iL._AA300_.jpg",
-                                                        "mall_weight": "0.19",
-                                                        "transit_fee": "35.00",
-                                                        "avail_ability": "",
-                                                        "asin": "B014JZW2X4"
-                                                    }
-                                                ],
-                                                "allow":[[0,4,6],[1,2]],
-                                                "jsondata": "[39824,39827]"
-                                            },
-                                            {
-                                                "value_index": 5,
-                                                "info_id": [
-                                                    39831
-                                                ],
-                                                "selected": 0,
-                                                "value": [
-                                                    {
-                                                        "attr_id": "24",
-                                                        "attr_name": "Size",
-                                                        "attr_value": "X-Large",
-                                                        "attr_value_index": 5,
-                                                        "id": "39831",
-                                                        "selected": 0,
-                                                        "promote_price": "285",
-                                                        "market_price": "265",
-                                                        "jd_price": "265",
-                                                        "buy_small_img": "http://115.29.51.240:84//goods_images/41uDJUIH3iL._AA300_.jpg",
-                                                        "mall_weight": "0.19",
-                                                        "transit_fee": "35.00",
-                                                        "avail_ability": "",
-                                                        "asin": "B014JZW55E"
-                                                    }
-                                                ],
-                                                "allow":[[0,1,2],[1]],
-                                                "jsondata": "[39831]"
-                                            },
-                                            {
-                                                "value_index": 6,
-                                                "info_id": [
-                                                    39834
-                                                ],
-                                                "selected": 0,
-                                                "value": [
-                                                    {
-                                                        "attr_id": "24",
-                                                        "attr_name": "Size",
-                                                        "attr_value": "XX-Large",
-                                                        "attr_value_index": 6,
-                                                        "id": "39834",
-                                                        "selected": 0,
-                                                        "promote_price": "265",
-                                                        "market_price": "265",
-                                                        "jd_price": "265",
-                                                        "buy_small_img": "http://115.29.51.240:84//goods_images/41EuT8vk8CL._AA300_.jpg",
-                                                        "mall_weight": "0.19",
-                                                        "transit_fee": "35.00",
-                                                        "avail_ability": "",
-                                                        "asin": "B014JZWDKQ"
-                                                    }
-                                                ],
-                                                "allow":[[0,2,3],[0]],
-                                                "jsondata": "[39834]"
+                                                "goods_info_id": "72704",
+                                                "buy_small_img": "http://115.29.51.240:84//goods_images/51Hcpe7-%2ByL._AA300_.jpg",
+                                                "promote_price": "107",
+                                                "market_price": "134",
+                                                "transit_fee": "40.00",
+                                                "is_selected": 1
                                             }
                                         ]
                                     }
-                                },
-                                {   "attr_index": 2,
-                                    "attr_name": "Color",
-                                    "attr_value": {
-                                        "name":["Blazing Yellow","Navy Blazer","Dark Grey","Red","White/Navy/Red","Ribbon Red","Classic White"],
-                                        "onevalue":[
+                                ]
+                            },
+                            {
+                                "attr_id": "3108",
+                                "attr_name": "Color",
+                                "attr_value_info": [
+                                    {
+                                        "attr_value": "蓝色",
+                                        "goods_info_list": [
                                             {
-                                                "value_index": 8,
-                                                "info_id": [
-                                                    39808,
-                                                    39818,
-                                                    39824
-                                                ],
-                                                "selected": 0,
-                                                "value": [
-                                                    {
-                                                        "attr_id": "25",
-                                                        "attr_name": "Color",
-                                                        "attr_value": "Blazing Yellow",
-                                                        "attr_value_index": 8,
-                                                        "id": "39808",
-                                                        "selected": 0,
-                                                        "promote_price": "285",
-                                                        "market_price": "265",
-                                                        "jd_price": "265",
-                                                        "buy_small_img": "http://115.29.51.240:84//goods_images/41ULjAlRIbL._AA300_.jpg",
-                                                        "mall_weight": "0.19",
-                                                        "transit_fee": "35.00",
-                                                        "avail_ability": "",
-                                                        "asin": "B014JZ525O"
-                                                    },
-                                                    {
-                                                        "attr_id": "25",
-                                                        "attr_name": "Color",
-                                                        "attr_value": "Blazing Yellow",
-                                                        "attr_value_index": 8,
-                                                        "id": "39818",
-                                                        "selected": 0,
-                                                        "promote_price": "285",
-                                                        "market_price": "265",
-                                                        "jd_price": "265",
-                                                        "buy_small_img": "http://115.29.51.240:84//goods_images/41ULjAlRIbL._AA300_.jpg",
-                                                        "mall_weight": "0.19",
-                                                        "transit_fee": "35.00",
-                                                        "avail_ability": "",
-                                                        "asin": "B014JZ557E"
-                                                    },
-                                                    {
-                                                        "attr_id": "25",
-                                                        "attr_name": "Color",
-                                                        "attr_value": "Blazing Yellow",
-                                                        "attr_value_index": 8,
-                                                        "id": "39824",
-                                                        "selected": 0,
-                                                        "promote_price": "285",
-                                                        "market_price": "265",
-                                                        "jd_price": "265",
-                                                        "buy_small_img": "http://115.29.51.240:84//goods_images/41ULjAlRIbL._AA300_.jpg",
-                                                        "mall_weight": "0.19",
-                                                        "transit_fee": "35.00",
-                                                        "avail_ability": "",
-                                                        "asin": "B014JZ58D0"
-                                                    }
-                                                ],
-                                                "allow":[[0,1,2],[0]],
-                                                "jsondata": "[39808,39818,39824]"
+                                                "goods_info_id": "72702",
+                                                "buy_small_img": "http://115.29.51.240:84//goods_images/51Hcpe7-%2ByL._AA300_.jpg",
+                                                "promote_price": "108",
+                                                "market_price": "134",
+                                                "transit_fee": "40.00",
+                                                "is_selected": 0
                                             },
                                             {
-                                                "value_index": 9,
-                                                "info_id": [
-                                                    39811,
-                                                    39821
-                                                ],
-                                                "selected": 0,
-                                                "value": [
-                                                    {
-                                                        "attr_id": "25",
-                                                        "attr_name": "Color",
-                                                        "attr_value": "Navy Blazer",
-                                                        "attr_value_index": 9,
-                                                        "id": "39811",
-                                                        "selected": 0,
-                                                        "promote_price": "285",
-                                                        "market_price": "265",
-                                                        "jd_price": "265",
-                                                        "buy_small_img": "http://115.29.51.240:84//goods_images/41WkseG0AuL._AA300_.jpg",
-                                                        "mall_weight": "0.19",
-                                                        "transit_fee": "35.00",
-                                                        "avail_ability": "",
-                                                        "asin": "B014JZWYE6"
-                                                    },
-                                                    {
-                                                        "attr_id": "25",
-                                                        "attr_name": "Color",
-                                                        "attr_value": "Navy Blazer",
-                                                        "attr_value_index": 9,
-                                                        "id": "39821",
-                                                        "selected": 0,
-                                                        "promote_price": "285",
-                                                        "market_price": "265",
-                                                        "jd_price": "265",
-                                                        "buy_small_img": "http://115.29.51.240:84//goods_images/41WkseG0AuL._AA300_.jpg",
-                                                        "mall_weight": "0.19",
-                                                        "transit_fee": "35.00",
-                                                        "avail_ability": "",
-                                                        "asin": "B014JZX15C"
-                                                    }
-                                                ],
-                                                "allow":[[0,1,5],[0]],
-                                                "jsondata": "[39811,39821]"
-                                            },
+                                                "goods_info_id": "72704",
+                                                "buy_small_img": "http://115.29.51.240:84//goods_images/51Hcpe7-%2ByL._AA300_.jpg",
+                                                "promote_price": "107",
+                                                "market_price": "134",
+                                                "transit_fee": "40.00",
+                                                "is_selected": 1
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "attr_value": "黑色",
+                                        "goods_info_list": [
                                             {
-                                                "value_index": 10,
-                                                "info_id": [
-                                                    39813
-                                                ],
-                                                "selected": 0,
-                                                "value": [
-                                                    {
-                                                        "attr_id": "25",
-                                                        "attr_name": "Color",
-                                                        "attr_value": "Dark Grey",
-                                                        "attr_value_index": 10,
-                                                        "id": "39813",
-                                                        "selected": 0,
-                                                        "promote_price": "199",
-                                                        "market_price": "0",
-                                                        "jd_price": "0",
-                                                        "buy_small_img": "http://115.29.51.240:84//goods_images/51oDroRP3sL._AA300_.jpg",
-                                                        "mall_weight": "0.39",
-                                                        "transit_fee": "35.00",
-                                                        "avail_ability": "",
-                                                        "asin": "B004HIVAHS"
-                                                    }
-                                                ],
-                                                "allow":[[1],[0,3]],
-                                                "jsondata": "[39813]"
-                                            },
-                                            {
-                                                "value_index": 11,
-                                                "info_id": [
-                                                    39815
-                                                ],
-                                                "selected": 1,
-                                                "value": [
-                                                    {
-                                                        "attr_id": "25",
-                                                        "attr_name": "Color",
-                                                        "attr_value": "Red",
-                                                        "attr_value_index": 11,
-                                                        "id": "39815",
-                                                        "selected": 1,
-                                                        "promote_price": "198",
-                                                        "market_price": "0",
-                                                        "jd_price": "0",
-                                                        "buy_small_img": "http://115.29.51.240:84//goods_images/41D70LVJybL._AA300_.jpg",
-                                                        "mall_weight": "0.19",
-                                                        "transit_fee": "35.00",
-                                                        "avail_ability": "",
-                                                        "asin": "B004CQZMWE"
-                                                    }
-                                                ],
-                                                "allow":[[0,1,4],[0,1,4]],
-                                                "jsondata": "[39815]"
-                                            },
-                                            {
-                                                "value_index": 12,
-                                                "info_id": [
-                                                    39817
-                                                ],
-                                                "selected": 0,
-                                                "value": [
-                                                    {
-                                                        "attr_id": "25",
-                                                        "attr_name": "Color",
-                                                        "attr_value": "White/Navy/Red",
-                                                        "attr_value_index": 12,
-                                                        "id": "39817",
-                                                        "selected": 0,
-                                                        "promote_price": "199",
-                                                        "market_price": "0",
-                                                        "jd_price": "0",
-                                                        "buy_small_img": "http://115.29.51.240:84//goods_images/41ER-1KxbvL._AA300_.jpg",
-                                                        "mall_weight": "0.33",
-                                                        "transit_fee": "35.00",
-                                                        "avail_ability": "",
-                                                        "asin": "B0047NJONK"
-                                                    }
-                                                ],
-                                                "allow":[[0,1],[0,1]],
-                                                "jsondata": "[39817]"
-                                            },
-                                            {
-                                                "value_index": 13,
-                                                "info_id": [
-                                                    39822,
-                                                    39827,
-                                                    39831
-                                                ],
-                                                "selected": 0,
-                                                "value": [
-                                                    {
-                                                        "attr_id": "25",
-                                                        "attr_name": "Color",
-                                                        "attr_value": "Ribbon Red",
-                                                        "attr_value_index": 13,
-                                                        "id": "39822",
-                                                        "selected": 0,
-                                                        "promote_price": "298",
-                                                        "market_price": "265",
-                                                        "jd_price": "265",
-                                                        "buy_small_img": "http://115.29.51.240:84//goods_images/41uDJUIH3iL._AA300_.jpg",
-                                                        "mall_weight": "0.19",
-                                                        "transit_fee": "35.00",
-                                                        "avail_ability": "",
-                                                        "asin": "B014JZVZXW"
-                                                    },
-                                                    {
-                                                        "attr_id": "25",
-                                                        "attr_name": "Color",
-                                                        "attr_value": "Ribbon Red",
-                                                        "attr_value_index": 13,
-                                                        "id": "39827",
-                                                        "selected": 0,
-                                                        "promote_price": "232",
-                                                        "market_price": "265",
-                                                        "jd_price": "265",
-                                                        "buy_small_img": "http://115.29.51.240:84//goods_images/41uDJUIH3iL._AA300_.jpg",
-                                                        "mall_weight": "0.19",
-                                                        "transit_fee": "35.00",
-                                                        "avail_ability": "",
-                                                        "asin": "B014JZW2X4"
-                                                    },
-                                                    {
-                                                        "attr_id": "25",
-                                                        "attr_name": "Color",
-                                                        "attr_value": "Ribbon Red",
-                                                        "attr_value_index": 13,
-                                                        "id": "39831",
-                                                        "selected": 0,
-                                                        "promote_price": "285",
-                                                        "market_price": "265",
-                                                        "jd_price": "265",
-                                                        "buy_small_img": "http://115.29.51.240:84//goods_images/41uDJUIH3iL._AA300_.jpg",
-                                                        "mall_weight": "0.19",
-                                                        "transit_fee": "35.00",
-                                                        "avail_ability": "",
-                                                        "asin": "B014JZW55E"
-                                                    }
-                                                ],
-                                                "allow":[[0,2][0,1]],
-                                                "jsondata": "[39822,39827,39831]"
-                                            },
-                                            {
-                                                "value_index": 14,
-                                                "info_id": [
-                                                    39834
-                                                ],
-                                                "selected": 0,
-                                                "value": [
-                                                    {
-                                                        "attr_id": "25",
-                                                        "attr_name": "Color",
-                                                        "attr_value": "Classic White",
-                                                        "attr_value_index": 14,
-                                                        "id": "39834",
-                                                        "selected": 0,
-                                                        "promote_price": "265",
-                                                        "market_price": "265",
-                                                        "jd_price": "265",
-                                                        "buy_small_img": "http://115.29.51.240:84//goods_images/41EuT8vk8CL._AA300_.jpg",
-                                                        "mall_weight": "0.19",
-                                                        "transit_fee": "35.00",
-                                                        "avail_ability": "",
-                                                        "asin": "B014JZWDKQ"
-                                                    }
-                                                ],
-                                                "allow":[[2],[2]],
-                                                "jsondata": "[39834]"
+                                                "goods_info_id": "72703",
+                                                "buy_small_img": "http://115.29.51.240:84//goods_images/41V952Q7iEL._AA300_.jpg",
+                                                "promote_price": "108",
+                                                "market_price": "134",
+                                                "transit_fee": "40.00",
+                                                "is_selected": 0
                                             }
                                         ]
                                     }
-                                }
-                            ]
-                        };
+                                ]
+                            }
+                        ];
                         closureselect(goodsattr);
+                        function closureselect(obj){
+                            console.log("slideup");
+                            Ponto.invoke(
+                                    "Messaging",
+                                    "refreshable",
+                                    {isfresh:false},
+                                    null,
+                                    null);
+                            //alert('31')
+                            var goodsnum = parseInt($('.number').text()) + 1;
+                            detail.hide();
+                            $('.number').text(goodsnum);
+                            buyPage.show();
+                            for(var n=0;n<obj.length;n++){
+                                var attributehtml = '<div class=selection-items><div class=selection-title>'+obj[n].attr_name+':</div><ul class="selection-list" data-attrgroup="'+n+'" id="btn_attribute'+n+'">';
+                                for(var i =0;i<obj[n].attr_value_info.length;i++){
+                                    var allowid = [];
+                                    for(var m =0;m<obj[n].attr_value_info[i].goods_info_list.length;m++){
+                                        allowid.push(obj[n].attr_value_info[i].goods_info_list[m].goods_info_id)
+                                    }
+                                    attributehtml +='<li class="selection-valid" data-allowid="'+allowid+'" data-xuhao="'+i+'">'+obj[n].attr_value_info[i].attr_value+'</li>';
+                                }
+                                attributehtml +='</ul></div>';
+                                $("#add_attributeBtn").append(attributehtml);
+                                var timearray = new Object(); //临时数组
+                                $("#btn_attribute"+n+" li").each(function(a){
+                                    $(this).unbind("click");
+                                    $(this).bind("click",function(){
+
+                                        $(this).parent().children("li").removeClass("selection-active");
+                                        var groupindex=$(this).parent().data("attrgroup");
+                                        $(this).addClass("selection-active");
+
+                                        var allowdata =$(this).data("allowid");
+                                        var dataStrArr;
+                                        var dataIntArr=[];
+                                        if (typeof(allowdata) == "string")
+                                        {
+                                            dataStrArr=allowdata.split(",");
+                                            dataStrArr.forEach(function(data){
+                                                dataIntArr.push(+data);
+                                            });
+                                        }else
+                                        {
+                                            dataStrArr =Number(allowdata);
+                                            dataIntArr.push(+dataStrArr);
+                                        }
+
+                                        console.log("数组"+dataIntArr);
+
+                                        console.log("click:"+a+"parent"+groupindex+"dataIntArr"+dataIntArr);
+
+                                        timearray.infoid = dataIntArr;
+                                        timearray.value = obj[groupindex].attr_value_info[a].goods_info_list;
+                                        var hadselect=[];
+                                        for(var i =0;i<obj.length;i++){
+                                            if(i == groupindex){
+
+                                            }else {
+                                                for(var l = 0;l<$("#btn_attribute"+i+" li").size();l++){
+                                                    if($("#btn_attribute"+i+" li").eq(l).hasClass("selection-active")){
+                                                        console.log("其他的选中的是"+l);
+                                                        hadselect =$("#btn_attribute"+i+" li").eq(l).data("allowid");
+                                                        thesame(timearray,hadselect);
+                                                        function thesame(timearray,hadselect){
+                                                            var a;
+                                                            var g=[];
+                                                            if (typeof(hadselect) == "string")
+                                                            {
+                                                                a=hadselect.split(",");
+                                                                a.forEach(function(data){
+                                                                    g.push(+data);
+                                                                });
+                                                            }else
+                                                            {
+                                                                a =Number(hadselect);
+                                                                g.push(+hadselect);
+                                                            }
+                                                            for(var s = 0;s < g.length;s++){
+                                                                console.log(g.length);
+                                                                for(var i =0; i<timearray.infoid.length ;i++){
+                                                                    if(g[s] == timearray.infoid[i]){
+                                                                        $("#promote_price").html(timearray.value[i].promote_price);
+                                                                         $("#market_price").html(timearray.value[i].market_price);
+                                                                         $("#mall_weight").html(timearray.value[i].mall_weight);
+                                                                         $("#transit_fee").html(timearray.value[i].transit_fee);
+                                                                         $("#goods_buy_small_image").attr("src", timearray.value[i].buy_small_img);
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+
+                                                    }else{
+                                                        var invalidindex ;
+                                                        for(var r = 0;r < dataIntArr.length;r++){  //allow的数
+                                                            for(var s = 0;s < obj[i].attr_value_info.length;s++){ //第二级的里的infolist是否存在同样的id 没有就变灰
+                                                                console.log(dataIntArr[r]);
+                                                                for(var p = 0;p < obj[i].attr_value_info[s].goods_info_list.length;p++){
+                                                                    var obj_info_id = eval(obj[i].attr_value_info[s].goods_info_list[p].goods_info_id);
+                                                                    if( dataIntArr[r] == obj_info_id ){
+                                                                        invalidindex = s;
+                                                                    }else{
+                                                                        $("#btn_attribute"+i+" li").eq(s).addClass("selection-invalid");
+                                                                    }
+                                                                    $("#btn_attribute"+i+" li").eq(invalidindex).removeClass("selection-invalid"); //如果id相同
+                                                                }
+                                                            }
+                                                        }
+                                                        $("#promote_price").html(timearray.value[0].promote_price);
+                                                        $("#market_price").html(timearray.value[0].market_price);
+                                                        $("#mall_weight").html(timearray.value[0].mall_weight);
+                                                        $("#transit_fee").html(timearray.value[0].transit_fee);
+                                                        $("#goods_buy_small_image").attr("src", timearray.value[0].buy_small_img);
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    });
+                                });
+
+                            }
+
+                        }
                     }else{
                         //直接添加进购物车
                         var goodsnum = parseInt($("#goods_number").val()) + 1;
@@ -1181,104 +828,6 @@
                 }
             });
         });
-
-        function closureselect(obj){
-            if(obj.all_attr_val.length == 0){
-                console.log("无颜色尺寸");
-                var goodsnum = parseInt($("#goods_number").val()) + 1;
-                //alert(goodsnum);
-                add2Shopcar(goodsnum);
-                //alert(goodsnum);
-                $("#goods_number").val(goodsnum);
-            }else {
-                console.log("slideup");
-                Ponto.invoke(
-                        "Messaging",
-                        "refreshable",
-                        {isfresh:false},
-                        null,
-                        null);
-                //alert('31');
-                var goodsnum = parseInt($('.number').text()) + 1;
-                detail.hide();
-                $('.number').text(goodsnum);
-                buyPage.show();
-                for(var n=0;n<obj.all_attr_val.length;n++){
-
-                    var attributehtml = '<div class=selection-items><div class=selection-title>'+obj.all_attr_val[n].attr_name+':</div><ul class="selection-list" data-attrgroup="'+n+'" id="btn_attribute'+n+'">';
-                    for(var i =0;i<obj.all_attr_val[n].attr_value.name.length;i++){
-                        var AllowData =[];
-                        for(var c = 0;c<obj.all_attr_val.length;c++){
-                            AllowData[c]=obj.all_attr_val[n].attr_value.onevalue[i].allow[c];
-                        }
-                        attributehtml +='<li class="selection-valid" data-allowdata="'+JSON.stringify(AllowData)+'" data-infoid="'+obj.all_attr_val[n].attr_value.onevalue[i].info_id+'" data-xuhao="'+i+'">'+obj.all_attr_val[n].attr_value.name[i]+'</li>';
-                    }
-                    attributehtml +='</ul></div>';
-                    $("#add_attributeBtn").append(attributehtml);
-
-                    $("#btn_attribute"+n+" li").each(function(a){
-                        $(this).unbind("click");
-                        $(this).bind("click",function(){
-
-                            $(this).parent().children("li").removeClass("selection-active");
-                            var groupindex=$(this).parent().data("attrgroup");
-                            $(this).addClass("selection-active");
-
-                            var allowdata =String($(this).data("allowdata"));
-                            var array = eval(allowdata); //转换成数组
-
-                            console.log("click:"+a);
-                            for(var i =0;i<obj.all_attr_val.length;i++){
-                                if(i == groupindex){ }else {
-                                    $("#btn_attribute"+i+" li").removeClass("selection-invalid");
-                                    for(var s =0;s<array[i].length;s++){
-                                        $("#btn_attribute"+i+" li").eq(array[i][s]).addClass("selection-invalid");
-                                    }
-                                }
-                            }//变灰
-                            var hasselect = '';
-                            var hasselectarray = [];
-                            for(var r = 0;r<$(".selection-list").size();r++){
-                                for(var i = 0;i<$("#btn_attribute"+r+" li").size();i++){
-                                    if($("#btn_attribute"+r+" li").eq(i).hasClass("selection-active")){
-                                        if($("#btn_attribute"+r+" li").eq(i).hasClass("selection-invalid")){
-                                            hasselect +='';//联动变灰
-                                            hasselectarray[r] = null;
-                                        }else{
-                                            hasselect += '"'+$("#btn_attribute"+r+" li").eq(i).html()+'"';
-                                            console.log("hasactive:"+i);
-                                            obj.all_attr_val[r].attr_value.onevalue[i].attr_value;
-                                            $("#had_selected_attr_values").empty().html(hasselect);
-                                            hasselectarray[r] = i;
-                                        }
-                                    }
-                                    console.log("选中的数组"+hasselectarray);
-                                    for(var p = 0;p<hasselectarray.length;p++){
-                                        if(hasselectarray[p] == null){
-                                            hasselectarray[p] ='';/*obj.all_attr_val[p].attr_value.onevalue[0].default_index*/
-                                        }else{
-                                            $("#promote_price").html(obj.all_attr_val[p].attr_value.onevalue[hasselectarray[p]].promote_price);
-                                            $("#market_price").html(obj.all_attr_val[p].attr_value.onevalue[hasselectarray[p]].market_price);
-                                            $("#had_selected_attr_values").html(obj.all_attr_val[p].attr_value.onevalue[hasselectarray[p]].attr_value);
-                                            $("#mall_weight").html(obj.all_attr_val[p].attr_value.onevalue[hasselectarray[p]].mall_weight);
-                                            $("#transit_fee").html(obj.all_attr_val[p].attr_value.onevalue[hasselectarray[p]].transit_fee);
-                                            $("#goods_buy_small_image").attr("src",obj.all_attr_val[p].attr_value.onevalue[hasselectarray[p]].buy_small_img);
-                                        }
-                                    }
-                                }
-                            }
-
-                        });
-                    });
-
-                    for(var i =0;i<obj.hasselect.length;i++){
-                        $("#btn_attribute"+i+" li").eq(obj.hasselect[i]).click();
-                    }
-
-                }
-
-            }
-        }
 
         //关闭购物车
         btnGrayBar.click(function () {

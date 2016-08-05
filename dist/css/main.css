@@ -422,6 +422,7 @@ input {
 .detail-name {
   /*height: 102px;*/
   padding: 14px 0 10px 0;
+  margin-bottom: 10px;
 }
 
 .name-title {
@@ -925,7 +926,7 @@ img.owner-logo {
 #buyPageInner .colflex {
   position: absolute;
   background: #fff;
-  height: 70%;
+  height: 78%;
   z-index: 2;
   bottom: 0;
   left: 0;
@@ -992,12 +993,12 @@ img.owner-logo {
   top: 14px;
   width: 44px;
   height: 44px;
-  background: url("../images/btn-grayBar@2x.png") no-repeat center center;
+  background: url("../images/btn-grayBar@3x.png") no-repeat center center;
   background-size: 20px 20px;
 }
 
 .goods-messages {
-  margin: 15px 10px;
+  margin: 10px 10px;
 }
 
 .goods-messages img {
@@ -1071,18 +1072,8 @@ img.owner-logo {
   margin-right: 0;
 }
 
-.selection-active {
-  border: none;
-  color: #fff;
-  background: #f22f4a;
-  pointer-events: none;
-}
 
-.selection-invalid {
-  border: 1px dashed #d1d1d1;
-  color: #d1d1d1;
-  background: #fff;
-}
+
 
 .selection-num {
   overflow: hidden;
@@ -1100,6 +1091,7 @@ img.owner-logo {
 
 .num-subtract, .num-add {
   width: 33px;
+  height: 35px;
   font-size: 28px;
   color: #999;
   background: #eeeeee;
@@ -4528,11 +4520,12 @@ li.collection {
   padding: 3px 5px 1px;
   border-radius: 10px;
   margin-left: 5px;
+  vertical-align: middle;
 }
 .mm-tag{
   font-size: 11px;
   text-align: left;
-  padding: 15px 12px 0px;
+  padding: 0px 12px 0px;
   margin: 10px 0px;
   border-top: 1px solid #efeeee;
 }
@@ -4542,7 +4535,9 @@ li.collection {
   margin-right: 10px;
   line-height: 16px;
   height:14px;
+  margin-top: 15px;
 }
+
 .g{
   background: url("../images/g@2x.png") no-repeat;
   background-size: 14px 14px;
@@ -4599,6 +4594,7 @@ li.collection {
   font-size: 12px;
   line-height: 1.5;
   text-align: left;
+  margin: 0 auto;
 }
 .detail-images li.pink-border{
   border: 1px solid #f22f4a;
@@ -4710,4 +4706,40 @@ li.collection {
   padding: 10px;
   background: rgba(0,0,0,0.40);
   display: none;
+}
+.selection-invalid {
+  border: 1px dashed #d1d1d1;
+  color: #d1d1d1;
+  background: #fff;
+  pointer-events: none;
+}
+
+.selection-active {
+  border: none;
+  color: #fff;
+  background: #f22f4a;
+  pointer-events: none;
+}
+.detail_p p,.detail_p span{line-height: 1.5;text-align: left;color: #999999;font-size: 12px;}
+/*
+.detail_p{line-height: 0;}
+*/
+#discount{display: none}
+
+
+.onepicel{
+  position: relative;
+  border:none;
+}
+.onepicel:after{
+  content: '';
+  position: absolute;
+  left: 0;
+  background: #efeeee;
+  width: 100%;
+  height: 1px;
+  -webkit-transform: scaleY(0.5);
+  transform: scaleY(0.5);
+  -webkit-transform-origin: 0 0;
+  transform-origin: 0 0;
 }

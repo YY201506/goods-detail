@@ -5,16 +5,18 @@
     <meta charset="UTF-8">
     <meta http-equiv="refresh" content="600">
     <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"/>
-    <link rel="stylesheet" href="css/main.css?v=14"/>
+    <link rel="stylesheet" href="css/main.css?v=27"/>
     <link rel="stylesheet" href="css/swiper.min.css?v=7"/>
     <title></title>
     <meta name="Keywords" content=""/>
     <meta name="Description" content=""/>
 </head>
-<body style="font-size: 20px">
+<body style="font-size: 20px" >
+<div class="loading" style="display: none;position: fixed;z-index: 99;background: rgba(255, 255, 255, 0.84);top: 0%;bottom: 0%;left: 0%;right: 0%;text-align: center;padding-top: 28%;font-size: 16px;">loading...</div>
+
 <div class="page" >
     <div class="content">
-        <div class="downloadApp">
+        <div class="downloadApp" style="display: none">
             <div class="downloadLeft">
                 <img src="../dist/images/download.png" alt="">
                 <div class="colflex">
@@ -45,20 +47,20 @@
                 </div>
 
                 <div class="detail-name container bd0">
-                    <div class="name-title deepergray"><span id="discount" style="color: #ff0101;"></span><span id="nametitle"></span></div>
+                    <div class="name-title deepergray"><span id="discount" style="color: #ff0101;"></span><span id="nametitle" data-goodsid=""></span></div>
                     <p class="name-price"><span id="nameprice" class=" colorred"></span> <span class="mm-freetax" style="display: none">包邮包税</span></p>
                     <p class="grayfont name-referprice" style="display: none"><span id="form_refer">国内参考价：</span><span class="line-throungh" id="namereferprice"></span></p>
-                    <div class="mm-tag grayfont">
+                    <div class="mm-tag grayfont onepicel">
                     </div>
+                    <span class="cart_number_least" style="display: none"></span>
                 </div>
-                <div class="mm-fromto grayfont"></div>
             </div>
             <!--一次加载-->
             <div id="onecTime">
 
             </div>
 
-            <div id="Adivce-carriage" class="adivce-carriage" style="display: none;">
+            <!--<div id="Adivce-carriage" class="adivce-carriage" style="display: none;">
                 <div class="mm-advice-title">
                     <p class="mm-advice-hrline"></p>
                     <span>商品推荐</span>
@@ -78,7 +80,7 @@
                     </div>
 
                 </div>
-            </div>
+            </div>-->
 
             <div class="detail-buy rowflex before-scale">
                 <a class="buy-btn btn-scar" href="#">
@@ -90,6 +92,8 @@
                 <a class="buy-btn btn-collect" toggle-class="active" href="#">收藏</a>
 
             </div>
+            <input type="text" style="display: none" name="token" id="token" value="" />
+            <input type="text" style="display: none" name="cart_number_least" id="cart_number_least" value="" />
         </div>
     </div>
 </div>
@@ -101,10 +105,10 @@
         <div class="flextop">
             <div class="goods-messages rowflex">
                 <span class="btn-grayBar"></span>
-                <img id="goods_buy_small_image" src="images/demo01.png" alt="Tommy Hilfiger 经典款男士T恤 多色">
+                <img id="goods_buy_small_image" src="" alt="" data-goods_id="">
 
                 <div class="messages-wrap">
-                    <p class="f18" style="margin-bottom: 15px;margin-top: 10px;">¥ <span id="promote_price">0</span><span class="grayfont line-throungh">¥<span id="market_price">0</span></span></p>
+                    <p class="f18" style="margin-bottom: 15px;margin-top: 10px;">¥ <span id="promote_price">0</span>&nbsp;<span class="grayfont line-throungh">¥<span id="market_price">0</span></span></p>
                     <p class="f13 grayfont" style="margin-bottom: 15px;">重量<span id="mall_weight">0.0</span>kg&nbsp;&nbsp;&nbsp;&nbsp;运费¥<span id="transit_fee"></span>0</p>
                     <p style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">已选<span id="had_selected_attr_values" ></span></p>
                 </div>
@@ -141,840 +145,756 @@
     </div>
 </div>
 <script src="js/zepto.min.js"></script>
+<!--<script src="js/iSlider.min.js"></script>-->
 <script src="js/swiper.min.js"></script>
 <script src="js/ponto.js?v=4"></script>
 <script>
-    $(document).ready(function() {
-        function getQueryString(name) {
-            var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
-            var r = window.location.search.substr(1).match(reg);
-            if (r != null) return unescape(r[2]); return null;
-        }
-        var Val_id = getQueryString("id");
-        $.ajax({
-            url: "http://115.29.51.240:84/goods_interface.php",
-            type: "post",
-            dataType: 'JSONP',
+    var GlobalsaveToken /*= "9468e749e9bc12ea85ab8dd5799aac43"*/;
+    $(document).ready(function(){
+            function getQueryString(name) {
+                var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
+                var r = window.location.search.substr(1).match(reg);
+                if (r != null) return unescape(r[2]); return null;
+            }
+            var Val_id = getQueryString("id");
+            var deviceid = getQueryString("deviceid");
+
+            var buygoosID;
+            if(deviceid == null){
+                deviceid = null;
+                $(".downloadApp").show();
+            }else {
+                $(".downloadApp").hide();
+            }
+            $.ajax({
+            type:"POST",
+            url:"http://115.29.51.240:84/goods_interface.php",
+            async:true,
             data:{
                 intertype:"100",
                 id:Val_id,
-                deviceid:"86001"
+                deviceid:deviceid
             },
-            success: function(data){
-                 console.log(JSON.parse(data));
+            datatype: "jsonp",//"xml", "html", "script", "json", "jsonp", "text".
+            beforeSend:function(){
+               $(".loading").show();
+            },
+            success:function(data){
+                $(".loading").hide();
+                //alert("success");
+                console.log(JSON.parse(data));
                 coloursgoods(JSON.parse(data).goods);
                 addOnce(JSON.parse(data).goods);
+                getToken();
+            },
+            complete: function(XMLHttpRequest, textStatus){
+                //alert("over");
+                if( XMLHttpRequest.responseText == "ok" )
+                {
+
+                }
+                else if(XMLHttpRequest.responseText == "errlogin" )
+                {
+
+                }
+                else if(XMLHttpRequest.responseText == "errgoods" )
+                {
+
+                }
+                else
+                {
+
+                }
+            },
+            error: function(){
+                //请求出错处理
+                Ponto.invoke(
+                        "Messaging",
+                        "toast",
+                        {"title":'网络断了，请稍后再试'},
+                        null,
+                        null);
             }
         });
-        var chooseIDinfo;
-        function coloursgoods(goodsNew){
-            var html = '',first ='';
-            var lowest;
-            var lowest_index;
-            lowest = eval(goodsNew.lowest_goods_info_id);
-            if(lowest>0){
-                //有goods_child_info
-                for (var i =0;i<goodsNew.goods_child_info.length;i++){
-                    if(eval(goodsNew.goods_child_info[i].goods_info_id) == lowest){
-                        for(var u =0;u<goodsNew.goods_child_info[i].gallery_list.length;u++){
-                            if(goodsNew.goods_child_info[i].gallery_list[u].is_home == 1){
-                                first ='<div class=swiper-slide><a href="#"><img src="'+goodsNew.goods_child_info[i].gallery_list[u].thumb_url+'" alt="'+goodsNew.goods_child_info[i].gallery_list[u].thumb_desc+'"></a></div>'
-                            }else{
-                                html +='<div class=swiper-slide><a href="#"><img src="'+goodsNew.goods_child_info[i].gallery_list[u].thumb_url+'" alt="'+goodsNew.goods_child_info[i].gallery_list[u].thumb_desc+'"></a></div>'
-                            }
-                        }
-                        lowest_index = i;
-                        html = first+html;
-                    }
+           /* $.ajax({
+                url: "http://115.29.51.240:84/goods_interface.php",
+                type: "post",
+                dataType: 'JSONP',
+                data:{
+                    intertype:"100",
+                    id:Val_id,
+                    deviceid:deviceid
+                },
+                success: function(data){
+                    console.log(JSON.parse(data));
+                    coloursgoods(JSON.parse(data).goods);
+                    addOnce(JSON.parse(data).goods);
+                    getToken();
                 }
-                $(".detailPic-swiper .swiper-wrapper").append(html);
-                var typehtml = ''; //缩略图
-                if(goodsNew.goods_child_info >10){
-                    $(".detail-images ").removeClass("center");
-                }
-                for(var i =0;i<goodsNew.goods_child_info.length;i++){
-                    typehtml += '<li class="swiper-slide" data-type="'+[i]+'" data-goodinfoid="'+goodsNew.goods_child_info[i].goods_info_id+'"><img src="'+goodsNew.goods_child_info[i].buy_small_img+'" alt=""></li>';
-                }
-                $(".detail-images .swiper-wrapper").append(typehtml);
-                $(".detail-images .swiper-wrapper li").eq(lowest_index).addClass("pink-border");
-                //内容
+            });*/
 
-                $("#nametitle").html(goodsNew.name);
-                $("#nameprice").html('￥'+goodsNew.goods_child_info[lowest_index].target_promote_price);
-                if(goodsNew.goods_child_info[lowest_index].target_market_price){
-                    $(".name-referprice").show();
-                    $("#namereferprice").html('￥'+goodsNew.goods_child_info[lowest_index].target_market_price);
-                }
-                if(goodsNew.goods_child_info[lowest_index].target_discount){
-                    $("#discount").html(goodsNew.goods_child_info[lowest_index].target_discount+'折');
-                }
-                if(goodsNew.goods_source_list){
-                    var tag1html = '';
-                    for (var i =0;i<goodsNew.goods_source_list.length;i++){
-                        tag1html +='<span class="g" style="background: url(&quot;'+goodsNew.goods_source_list[i].icon+'&quot;) no-repeat;background-size: 14px 14px;">'+goodsNew.goods_source_list[i].name+'</span>';
+            var chooseIDinfo;
+            function coloursgoods(goodsNew){
+                //alert(goodsNew.goods_id);
+                var html = '',first ='';
+                var lowest;
+                var lowest_index;
+                lowest = eval(goodsNew.lowest_goods_info_id);
+                chooseIDinfo = goodsNew.lowest_goods_info_id;
+                if(lowest>0){
+                    //有goods_child_info
+                    if(goodsNew.goods_child_info.length == 1){
+                        $(".detail-images ").hide();
                     }
-                    $(".mm-tag").append(tag1html);
-                }
-                var CliChooseType = '';
-                $(".detail-images ul li").each(function(index){
-                    $(this).click(function(){
-                        $(".detail-images ul li").removeClass("pink-border");
-                        $(this).addClass("pink-border");
-                        var goodinfoid = $(this).data("goodinfoid");
-                        console.log(goodinfoid);
-                        CliChooseType = index;
-                        chooseIDinfo = eval($(this).data("goodinfoid"));
-                        console.log("点击的是哪个款式："+index+"infoid:"+$(this).data("goodinfoid"));
-                        var piclenght = goodsNew.goods_child_info[index].gallery_list.length;
-                        var html ='';
-                        for(var i=0;i< piclenght;i++){
-                            html += '<div class="swiper-slide"><a href="#"><img src="'+goodsNew.goods_child_info[index].gallery_list[i].thumb_url+'" alt=""></a></div>';
-                        }
-                        $(".detailPic-swiper .swiper-wrapper").empty().append(html);
-                        $('.detailPic-swiper').each(function() {
-                            var $this = $(this);
-                            var $pager = $this.find('.detailPic-swiper-index');
-                            $(".detailPic-swiper .swiper-wrapper .swiper-slide").size();
-                            new Swiper($this, {
-                                loop: true,
-                                autoplay: 5000,
-                                pagination: $this.find('.swiper-pagination'),
-                                onSlideChangeEnd: function(swiper) {
-                                    $pager.html((parseInt(swiper.slides[swiper.activeIndex]
-                                                    .getAttribute('data-swiper-slide-index')) + 1) +
-                                            '/' + ( $(".detailPic-swiper .swiper-wrapper .swiper-slide").size()- 2));
+                    for (var i =0;i<goodsNew.goods_child_info.length;i++){
+                        if(eval(goodsNew.goods_child_info[i].goods_info_id) == lowest){
+                            if(goodsNew.goods_child_info[i].gallery_list){
+                                for(var u =0;u<goodsNew.goods_child_info[i].gallery_list.length;u++){
+                                    if(goodsNew.goods_child_info[i].gallery_list[u].is_home == 1){
+                                        first ='<div class=swiper-slide><img src="'+goodsNew.goods_child_info[i].gallery_list[u].thumb_url+'" alt="'+goodsNew.goods_child_info[i].gallery_list[u].thumb_desc+'"></div>'
+                                    }else{
+                                        html +='<div class=swiper-slide><img src="'+goodsNew.goods_child_info[i].gallery_list[u].thumb_url+'" alt="'+goodsNew.goods_child_info[i].gallery_list[u].thumb_desc+'"></div>'
+                                    }
                                 }
-                            });
-                        });
-
-                        $("#nameprice").html('￥'+goodsNew.goods_child_info[index].target_promote_price);
-                        if(goodsNew.goods_child_info[index].target_discount){
-                            $("#discount").html(goodsNew.goods_child_info[index].target_discount+'折');
+                                lowest_index = i;
+                                html = first+html;
+                            }
+                            lowest_index = i;
+                        }else{
+                            lowest_index = 0;
                         }
-                        if(goodsNew.goods_child_info[index].target_market_price){
-                            $(".name-referprice").show();
-                            $("#namereferprice").html('￥'+goodsNew.goods_child_info[index].target_market_price);
-                        }
-
-                    });
-                });
-            }else{
-                $(".detail-images ").hide();
-                //没有goods_child_info
-                if(goodsNew.gallery_list){
-                    for (var i =0;i<goodsNew.gallery_list.length;i++){
-                        html +='<div class=swiper-slide><a href="#"><img src="'+goodsNew.gallery_list[i].thumb_url+'" alt="'+goodsNew.gallery_list[i].thumb_desc+'"></a></div>'
                     }
                     $(".detailPic-swiper .swiper-wrapper").append(html);
-                }
-
-                if(goodsNew.target_discount){
-                    $("#discount").html(goodsNew.target_discount+'折');
-                }
-                $("#nametitle").html(goodsNew.name);
-
-                $("#nameprice").html('￥'+goodsNew.target_promote_price);
-                if(goodsNew.target_market_price){
-                    $(".name-referprice").show();
-                    $("#namereferprice").html('￥'+goodsNew.target_market_price);
-                }
-                if(goodsNew.goods_source_list){
-                    var tag1html = '';
-                    for (var i =0;i<goodsNew.goods_source_list.length;i++){
-                        tag1html +='<span class="g" style="background: url(&quot;'+goodsNew.goods_source_list[i].icon+'&quot;) no-repeat;background-size: 14px 14px;">'+goodsNew.goods_source_list[i].name+'</span>';
+                    var typehtml = ''; //缩略图
+                    if(goodsNew.goods_child_info.length >6){
+                        $(".detail-images ").removeClass("center");
                     }
-                    $(".mm-tag").append(tag1html);
-                }
-            }
-            $('.detailPic-swiper').each(function() {
-                var $this = $(this);
-                var $pager = $this.find('.detailPic-swiper-index');
-                $(".detailPic-swiper .swiper-wrapper .swiper-slide").size();
-                new Swiper($this, {
-                    loop: true,
-                    autoplay: 5000,
-                    pagination: $this.find('.swiper-pagination'),
-                    onSlideChangeEnd: function(swiper) {
-                        $pager.html((parseInt(swiper.slides[swiper.activeIndex]
-                                        .getAttribute('data-swiper-slide-index')) + 1) +
-                                '/' + ( $(".detailPic-swiper .swiper-wrapper .swiper-slide").size()- 2));
+                    for(var i =0;i<goodsNew.goods_child_info.length;i++){
+                        typehtml += '<li class="swiper-slide" data-type="'+[i]+'" data-goodinfoid="'+goodsNew.goods_child_info[i].goods_info_id+'"><img src="'+goodsNew.goods_child_info[i].buy_small_img+'" alt=""></li>';
                     }
-                });
-            });//滑动
-        }
-        function addOnce(obj){
-            console.log("add");
-            $("title").html(obj.name);
-            var html = '';
-            if(obj.one_p1){
-                html+='<div class="pointComment container bd0 mbottom"><div class="mizan-points"><div class="mm-commen-title"><p class="mm-hrline"></p><span>'+obj.one_p1+'</span></div><p class="deepgray">'+obj.one_p2+'</p></div></div>';
-            }else {
-            }
-            if(obj.one_detail_p){
-                html +='<div class="goods-detail container bd0 mbottom"><div class=mm-commen-title><p class=mm-hrline></p><span>商品详情</span></div><div class="goods-detail-info deepgray"><div style="text-align:center;">';
-                html +=obj.one_detail_p;
-                html +='</div></div></div>';
-            }else{
-                html +='';
-            }
-            if(obj.brand_desc){
-                html +='<div class="goods-detail container bd0 mbottom"><div class=goods-detail-info>';
-                html +='<div style="text-align: center;"><img src="'+obj.brand_logo+'" style="height: 60px;"></div><div class="deepgray">'+obj.brand_desc+'</div>';
-                html+='</div></div></div>';
-            }
-            if(obj.is_mizan_selected == 1){
-                $(".mm-hastest").show();
-            }else {
-                $(".mm-hastest").hide();
-            }
-            if(obj.is_tax_package == 1){
-                $(".mm-freetax").show();
-            }else {
-                $(".mm-freetax").hide();
-            }
-            if(obj.goods_service_commitment){
-                html +='<div class="goods-detail container bd0 mbottom"><div class=mm-commen-title><p class=mm-hrline></p><span>服务承诺</span></div><div class=goods-detail-info>';
-                for (var i =0;i<obj.goods_service_commitment.length;i++){
-                    html +='<div class="promit promit1" style="background: url(&quot;'+obj.goods_service_commitment[i].icon+'&quot;) no-repeat top center;background-size: 40px 40px;"><p>'+obj.goods_service_commitment[i].name+'</p></div>';
-                }
-                html+='</div></div>';
-            }else{
-                html +='';
-            }
-            if(obj.one_flow_img||obj.one_beforebuy){
-                html +='<div class="detail-process container bd0 mbottom">';
-                if(obj.one_flow_img){
-                    html +='<div class=mm-commen-title><p class=mm-hrline></p><span>物流流程</span></div><img src="'+obj.one_flow_img+'" class=mbottom>';
-                }
-                if(obj.one_beforebuy){
-                    html +='<div class=mm-commen-title><p class=mm-hrline></p><span>买前须知</span></div><ol class=hide>';
-                    for (var i =0;i<obj.one_beforebuy.length;i++){
-                        html+='<li>'+obj.one_beforebuy[i]+'</li>';
-                    }
-                    html +='</ol><a class=detail-process-more href="#">阅读全文</a>';
-                }
-                html +='</div>';
-            }
-            $('#onecTime').append(html);
-
-            /*显示隐藏*/
-            $('.detail-process-more').click(function () {
-                var ol = $('.detail-process ol'),
-                        arrow = $('.detail-process .detail-process-more'),
-                        height = 0;
-                if (ol.hasClass('hide')) {
-                    ol.children().each(function () {
-                        console.log($(this).height());
-                        height += $(this).height();
+                    $(".detail-images .swiper-wrapper").append(typehtml);
+                    var mySwiper1 = new Swiper('.detail-images',{
+                        slidesPerView : 7,
+                        centeredSlides : true,
+                        touchRatio : 0.5,
                     });
-                    ol.removeClass('hide').css('height', height);
-                    arrow.addClass('up');
-                } else {
-                    ol.addClass('hide').removeAttr('style');
-                    arrow.removeClass('up');
-                }
-                return false;
-            });
+                    $(".detail-images .swiper-wrapper li").eq(lowest_index).addClass("pink-border");
+                    //内容
 
-            var lowest;
-            var btncartshop = $('.btn-shoppingCart');
-            lowest = eval(obj.lowest_goods_info_id);
-            if(obj.is_on_sale == 1){
-                var goodsnum = 0;
-                btncartshop.click(function () {
-                    //获取token后
-                    if(lowest>0){
-                        console.log("进入购物车");
-                        Ponto.invoke(
-                                "Messaging",
-                                "refreshable",
-                                {isfresh:false},
-                                null,
-                                null);
-                        var goodsnum = parseInt($('.number').text()) + 1;
-                        detail.hide();
-                        $('.number').text(goodsnum);
-                        buyPage.show();
-                        /*$.ajax({
-                            type: "POST",
-                            url: "",
-                            data:{"id":chooseIDinfo},
-                            success: function(data){
-                                alert(data);
+                    $("#nametitle").html(goodsNew.name);
+                    $("#nametitle").data("goods_id",goodsNew.goods_id);
+                    $("#nameprice").html('¥ '+goodsNew.goods_child_info[lowest_index].target_promote_price);
+                    if(goodsNew.goods_child_info[lowest_index].target_market_price){
+                        $(".name-referprice").show();
+                        $("#namereferprice").html('¥ '+goodsNew.goods_child_info[lowest_index].target_market_price);
+                    }
+                    if(goodsNew.goods_child_info[lowest_index].target_discount){
+                        $("#discount").html(goodsNew.goods_child_info[lowest_index].target_discount+'折');
+                    }
+                    if(goodsNew.goods_source_list){
+                        var tag1html = '';
+                        for (var i =0;i<goodsNew.goods_source_list.length;i++){
+                            tag1html +='<span class="g" style="background: url(&quot;'+goodsNew.goods_source_list[i].icon+'&quot;) no-repeat;background-size: 14px 14px;">'+goodsNew.goods_source_list[i].name+'</span>';
+                        }
+                        $(".mm-tag").append(tag1html);
+                    }
+                    if(goodsNew.cart_number_least){
+                        $(".cart_number_least").html(goodsNew.cart_number_least);
+                    }
+                    var CliChooseType = '';
+                    $(".detail-images ul li").each(function(index){
+                        $(this).click(function(){
+                            $(".detail-images ul li").removeClass("pink-border");
+                            $(this).addClass("pink-border");
+                            var goodinfoid = $(this).data("goodinfoid");
+                            //console.log(goodinfoid);
+                            CliChooseType = index;
+                            chooseIDinfo = eval($(this).data("goodinfoid"));
+                            console.log("点击的是哪个款式："+index+"infoid:"+$(this).data("goodinfoid"));
+                            var piclenght = goodsNew.goods_child_info[index].gallery_list.length;
+                            var html ='';
+                            for(var i=0;i< piclenght;i++){
+                                html += '<div class="swiper-slide"><a href="#"><img src="'+goodsNew.goods_child_info[index].gallery_list[i].thumb_url+'" alt=""></a></div>';
                             }
-                        });*/
-                        var goodsattr ={
-                            "all_attr_val":[
-                                {   "attr_index": 1,
-                                    "attr_name": "Size",
-                                    "attr_value": {
-                                        "name":["small price","Small Petite","Medium","Large","X-Large","XX-Large"],
-                                        "onevalue":[
-                                            {
-                                                "value_index": 1,
-                                                "info_id": [
-                                                    39808,
-                                                    39811
-                                                ],
-                                                "selected": 0,
-                                                "value": [
-                                                    {
-                                                        "attr_id": "24",
-                                                        "attr_name": "Size",
-                                                        "attr_value": "Small",
-                                                        "attr_value_index": 1,
-                                                        "id": "39808",
-                                                        "selected": 0,
-                                                        "promote_price": "285",
-                                                        "market_price": "265",
-                                                        "jd_price": "265",
-                                                        "buy_small_img": "http://115.29.51.240:84//goods_images/41ULjAlRIbL._AA300_.jpg",
-                                                        "mall_weight": "0.19",
-                                                        "transit_fee": "35.00",
-                                                        "avail_ability": "",
-                                                        "asin": "B014JZ525O"
-                                                    },
-                                                    {
-                                                        "attr_id": "24",
-                                                        "attr_name": "Size",
-                                                        "attr_value": "Small",
-                                                        "attr_value_index": 1,
-                                                        "id": "39811",
-                                                        "selected": 0,
-                                                        "promote_price": "285",
-                                                        "market_price": "265",
-                                                        "jd_price": "265",
-                                                        "buy_small_img": "http://115.29.51.240:84//goods_images/41WkseG0AuL._AA300_.jpg",
-                                                        "mall_weight": "0.19",
-                                                        "transit_fee": "35.00",
-                                                        "avail_ability": "",
-                                                        "asin": "B014JZWYE6"
-                                                    }
-                                                ],
-                                                "allow":[[0,1,2,6],[0,1,4,5]],
-                                                "jsondata": "[39808,39811]"
-                                            },
-                                            {
-                                                "value_index": 2,
-                                                "info_id": [
-                                                    39813,
-                                                    39815,
-                                                    39817
-                                                ],
-                                                "selected": 1,
-                                                "value": [
-                                                    {
-                                                        "attr_id": "24",
-                                                        "attr_name": "Size",
-                                                        "attr_value": "Small Petite",
-                                                        "attr_value_index": 2,
-                                                        "id": "39813",
-                                                        "selected": 0,
-                                                        "promote_price": "199",
-                                                        "market_price": "0",
-                                                        "jd_price": "0",
-                                                        "buy_small_img": "http://115.29.51.240:84//goods_images/51oDroRP3sL._AA300_.jpg",
-                                                        "mall_weight": "0.39",
-                                                        "transit_fee": "35.00",
-                                                        "avail_ability": "",
-                                                        "asin": "B004HIVAHS"
-                                                    },
-                                                    {
-                                                        "attr_id": "24",
-                                                        "attr_name": "Size",
-                                                        "attr_value": "Small Petite",
-                                                        "attr_value_index": 2,
-                                                        "id": "39815",
-                                                        "selected": 1,
-                                                        "promote_price": "198",
-                                                        "market_price": "0",
-                                                        "jd_price": "0",
-                                                        "buy_small_img": "http://115.29.51.240:84//goods_images/41D70LVJybL._AA300_.jpg",
-                                                        "mall_weight": "0.19",
-                                                        "transit_fee": "35.00",
-                                                        "avail_ability": "",
-                                                        "asin": "B004CQZMWE"
-                                                    },
-                                                    {
-                                                        "attr_id": "24",
-                                                        "attr_name": "Size",
-                                                        "attr_value": "Small Petite",
-                                                        "attr_value_index": 2,
-                                                        "id": "39817",
-                                                        "selected": 0,
-                                                        "promote_price": "199",
-                                                        "market_price": "0",
-                                                        "jd_price": "0",
-                                                        "buy_small_img": "http://115.29.51.240:84//goods_images/41ER-1KxbvL._AA300_.jpg",
-                                                        "mall_weight": "0.33",
-                                                        "transit_fee": "35.00",
-                                                        "avail_ability": "",
-                                                        "asin": "B0047NJONK"
-                                                    }
-                                                ],
-                                                "allow":[[0,1,2,6],[1]],
-                                                "jsondata": "[39813,39815,39817]"
-                                            },
-                                            {
-                                                "value_index": 3,
-                                                "info_id": [
-                                                    39818,
-                                                    39821,
-                                                    39822
-                                                ],
-                                                "selected": 0,
-                                                "value": [
-                                                    {
-                                                        "attr_id": "24",
-                                                        "attr_name": "Size",
-                                                        "attr_value": "Medium",
-                                                        "attr_value_index": 3,
-                                                        "id": "39818",
-                                                        "selected": 0,
-                                                        "promote_price": "285",
-                                                        "market_price": "265",
-                                                        "jd_price": "265",
-                                                        "buy_small_img": "http://115.29.51.240:84//goods_images/41ULjAlRIbL._AA300_.jpg",
-                                                        "mall_weight": "0.19",
-                                                        "transit_fee": "35.00",
-                                                        "avail_ability": "",
-                                                        "asin": "B014JZ557E"
-                                                    },
-                                                    {
-                                                        "attr_id": "24",
-                                                        "attr_name": "Size",
-                                                        "attr_value": "Medium",
-                                                        "attr_value_index": 3,
-                                                        "id": "39821",
-                                                        "selected": 0,
-                                                        "promote_price": "285",
-                                                        "market_price": "265",
-                                                        "jd_price": "265",
-                                                        "buy_small_img": "http://115.29.51.240:84//goods_images/41WkseG0AuL._AA300_.jpg",
-                                                        "mall_weight": "0.19",
-                                                        "transit_fee": "35.00",
-                                                        "avail_ability": "",
-                                                        "asin": "B014JZX15C"
-                                                    },
-                                                    {
-                                                        "attr_id": "24",
-                                                        "attr_name": "Size",
-                                                        "attr_value": "Medium",
-                                                        "attr_value_index": 3,
-                                                        "id": "39822",
-                                                        "selected": 0,
-                                                        "promote_price": "298",
-                                                        "market_price": "265",
-                                                        "jd_price": "265",
-                                                        "buy_small_img": "http://115.29.51.240:84//goods_images/41uDJUIH3iL._AA300_.jpg",
-                                                        "mall_weight": "0.19",
-                                                        "transit_fee": "35.00",
-                                                        "avail_ability": "",
-                                                        "asin": "B014JZVZXW"
-                                                    }
-                                                ],
-                                                "allow":[[4],[0]],
-                                                "jsondata": "[39818,39821,39822]"
-                                            },
-                                            {
-                                                "value_index": 4,
-                                                "info_id": [
-                                                    39824,
-                                                    39827
-                                                ],
-                                                "selected": 0,
-                                                "value": [
-                                                    {
-                                                        "attr_id": "24",
-                                                        "attr_name": "Size",
-                                                        "attr_value": "Large",
-                                                        "attr_value_index": 4,
-                                                        "id": "39824",
-                                                        "selected": 0,
-                                                        "promote_price": "285",
-                                                        "market_price": "265",
-                                                        "jd_price": "265",
-                                                        "buy_small_img": "http://115.29.51.240:84//goods_images/41ULjAlRIbL._AA300_.jpg",
-                                                        "mall_weight": "0.19",
-                                                        "transit_fee": "35.00",
-                                                        "avail_ability": "",
-                                                        "asin": "B014JZ58D0"
-                                                    },
-                                                    {
-                                                        "attr_id": "24",
-                                                        "attr_name": "Size",
-                                                        "attr_value": "Large",
-                                                        "attr_value_index": 4,
-                                                        "id": "39827",
-                                                        "selected": 0,
-                                                        "promote_price": "232",
-                                                        "market_price": "265",
-                                                        "jd_price": "265",
-                                                        "buy_small_img": "http://115.29.51.240:84//goods_images/41uDJUIH3iL._AA300_.jpg",
-                                                        "mall_weight": "0.19",
-                                                        "transit_fee": "35.00",
-                                                        "avail_ability": "",
-                                                        "asin": "B014JZW2X4"
-                                                    }
-                                                ],
-                                                "allow":[[0,4,6],[1,2]],
-                                                "jsondata": "[39824,39827]"
-                                            },
-                                            {
-                                                "value_index": 5,
-                                                "info_id": [
-                                                    39831
-                                                ],
-                                                "selected": 0,
-                                                "value": [
-                                                    {
-                                                        "attr_id": "24",
-                                                        "attr_name": "Size",
-                                                        "attr_value": "X-Large",
-                                                        "attr_value_index": 5,
-                                                        "id": "39831",
-                                                        "selected": 0,
-                                                        "promote_price": "285",
-                                                        "market_price": "265",
-                                                        "jd_price": "265",
-                                                        "buy_small_img": "http://115.29.51.240:84//goods_images/41uDJUIH3iL._AA300_.jpg",
-                                                        "mall_weight": "0.19",
-                                                        "transit_fee": "35.00",
-                                                        "avail_ability": "",
-                                                        "asin": "B014JZW55E"
-                                                    }
-                                                ],
-                                                "allow":[[0,1,2],[1]],
-                                                "jsondata": "[39831]"
-                                            },
-                                            {
-                                                "value_index": 6,
-                                                "info_id": [
-                                                    39834
-                                                ],
-                                                "selected": 0,
-                                                "value": [
-                                                    {
-                                                        "attr_id": "24",
-                                                        "attr_name": "Size",
-                                                        "attr_value": "XX-Large",
-                                                        "attr_value_index": 6,
-                                                        "id": "39834",
-                                                        "selected": 0,
-                                                        "promote_price": "265",
-                                                        "market_price": "265",
-                                                        "jd_price": "265",
-                                                        "buy_small_img": "http://115.29.51.240:84//goods_images/41EuT8vk8CL._AA300_.jpg",
-                                                        "mall_weight": "0.19",
-                                                        "transit_fee": "35.00",
-                                                        "avail_ability": "",
-                                                        "asin": "B014JZWDKQ"
-                                                    }
-                                                ],
-                                                "allow":[[0,2,3],[0]],
-                                                "jsondata": "[39834]"
-                                            }
-                                        ]
+                            $(".detailPic-swiper .swiper-wrapper").empty().append(html);
+                            /*$('.detailPic-swiper').each(function() {
+                                var $this = $(this);
+                                var $pager = $this.find('.detailPic-swiper-index');
+                                $(".detailPic-swiper .swiper-wrapper .swiper-slide").size();
+                                var myswipe2 =new Swiper($this, {
+                                    loop: true,
+                                    autoplayDisableOnInteraction:false,
+                                    pagination: $this.find('.swiper-pagination'),
+                                    onSlideChangeEnd: function(swiper) {
+                                        $pager.html((parseInt(swiper.slides[swiper.activeIndex]
+                                                        .getAttribute('data-swiper-slide-index')) + 1) +
+                                                '/' + ( $(".detailPic-swiper .swiper-wrapper .swiper-slide").size()- 2));
                                     }
-                                },
-                                {   "attr_index": 2,
-                                    "attr_name": "Color",
-                                    "attr_value": {
-                                        "name":["Blazing Yellow","Navy Blazer","Dark Grey","Red","White/Navy/Red","Ribbon Red","Classic White"],
-                                        "onevalue":[
-                                            {
-                                                "value_index": 8,
-                                                "info_id": [
-                                                    39808,
-                                                    39818,
-                                                    39824
-                                                ],
-                                                "selected": 0,
-                                                "value": [
-                                                    {
-                                                        "attr_id": "25",
-                                                        "attr_name": "Color",
-                                                        "attr_value": "Blazing Yellow",
-                                                        "attr_value_index": 8,
-                                                        "id": "39808",
-                                                        "selected": 0,
-                                                        "promote_price": "285",
-                                                        "market_price": "265",
-                                                        "jd_price": "265",
-                                                        "buy_small_img": "http://115.29.51.240:84//goods_images/41ULjAlRIbL._AA300_.jpg",
-                                                        "mall_weight": "0.19",
-                                                        "transit_fee": "35.00",
-                                                        "avail_ability": "",
-                                                        "asin": "B014JZ525O"
+                                });
+                            });*/
+
+                            $("#nameprice").html('￥'+goodsNew.goods_child_info[index].target_promote_price);
+                            if(goodsNew.goods_child_info[index].target_discount){
+                                $("#discount").html(goodsNew.goods_child_info[index].target_discount+'折');
+                            }
+                            if(goodsNew.goods_child_info[index].target_market_price){
+                                $(".name-referprice").show();
+                                $("#namereferprice").html('￥'+goodsNew.goods_child_info[index].target_market_price);
+                            }
+
+                        });
+                    });
+                }else{
+                    $(".detail-images ").hide();
+                    //没有goods_child_info
+                    if(goodsNew.gallery_list){
+                        for (var i =0;i<goodsNew.gallery_list.length;i++){
+                            html +='<div class=swiper-slide><a href="#"><img src="'+goodsNew.gallery_list[i].thumb_url+'" alt="'+goodsNew.gallery_list[i].thumb_desc+'"></a></div>'
+                        }
+                        $(".detailPic-swiper .swiper-wrapper").append(html);
+                    }
+
+                    if(goodsNew.target_discount){
+                        $("#discount").html(goodsNew.target_discount+'折');
+                    }
+                    $("#nametitle").html(goodsNew.name);
+
+                    $("#nameprice").html('¥ '+goodsNew.target_promote_price);
+                    if(goodsNew.target_market_price){
+                        $(".name-referprice").show();
+                        $("#namereferprice").html('¥ '+goodsNew.target_market_price);
+                    }
+                    if(goodsNew.goods_source_list){
+                        var tag1html = '';
+                        for (var i =0;i<goodsNew.goods_source_list.length;i++){
+                            tag1html +='<span class="g" style="background: url(&quot;'+goodsNew.goods_source_list[i].icon+'&quot;) no-repeat;background-size: 14px 14px;">'+goodsNew.goods_source_list[i].name+'</span>';
+                        }
+                        $(".mm-tag").append(tag1html);
+                    }
+                }
+
+                var mySwiper2 = new Swiper('.detailPic-swiper', {
+
+                })
+
+                /*$('.detailPic-swiper').each(function() {
+                    var $this = $(this);
+                    var $pager = $this.find('.detailPic-swiper-index');
+                    $(".detailPic-swiper .swiper-wrapper .swiper-slide").size();
+                    new Swiper($this, {
+                        loop: true,
+                        autoplayDisableOnInteraction:false,
+                        pagination: $this.find('.swiper-pagination'),
+                        onSlideChangeEnd: function(swiper) {
+                            $pager.html((parseInt(swiper.slides[swiper.activeIndex]
+                                            .getAttribute('data-swiper-slide-index')) + 1) +
+                                    '/' + ( $(".detailPic-swiper .swiper-wrapper .swiper-slide").size()- 2));
+                        }
+                    });
+                });*///滑动
+                //分享功能
+                /* Ponto.invoke(
+                 "Messaging",
+                 "share2",
+                 {url: refurl, title: $(".nametitle").html(), subTitle: $(this).attr("idname"), sImageUrl:$(this).attr("thuml") },
+                 null,
+                 null
+                 );*/
+            }
+            function addOnce(obj){
+                console.log("add");
+                $("title").html(obj.name);
+                var html = '';
+                if(obj.one_p1){
+                    html+='<div class="pointComment container bd0 mbottom"><div class="mizan-points"><div class="mm-commen-title"><p class="mm-hrline onepicel"></p><span>'+obj.one_p1+'</span></div><p class="deepgray">'+obj.one_p2+'</p></div></div>';
+                }else {
+                }
+                if(obj.one_detail_p){
+                    html +='<div class="goods-detail container bd0 mbottom"><div class="mm-commen-title"><p class="mm-hrline onepicel"></p><span>商品详情</span></div><div class="goods-detail-info deepgray"><div class="detail_p" style="text-align:center;">';
+                    html +=obj.one_detail_p;
+                    html +='</div></div></div>';
+                }else{
+                    html +='';
+                }
+                if(obj.brand_desc){
+                    html +='<div class="goods-detail container bd0 mbottom"><div class=goods-detail-info>';
+                    html +='<div style="text-align: center;margin-top: 8px;"><img src="'+obj.brand_logo+'" style="height: 60px;"></div><div class="deepgray">'+obj.brand_desc+'</div>';
+                    html+='</div></div></div>';
+                }
+                if(obj.is_mizan_selected == 1){
+                    $(".mm-hastest").show();
+                }else {
+                    $(".mm-hastest").hide();
+                }
+                if(obj.is_tax_package == 1){
+                    $(".mm-freetax").show();
+                }else {
+                    $(".mm-freetax").hide();
+                }
+                if(obj.goods_service_commitment){
+                    html +='<div class="goods-detail container bd0 mbottom"><div class="mm-commen-title"><p class="mm-hrline onepicel"></p><span>服务承诺</span></div><div class=goods-detail-info>';
+                    for (var i =0;i<obj.goods_service_commitment.length;i++){
+                        html +='<div class="promit promit1" style="background: url(&quot;'+obj.goods_service_commitment[i].icon+'&quot;) no-repeat top center;background-size: 40px 40px;"><p>'+obj.goods_service_commitment[i].name+'</p></div>';
+                    }
+                    html+='</div></div>';
+                }else{
+                    html +='';
+                }
+                if(obj.shopping_process){
+                    html +='<div class="detail-process container bd0 mbottom">';
+                    if(obj.shopping_process.shopping_process){
+                        html +='<div class=mm-commen-title><p class="mm-hrline onepicel"></p><span>物流流程</span></div><img src="'+obj.shopping_process.shopping_process+'" class=mbottom>';
+                    }
+                    if(obj.shopping_process.before_shopping){
+                        html +='<div class=mm-commen-title><p class="mm-hrline onepicel"></p><span>买前须知</span></div><ol class=hide>';
+                        for (var i =0;i<obj.shopping_process.before_shopping.length;i++){
+                            html+='<li>'+obj.shopping_process.before_shopping[i]+'</li>';
+                        }
+                        html +='</ol><a class=detail-process-more href="#">阅读全文</a>';
+                    }
+                    html +='</div>';
+                }
+                $('#onecTime').append(html);
+                //alert(obj.goods_id);
+
+                /*显示隐藏*/
+                $('.detail-process-more').click(function () {
+                    var ol = $('.detail-process ol'),
+                            arrow = $('.detail-process .detail-process-more'),
+                            height = 0;
+                    if (ol.hasClass('hide')) {
+                        ol.children().each(function () {
+                            console.log($(this).height());
+                            height += $(this).height();
+                        });
+                        ol.removeClass('hide').css('height', height);
+                        arrow.addClass('up');
+                    } else {
+                        ol.addClass('hide').removeAttr('style');
+                        arrow.removeClass('up');
+                    }
+                    return false;
+                });
+
+                var lowest;
+                var btncartshop = $('.btn-shoppingCart');
+                lowest = eval(obj.lowest_goods_info_id);
+                if(obj.is_on_sale == 1){
+                    var goodsnum = 0;
+                    var canbug = false;
+                    btncartshop.click(function () {
+                        buygoosID = obj.goods_id;
+                        if(lowest>0){
+                            console.log("进入购物车");
+                            alert(Val_id);
+                            if(GlobalsaveToken == null){
+                                alert("请从APP端购买！")
+                                Ponto.invoke(
+                                        "Messaging",
+                                        "toast",
+                                        {"title":'网络断了，请稍后再试'},
+                                        null,
+                                        null);
+                            }else{
+                                $.ajax({
+                                    type: "POST",
+                                    url: "http://115.29.51.240:84/goods_interface.php",
+                                    data:{
+                                        "intertype":102,
+                                        "id":Val_id,
+                                        "deviceid":deviceid,//"867628026358119"
+                                        "token": GlobalsaveToken,//"9468e749e9bc12ea85ab8dd5799aac43"
+                                        /*"deviceid":"867628026358119",
+                                        "token": "9468e749e9bc12ea85ab8dd5799aac43",*/
+                                        "default_goods_info_id":chooseIDinfo
+                                    },
+                                    success: function(data){
+                                        if(JSON.parse(data).code == 200){
+                                            //alert(JSON.parse(data).goods);
+                                            console.log(JSON.parse(data).goods);
+                                            closureselect(JSON.parse(data).goods);
+                                        }
+                                        if(JSON.parse(data).code == 202){
+                                            //token值不匹配
+                                            Ponto.invoke(
+                                                    "Messaging",
+                                                    "getToken",
+                                                    {userLogin:true},
+                                                    function (token) {
+                                                        $("#token").val(token);
+                                                        GlobalsaveToken = token;
                                                     },
-                                                    {
-                                                        "attr_id": "25",
-                                                        "attr_name": "Color",
-                                                        "attr_value": "Blazing Yellow",
-                                                        "attr_value_index": 8,
-                                                        "id": "39818",
-                                                        "selected": 0,
-                                                        "promote_price": "285",
-                                                        "market_price": "265",
-                                                        "jd_price": "265",
-                                                        "buy_small_img": "http://115.29.51.240:84//goods_images/41ULjAlRIbL._AA300_.jpg",
-                                                        "mall_weight": "0.19",
-                                                        "transit_fee": "35.00",
-                                                        "avail_ability": "",
-                                                        "asin": "B014JZ557E"
-                                                    },
-                                                    {
-                                                        "attr_id": "25",
-                                                        "attr_name": "Color",
-                                                        "attr_value": "Blazing Yellow",
-                                                        "attr_value_index": 8,
-                                                        "id": "39824",
-                                                        "selected": 0,
-                                                        "promote_price": "285",
-                                                        "market_price": "265",
-                                                        "jd_price": "265",
-                                                        "buy_small_img": "http://115.29.51.240:84//goods_images/41ULjAlRIbL._AA300_.jpg",
-                                                        "mall_weight": "0.19",
-                                                        "transit_fee": "35.00",
-                                                        "avail_ability": "",
-                                                        "asin": "B014JZ58D0"
+                                                    null);
+                                        }
+                                    },
+                                    error: function(){
+                                        //请求出错处理
+                                        alert("请从APP端购买！")
+                                        Ponto.invoke(
+                                                "Messaging",
+                                                "toast",
+                                                {"title":'网络断了，请稍后再试'},
+                                                null,
+                                                null);
+                                    }
+                                });
+                                function closureselect(obj){
+                                    Ponto.invoke(
+                                            "Messaging",
+                                            "refreshable",
+                                            {isfresh:false},
+                                            null,
+                                            null);
+                                    detail.hide();
+                                    $('.number').html(1);
+                                    buyPage.show();
+                                    $("#add_attributeBtn").empty();
+                                    for(var n=0;n<obj.length;n++) {
+                                        var attributehtml = '<div class=selection-items><div class=selection-title>' + obj[n].attr_name + ':</div><ul class="selection-list" data-attrgroup="' + n + '" id="btn_attribute' + n + '">';
+                                        for (var i = 0; i < obj[n].attr_value_info.length; i++) {
+                                            var allowid = [];
+                                            for (var m = 0; m < obj[n].attr_value_info[i].goods_info_list.length; m++) {
+                                                allowid.push(obj[n].attr_value_info[i].goods_info_list[m].goods_info_id)
+                                            } //记录序列号
+                                            attributehtml += '<li class="selection-valid" data-allowid="' + allowid + '" data-xuhao="' + i + '">' + obj[n].attr_value_info[i].attr_value + '</li>';
+                                        }
+                                        attributehtml += '</ul></div>';
+                                        $("#add_attributeBtn").append(attributehtml);
+                                    }
+                                    var timearray = new Object(); //临时数组
+                                    for(var nn=0; nn<$(".selection-list").size();nn++){
+                                        $("#btn_attribute" + nn + " li").each(function (a) { //绑定点击事件
+                                            $(this).unbind("click");
+                                            $(this).bind("click", function () {
+                                                $(this).parent().children("li").removeClass("selection-active");
+                                                var groupindex = $(this).parent().data("attrgroup");
+                                                $(this).addClass("selection-active");
+                                                var allowdata = $(this).data("allowid");
+                                                var dataStrArr;
+                                                var dataIntArr = [];
+                                                if (typeof(allowdata) == "string") {
+                                                    dataStrArr = allowdata.split(",");
+                                                    dataStrArr.forEach(function (data) {
+                                                        dataIntArr.push(+data);
+                                                    });
+                                                } else {
+                                                    dataStrArr = Number(allowdata);
+                                                    dataIntArr.push(+dataStrArr);
+                                                }
+                                                //console.log("数组" + dataIntArr);
+                                                //console.log("click:" + a + "parent" + groupindex + "dataIntArr" + dataIntArr);
+                                                timearray.infoid = dataIntArr;
+                                                timearray.value = obj[groupindex].attr_value_info[a].goods_info_list;
+                                                var hadselect=[];
+                                                if(obj.length == 1){
+                                                    for(var l = 0;l<$("#btn_attribute0 li").size();l++){
+                                                        if($("#btn_attribute0 li").eq(l).hasClass("selection-active")){
+                                                            console.log("其他的选中的是"+l);
+                                                            hadselect =$("#btn_attribute0 li").eq(l).data("allowid");
+                                                            thesame(timearray,hadselect);
+                                                            function thesame(timearray,hadselect){
+                                                                var a;
+                                                                var g=[];
+                                                                if (typeof(hadselect) == "string")
+                                                                {
+                                                                    a=hadselect.split(",");
+                                                                    a.forEach(function(data){
+                                                                        g.push(+data);
+                                                                    });
+                                                                }else
+                                                                {
+                                                                    a =Number(hadselect);
+                                                                    g.push(+hadselect);
+                                                                }
+                                                                for(var s = 0;s < g.length;s++){
+                                                                    console.log(g.length);
+                                                                    for(var i =0; i<timearray.infoid.length ;i++){
+                                                                        if(g[s] == timearray.infoid[i]){
+                                                                            $("#promote_price").html(timearray.value[i].promote_price);
+                                                                            $("#market_price").html(timearray.value[i].market_price);
+                                                                            $("#mall_weight").html(timearray.value[i].mall_weight);
+                                                                            $("#transit_fee").html(timearray.value[i].transit_fee);
+                                                                            $("#goods_buy_small_image").attr("src", timearray.value[i].buy_small_img);
+                                                                            $("#goods_buy_small_image").data("goodsid",timearray.value[i].goods_info_id);
+                                                                        }
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
                                                     }
-                                                ],
-                                                "allow":[[0,1,2],[0]],
-                                                "jsondata": "[39808,39818,39824]"
-                                            },
-                                            {
-                                                "value_index": 9,
-                                                "info_id": [
-                                                    39811,
-                                                    39821
-                                                ],
-                                                "selected": 0,
-                                                "value": [
-                                                    {
-                                                        "attr_id": "25",
-                                                        "attr_name": "Color",
-                                                        "attr_value": "Navy Blazer",
-                                                        "attr_value_index": 9,
-                                                        "id": "39811",
-                                                        "selected": 0,
-                                                        "promote_price": "285",
-                                                        "market_price": "265",
-                                                        "jd_price": "265",
-                                                        "buy_small_img": "http://115.29.51.240:84//goods_images/41WkseG0AuL._AA300_.jpg",
-                                                        "mall_weight": "0.19",
-                                                        "transit_fee": "35.00",
-                                                        "avail_ability": "",
-                                                        "asin": "B014JZWYE6"
-                                                    },
-                                                    {
-                                                        "attr_id": "25",
-                                                        "attr_name": "Color",
-                                                        "attr_value": "Navy Blazer",
-                                                        "attr_value_index": 9,
-                                                        "id": "39821",
-                                                        "selected": 0,
-                                                        "promote_price": "285",
-                                                        "market_price": "265",
-                                                        "jd_price": "265",
-                                                        "buy_small_img": "http://115.29.51.240:84//goods_images/41WkseG0AuL._AA300_.jpg",
-                                                        "mall_weight": "0.19",
-                                                        "transit_fee": "35.00",
-                                                        "avail_ability": "",
-                                                        "asin": "B014JZX15C"
+                                                }else{
+                                                    for(var i =0;i<obj.length;i++){
+                                                        if(i == groupindex){
+                                                            //点击的那一行
+                                                        }else {
+                                                            for(var l = 0;l<$("#btn_attribute"+i+" li").size();l++){
+                                                                if($("#btn_attribute"+i+" li").eq(l).hasClass("selection-active")){
+                                                                    console.log("其他的选中的是"+l);
+                                                                    hadselect =$("#btn_attribute"+i+" li").eq(l).data("allowid");
+                                                                    thesame(timearray,hadselect);
+                                                                    function thesame(timearray,hadselect){
+                                                                        var a;
+                                                                        var g=[];
+                                                                        if (typeof(hadselect) == "string")
+                                                                        {
+                                                                            a=hadselect.split(",");
+                                                                            a.forEach(function(data){
+                                                                                g.push(+data);
+                                                                            });
+                                                                        }else
+                                                                        {
+                                                                            a =Number(hadselect);
+                                                                            g.push(+hadselect);
+                                                                        }
+                                                                        for(var s = 0;s < g.length;s++){
+                                                                            console.log(g.length);
+                                                                            for(var i =0; i<timearray.infoid.length ;i++){
+                                                                                if(g[s] == timearray.infoid[i]){
+                                                                                    $("#promote_price").html(timearray.value[i].promote_price);
+                                                                                    $("#market_price").html(timearray.value[i].market_price);
+                                                                                    $("#mall_weight").html(timearray.value[i].mall_weight);
+                                                                                    $("#transit_fee").html(timearray.value[i].transit_fee);
+                                                                                    $("#goods_buy_small_image").attr("src", timearray.value[i].buy_small_img);
+                                                                                    $("#goods_buy_small_image").data("goodsid",timearray.value[i].goods_info_id);
+                                                                                }
+                                                                            }
+                                                                        }
+                                                                    }
+
+                                                                }else{
+                                                                    console.log("无选中其它的select项");
+                                                                    var invalidindex ;
+                                                                    for(var s = 0;s < $("#btn_attribute"+i+" li").size();s++){
+                                                                        var notselectli = $("#btn_attribute"+i+" li").eq(s).data("allowid");
+                                                                        var q;
+                                                                        var wnotselectli=[];
+                                                                        if (typeof(notselectli) == "string")
+                                                                        {
+                                                                            q=notselectli.split(",");
+                                                                            q.forEach(function(data){
+                                                                                wnotselectli.push(+data);
+                                                                            });
+                                                                        }else
+                                                                        {
+                                                                            q =Number(notselectli);
+                                                                            wnotselectli.push(+notselectli);
+                                                                        }
+                                                                        //console.log(wnotselectli);
+                                                                        $("#btn_attribute"+i+" li").eq(s).removeClass("selection-invalid");
+                                                                        Array.ExistsSameValues = function(a1, a2) {  //判断两个数组是否有相同的
+                                                                            var exists = false;
+                                                                            if(a1 instanceof Array && a2 instanceof Array)
+                                                                            {
+                                                                                for (var i=0,iLen=a1.length; i<iLen; i++)
+                                                                                {
+                                                                                    for (var j=0,jLen=a2.length; j<jLen; j++)
+                                                                                    {
+                                                                                        if (a1[i]===a2[j])
+                                                                                        {
+                                                                                            return true;
+                                                                                        }
+                                                                                    }
+                                                                                }
+                                                                            }
+                                                                            return exists;
+                                                                        };
+                                                                        if(Array.ExistsSameValues(dataIntArr, wnotselectli)){
+
+                                                                        }else{
+                                                                            if($("#btn_attribute"+i+" li").eq(s).hasClass("selection-active")){
+                                                                                $("#btn_attribute"+i+" li").eq(s).removeClass("selection-active");
+                                                                                $("#promote_price").html(timearray.value[0].promote_price);
+                                                                                $("#market_price").html(timearray.value[0].market_price);
+                                                                                $("#mall_weight").html(timearray.value[0].mall_weight);
+                                                                                $("#transit_fee").html(timearray.value[0].transit_fee);
+                                                                                $("#goods_buy_small_image").attr("src", timearray.value[0].buy_small_img);
+                                                                            }
+                                                                            $("#btn_attribute"+i+" li").eq(s).addClass("selection-invalid");
+                                                                        }
+                                                                    }
+
+                                                                }
+                                                            }
+                                                        }
                                                     }
-                                                ],
-                                                "allow":[[0,1,5],[0]],
-                                                "jsondata": "[39811,39821]"
-                                            },
-                                            {
-                                                "value_index": 10,
-                                                "info_id": [
-                                                    39813
-                                                ],
-                                                "selected": 0,
-                                                "value": [
-                                                    {
-                                                        "attr_id": "25",
-                                                        "attr_name": "Color",
-                                                        "attr_value": "Dark Grey",
-                                                        "attr_value_index": 10,
-                                                        "id": "39813",
-                                                        "selected": 0,
-                                                        "promote_price": "199",
-                                                        "market_price": "0",
-                                                        "jd_price": "0",
-                                                        "buy_small_img": "http://115.29.51.240:84//goods_images/51oDroRP3sL._AA300_.jpg",
-                                                        "mall_weight": "0.39",
-                                                        "transit_fee": "35.00",
-                                                        "avail_ability": "",
-                                                        "asin": "B004HIVAHS"
+                                                }
+
+                                                var hasselect = ''; //已选中的文字内容
+                                                for (var i = 0; i < $(".selection-list").size(); i++) {
+                                                    for (var e = 0; e < $("#btn_attribute" + i + " li").size(); e++) {
+                                                        if ($("#btn_attribute" + i + " li").eq(e).hasClass("selection-active")) {
+                                                            hasselect += '"' + $("#btn_attribute" + i + " li").eq(e).html() + '"';
+                                                        }
                                                     }
-                                                ],
-                                                "allow":[[1],[0,3]],
-                                                "jsondata": "[39813]"
-                                            },
-                                            {
-                                                "value_index": 11,
-                                                "info_id": [
-                                                    39815
-                                                ],
-                                                "selected": 1,
-                                                "value": [
-                                                    {
-                                                        "attr_id": "25",
-                                                        "attr_name": "Color",
-                                                        "attr_value": "Red",
-                                                        "attr_value_index": 11,
-                                                        "id": "39815",
-                                                        "selected": 1,
-                                                        "promote_price": "198",
-                                                        "market_price": "0",
-                                                        "jd_price": "0",
-                                                        "buy_small_img": "http://115.29.51.240:84//goods_images/41D70LVJybL._AA300_.jpg",
-                                                        "mall_weight": "0.19",
-                                                        "transit_fee": "35.00",
-                                                        "avail_ability": "",
-                                                        "asin": "B004CQZMWE"
-                                                    }
-                                                ],
-                                                "allow":[[0,1,4],[0,1,4]],
-                                                "jsondata": "[39815]"
-                                            },
-                                            {
-                                                "value_index": 12,
-                                                "info_id": [
-                                                    39817
-                                                ],
-                                                "selected": 0,
-                                                "value": [
-                                                    {
-                                                        "attr_id": "25",
-                                                        "attr_name": "Color",
-                                                        "attr_value": "White/Navy/Red",
-                                                        "attr_value_index": 12,
-                                                        "id": "39817",
-                                                        "selected": 0,
-                                                        "promote_price": "199",
-                                                        "market_price": "0",
-                                                        "jd_price": "0",
-                                                        "buy_small_img": "http://115.29.51.240:84//goods_images/41ER-1KxbvL._AA300_.jpg",
-                                                        "mall_weight": "0.33",
-                                                        "transit_fee": "35.00",
-                                                        "avail_ability": "",
-                                                        "asin": "B0047NJONK"
-                                                    }
-                                                ],
-                                                "allow":[[0,1],[0,1]],
-                                                "jsondata": "[39817]"
-                                            },
-                                            {
-                                                "value_index": 13,
-                                                "info_id": [
-                                                    39822,
-                                                    39827,
-                                                    39831
-                                                ],
-                                                "selected": 0,
-                                                "value": [
-                                                    {
-                                                        "attr_id": "25",
-                                                        "attr_name": "Color",
-                                                        "attr_value": "Ribbon Red",
-                                                        "attr_value_index": 13,
-                                                        "id": "39822",
-                                                        "selected": 0,
-                                                        "promote_price": "298",
-                                                        "market_price": "265",
-                                                        "jd_price": "265",
-                                                        "buy_small_img": "http://115.29.51.240:84//goods_images/41uDJUIH3iL._AA300_.jpg",
-                                                        "mall_weight": "0.19",
-                                                        "transit_fee": "35.00",
-                                                        "avail_ability": "",
-                                                        "asin": "B014JZVZXW"
-                                                    },
-                                                    {
-                                                        "attr_id": "25",
-                                                        "attr_name": "Color",
-                                                        "attr_value": "Ribbon Red",
-                                                        "attr_value_index": 13,
-                                                        "id": "39827",
-                                                        "selected": 0,
-                                                        "promote_price": "232",
-                                                        "market_price": "265",
-                                                        "jd_price": "265",
-                                                        "buy_small_img": "http://115.29.51.240:84//goods_images/41uDJUIH3iL._AA300_.jpg",
-                                                        "mall_weight": "0.19",
-                                                        "transit_fee": "35.00",
-                                                        "avail_ability": "",
-                                                        "asin": "B014JZW2X4"
-                                                    },
-                                                    {
-                                                        "attr_id": "25",
-                                                        "attr_name": "Color",
-                                                        "attr_value": "Ribbon Red",
-                                                        "attr_value_index": 13,
-                                                        "id": "39831",
-                                                        "selected": 0,
-                                                        "promote_price": "285",
-                                                        "market_price": "265",
-                                                        "jd_price": "265",
-                                                        "buy_small_img": "http://115.29.51.240:84//goods_images/41uDJUIH3iL._AA300_.jpg",
-                                                        "mall_weight": "0.19",
-                                                        "transit_fee": "35.00",
-                                                        "avail_ability": "",
-                                                        "asin": "B014JZW55E"
-                                                    }
-                                                ],
-                                                "allow":[[0,2][0,1]],
-                                                "jsondata": "[39822,39827,39831]"
-                                            },
-                                            {
-                                                "value_index": 14,
-                                                "info_id": [
-                                                    39834
-                                                ],
-                                                "selected": 0,
-                                                "value": [
-                                                    {
-                                                        "attr_id": "25",
-                                                        "attr_name": "Color",
-                                                        "attr_value": "Classic White",
-                                                        "attr_value_index": 14,
-                                                        "id": "39834",
-                                                        "selected": 0,
-                                                        "promote_price": "265",
-                                                        "market_price": "265",
-                                                        "jd_price": "265",
-                                                        "buy_small_img": "http://115.29.51.240:84//goods_images/41EuT8vk8CL._AA300_.jpg",
-                                                        "mall_weight": "0.19",
-                                                        "transit_fee": "35.00",
-                                                        "avail_ability": "",
-                                                        "asin": "B014JZWDKQ"
-                                                    }
-                                                ],
-                                                "allow":[[2],[2]],
-                                                "jsondata": "[39834]"
+                                                    $("#had_selected_attr_values").html(hasselect);
+                                                }
+                                            });
+                                        });
+                                    }
+                                    for(var n=0; n<$(".selection-list").size();n++){
+                                        for (var s = 0; s < obj[n].attr_value_info.length; s++) { //默认点击选中的
+                                            for (var p = 0; p < obj[n].attr_value_info[s].goods_info_list.length; p++) {
+                                                var obj_info_id = eval(obj[n].attr_value_info[s].goods_info_list[p].goods_info_id);
+                                                if (chooseIDinfo == obj_info_id) {
+                                                    $("#btn_attribute" + n + " li").eq(s).click(); //如果id相同
+
+                                                }
                                             }
-                                        ]
+                                        }
                                     }
                                 }
-                            ]
-                        };
-                        closureselect(goodsattr);
-                    }else{
-                        //直接添加进购物车post成功后执行+1或2
-                        /*$.ajax({
-                         type: "POST",
-                         url: "",
-                         data:{"id":chooseIDinfo},
-                         success: function(data){
-                         alert(data);
-                         }
-                         });*/
-                        add(2);
+                                //加减数量
+                                $('.num-subtract').unbind("click");
+                                $('.num-subtract').bind("click",function(){
+                                    goodsnum = goodsnum - eval($(".cart_number_least").html());
+                                    if (goodsnum <= 0) {
+                                        goodsnum = 0;
+                                    }
+                                    $('.number').empty().html(goodsnum);
+                                });
+                                $('.num-add').unbind("click");
+                                $('.num-add').bind("click",function(){
+                                    goodsnum = goodsnum + eval($(".cart_number_least").html());
+                                    $('.number').empty().html(goodsnum);
+                                });
+                                //关闭购物车
+                                btnGrayBar.click(function () {
+                                    detail.show();
+                                    buyPage.hide();
+                                    goodsnum=1;
+                                    Ponto.invoke(
+                                            "Messaging",
+                                            "refreshable",
+                                            {isfresh:true},
+                                            null,
+                                            null);
+                                });
+
+                                //购买加入购物车
+                                var itembtncfim = $('.items-btnConfirm');
+                                itembtncfim.click(function () {
+                                    if( $('.number').html() <= 0 ) {
+                                        Ponto.invoke(
+                                                "Messaging",
+                                                "toast",
+                                                {"title":'请添加购买数量！'},
+                                                null,
+                                                null);
+                                        return false;
+                                    }
+                                    if(deviceid == null){
+                                        alert("请从APP端购买！");
+                                    }else{
+                                        $.ajax({
+                                            type: "POST",
+                                            url: "http://115.29.51.240:84/goods_interface.php",
+                                            data:{
+                                                "intertype":102,
+                                                "id":buygoosID,
+                                                "deviceid":deviceid,
+                                                "token":GlobalsaveToken,
+                                                "default_goods_info_id":0,
+                                                "goods_info_id":eval($("#goods_buy_small_image").data("goodsid")),
+                                                "goods_number":eval($(".number").html())
+                                            },
+                                            success: function(data){
+                                                if(JSON.parse(data).code == 200){
+                                                    //alert(eval($("#goods_buy_small_image").data("goodsid")));
+                                                    //alert(JSON.parse(data).message);
+                                                    detail.show();
+                                                    buyPage.hide();
+                                                    showtag();
+                                                    $('.tag-num').html(JSON.parse(data).goods_number);
+                                                }else {
+                                                    alert(JSON.parse(data).message);
+                                                    Ponto.invoke(
+                                                            "Messaging",
+                                                            "toast",
+                                                            {"title":JSON.parse(data).message},
+                                                            null,
+                                                            null);
+                                                    return false;
+                                                }
+                                            },
+                                            error:function(data){
+                                                alert(JSON.parse(data).message);
+                                                Ponto.invoke(
+                                                        "Messaging",
+                                                        "toast",
+                                                        {"title":JSON.parse(data).message},
+                                                        null,
+                                                        null);
+                                                return false;
+                                            }
+                                        });
+                                    }
+                                });
+                            }
+                        }else{
+                            //直接添加进购物车post成功后执行+1或2
+                            if(deviceid ==null ){
+                                alert("无设备号");
+                            }if(GlobalsaveToken == null){
+                                alert("请从APP端购买！")
+                                Ponto.invoke(
+                                        "Messaging",
+                                        "toast",
+                                        {"title":'网络断了，请稍后再试'},
+                                        null,
+                                        null);
+                            }else {
+                                add(obj.cart_number_least);
+                                $.ajax({
+                                    type: "POST",
+                                    url: "http://115.29.51.240:84/goods_interface.php",
+                                    data:{
+                                        "intertype":102,
+                                        "id":buygoosID,
+                                        "deviceid":deviceid,
+                                        "token":GlobalsaveToken,
+                                        "goods_number":goodsnum
+                                    },
+                                    success: function(data){
+                                        //alert(eval($('.tag-num').html()));
+                                        // alert(String(data));//210
+                                         //alert(JSON.parse(data).goods_number);
+                                        if(JSON.parse(data).code == 200){
+                                            $('.tag-num').html(JSON.parse(data).goods_number);
+                                            showtag();
+                                            $('.tag-num').html(goodsnum);
+                                        }
+                                        else if(JSON.parse(data).code == 202){
+                                            //token值不匹配
+                                            Ponto.invoke(
+                                                    "Messaging",
+                                                    "getToken",
+                                                    {userLogin:true},
+                                                    function (token) {
+                                                        //$("#token").val(token);
+                                                        //GlobalsaveToken = token;
+                                                    },
+                                                    null);
+                                        }else{
+                                            Ponto.invoke(
+                                                    "Messaging",
+                                                    "toast",
+                                                    {"title":JSON.parse(data).message},
+                                                    null,
+                                                    null);
+                                            return false;
+                                        }
+                                    }
+                                });
+                            }
+                        }
                         function add(num){
-                            goodsnum = eval($('.tag-num').html())+ num;
+                            goodsnum = goodsnum+ num;
+                        }
+                        function reduce(num){
+                            goodsnum = eval($('.tag-num').html())- num;
+                            //$('.tag-num').html(goodsnum);
+                        }
+                        function showtag(){
                             if ($('.buytips').hasClass('fadeInDown')) {
                                 $('.buytips').removeClass('fadeInDown');
                             }
@@ -982,221 +902,119 @@
                             setTimeout(function () {
                                 $('.buytips').hide().removeClass('fadeInDown');
                             }, 1500);
-                           $('.tag-num').html(goodsnum).show();
+                            $('.tag-num').show();
                         }
-                    }
-                });
-            }else { //已下架
-                btncartshop.css({'background':"#ccc",'border': '1px solid #c4c5c6'});
-                btncartshop.html("商品已下架")
+                    });
+                }else { //已下架
+                    btncartshop.css({'background':"#ccc",'border': '1px solid #c4c5c6'});
+                    btncartshop.html("商品已下架")
+                }
+
+            }
+            /*end*/
+
+            function getToken(){
+                Ponto.invoke(
+                        "Messaging",
+                        "getToken",
+                        {userLogin:false},
+                        function (token) {
+                            $("#token").val(token);
+                            GlobalsaveToken = token;
+                            //alert(token);
+                        },
+                        null
+                );
             }
 
-        }
-        /*end*/
-
-        var detailImage = $('.detail-images');
-        var detailImageLis = detailImage.find('li'); //缩略图下的li
-        var screenWidth = window.innerWidth;
-        var detailPicSwiper = $('.detailPic-swiper');
-        var ret = 0;
+            var detailImage = $('.detail-images');
 
 
-        var detail = $('#goods-detail');
-        var buyPage = $('#buyPageInner');
-        var detailSelected = $('.detail-selected');
-        var btnGrayBar = $('.btn-grayBar');
+            var detail = $('#goods-detail');
+            var buyPage = $('#buyPageInner');
+            var detailSelected = $('.detail-selected');
+            var btnGrayBar = $('.btn-grayBar');
 
-        var btncartlist = $('.btn-scar');
+            var btncartlist = $('.btn-scar');
+            //进入购物车界面OK
+            btncartlist.click(function () {
+                Ponto.invoke(
+                        "Messaging",
+                        "goToCart",
+                        {},
+                        null,
+                        null);
+            });
 
-        //添加收藏
-        var btnCollect = $('.btn-collect');
-        btnCollect.click(function () {
-            Ponto.invoke(
-                    "Messaging",
-                    "getToken",
-                    {userLogin:true},
-                    function (token) {
-                        $("#user_login").val(1);
-                        $("#token").val(token);
-                    },
-                    null);
-            $.ajax({
-                //提交数据的类型 POST GET
-                type:"POST",
-                //提交的网址
-                url:"aaddcoll.html",
-                //提交的数据
-                data:{device_id:$("#device_id").val(),token:$("#token").val(),goods_id:$("#goods_id").val()},
-                //返回数据的格式
-                datatype: "json",//"xml", "html", "script", "json", "jsonp", "text".
-                //在请求之前调用的函数
-                beforeSend:function(){},
-                //成功返回之后调用的函数
-                success:function(data){
-                    //alert('31');
-                }   ,
-                //调用执行后调用的函数
-                complete: function(XMLHttpRequest, textStatus){
-                    //alert(XMLHttpRequest.responseText);
-                    if(XMLHttpRequest.responseText == 'ok')
-                    {
-                        //alert("添加收藏成功");
-                        Ponto.invoke(
-                                "Messaging",
-                                "toast",
-                                {"title":"添加收藏成功"},
-                                null,
-                                null);
-                    }
-                    //alert(textStatus);
-                    //HideLoading();
-                },
-                //调用出错执行的函数
-                error: function(){
-                    Ponto.invoke(
-                            "Messaging",
-                            "toast",
-                            {"title":'网络断了，请售后再试'},
-                            null,
-                            null);
-                }
+            //添加收藏error
+            var btnCollect = $('.btn-collect');
+            btnCollect.click(function () {
+                Ponto.invoke(
+                        "Messaging",
+                        "getToken",
+                        {userLogin:true},
+                        function (token) {
+                            $("#user_login").val(1);
+                            $("#token").val(token);
+                        },
+                        null);
+                /* $.ajax({
+                 //提交数据的类型 POST GET
+                 type:"POST",
+                 //提交的网址
+                 url:"aaddcoll.html",
+                 //提交的数据
+                 data:{device_id:deviceid,token:GlobalsaveToken,goods_id:$("#nametitle").data("goods_id")},
+                 //返回数据的格式
+                 datatype: "json",//"xml", "html", "script", "json", "jsonp", "text".
+                 //在请求之前调用的函数
+                 beforeSend:function(){},
+                 //成功返回之后调用的函数
+                 success:function(data){
+                 alert($("#nametitle").data("goods_id"));
+                 alert(deviceid);
+                 alert(GlobalsaveToken);
+                 alert(data);
+                 },
+                 //调用执行后调用的函数
+                 complete: function(XMLHttpRequest, textStatus){
+                 //alert(XMLHttpRequest.responseText);
+                 if(XMLHttpRequest.responseText == 'ok')
+                 {
+                 //alert("添加收藏成功");
+                 Ponto.invoke(
+                 "Messaging",
+                 "toast",
+                 {"title":"添加收藏成功"},
+                 null,
+                 null);
+                 }
+                 //alert(textStatus);
+                 //HideLoading();
+                 },
+                 //调用出错执行的函数
+                 error: function(){
+                 Ponto.invoke(
+                 "Messaging",
+                 "toast",
+                 {"title":'网络断了，请售后再试'},
+                 null,
+                 null);
+                 }
+                 });*/
             });
         });
 
-        function closureselect(obj){
-            if(obj.all_attr_val.length == 0){
-                console.log("无颜色尺寸");
-                var goodsnum = parseInt($("#goods_number").val()) + 1;
-                //alert(goodsnum);
-                add2Shopcar(goodsnum);
-                //alert(goodsnum);
-                $("#goods_number").val(goodsnum);
-            }else {
-                console.log("slideup");
-                Ponto.invoke(
-                        "Messaging",
-                        "refreshable",
-                        {isfresh:false},
-                        null,
-                        null);
-                //alert('31');
-                var goodsnum = parseInt($('.number').text()) + 1;
-                detail.hide();
-                $('.number').text(goodsnum);
-                buyPage.show();
-                for(var n=0;n<obj.all_attr_val.length;n++){
-
-                    var attributehtml = '<div class=selection-items><div class=selection-title>'+obj.all_attr_val[n].attr_name+':</div><ul class="selection-list" data-attrgroup="'+n+'" id="btn_attribute'+n+'">';
-                    for(var i =0;i<obj.all_attr_val[n].attr_value.name.length;i++){
-                        var AllowData =[];
-                        for(var c = 0;c<obj.all_attr_val.length;c++){
-                            AllowData[c]=obj.all_attr_val[n].attr_value.onevalue[i].allow[c];
-                        }
-                        attributehtml +='<li class="selection-valid" data-allowdata="'+JSON.stringify(AllowData)+'" data-infoid="'+obj.all_attr_val[n].attr_value.onevalue[i].info_id+'" data-xuhao="'+i+'">'+obj.all_attr_val[n].attr_value.name[i]+'</li>';
-                    }
-                    attributehtml +='</ul></div>';
-                    $("#add_attributeBtn").append(attributehtml);
-
-                    $("#btn_attribute"+n+" li").each(function(a){
-                        $(this).unbind("click");
-                        $(this).bind("click",function(){
-
-                            $(this).parent().children("li").removeClass("selection-active");
-                            var groupindex=$(this).parent().data("attrgroup");
-                            $(this).addClass("selection-active");
-
-                            var allowdata =String($(this).data("allowdata"));
-                            var array = eval(allowdata); //转换成数组
-
-                            console.log("click:"+a);
-
-                            for(var i =0;i<obj.all_attr_val.length;i++){
-                                if(i == groupindex){ }else {
-                                    $("#btn_attribute"+i+" li").removeClass("selection-invalid");
-                                    for(var s =0;s<array[i].length;s++){
-                                        $("#btn_attribute"+i+" li").eq(array[i][s]).addClass("selection-invalid");
-                                    }
-                                }
-                            }
-                        });
-                    });
-                    for(var i =0;i<obj.hasselect.length;i++){
-                        $("#btn_attribute"+i+" li").eq(obj.hasselect[i]).click();
-                    }
-
-                    function selectVuale (a,b){
-                        console.log(a);
-                        console.log(b);
-                    }
-
-
-                }
-
-            }
-        }
-
-        //关闭购物车
-        btnGrayBar.click(function () {
-            detail.show();
-            buyPage.hide();
-            Ponto.invoke(
-                    "Messaging",
-                    "refreshable",
-                    {isfresh:true},
-                    null,
-                    null);
-        });
-        //加入购物车
-        var itembtncfim = $('.items-btnConfirm');
-        itembtncfim.click(function () {
-            $("#goods_number").val($('.number').text());
-            if( $('.number').text() <= 0 )
-            {
-                Ponto.invoke(
-                        "Messaging",
-                        "toast",
-                        {"title":'请添加购买数量！'},
-                        null,
-                        null);
-                return false;
-            }
-            if( $("#target_goods_info_id").val() == 0 && $("#is_have_child").val() == 1 )
-            {
-                Ponto.invoke(
-                        "Messaging",
-                        "toast",
-                        {"title":'请选择商品属性！'},
-                        null,
-                        null);
-                return false;
-            }
-            add2Shopcar(parseInt($('.number').text()));
-        });
-        //跳转到购物车
-        $('.num-subtract').click(function () {
-            var value = parseInt($('.number').text()) - 1;
-            if (value <= 0) {
-                value = 0;
-            }
-            $('.number').text(value);
-        });
-        $('.num-add').click(function () {
-            var valuenum = parseInt($('.number').text()) + 1;
-            $('.number').text(valuenum);
-        });
-
-    });
 </script>
 <script>
     function user_login_res(token) {
         //alert('21');
         //alert(token);
         $("#user_login").val(1);
-        $("#token").val(token);
+        GlobalsaveToken=token;
     }
 </script>
-<script type='text/javascript' src='http://g.alicdn.com/msui/sm/0.6.2/js/sm.min.js' charset='utf-8'></script>
-<script>
+<!--<script>
     var objItem = {
         "length":6,
         item:[
@@ -1208,14 +1026,13 @@
             {"img":"images/share-itemsPic.png","name":"士民族风民族民族风风民族风坡跟","price":"$300.00","from":"美国直邮","promo":0,"none":1,"from_icon":"images/us.png"}
         ]
     }
-
     $(window).scroll(function(){
         var scrollTop = $(this).scrollTop();
         var scrollHeight = $(document).height();
         var windowHeight = $(this).height();
         if(scrollTop + windowHeight == scrollHeight){
-            $("#Adivce-carriage").show();
-            appendcarriage(objItem);
+            /*$("#Adivce-carriage").show();*/
+           /* appendcarriage(objItem);*/
             /*$.post("#",
                     { "id": "1822" },
                     function(data){
@@ -1223,14 +1040,14 @@
                     },
                     "json");*/
         }
-        function appendcarriage(obj){
+        /*function appendcarriage(obj){
             var lastIndex = $('.list-container .mm-crriage').length;
             if (lastIndex == obj.length) return;
             addItems(obj);
-    }
+         }*/
 
     });
-    function addItems(obj) {
+    /*function addItems(obj) {
         var html = '';
         for (var i = 0 ; i < obj.item.length; i++) {
             html += '<div class="mm-crriage"><div class="mm-crriage-pic">';
@@ -1244,9 +1061,7 @@
             html += '<p class="mm-crriage-title">'+obj.item[i].name+'</p><p class="mm-crriage-price">'+obj.item[i].price+'</p><p class="mm-crriage-from"><span class="mm-crriage-from-pic" style="background: url(&quot;'+obj.item[i].from_icon+'&quot;) no-repeat top center;background-size: 14px 14px;"></span>'+obj.item[i].from+'</p></div>';
         }
         $('.list-block .list-container').append(html);
-    }
-
-
-</script>
+    }*/
+</script>-->
 </body>
 </html>
