@@ -484,7 +484,7 @@ input {
 
 .detail-process ol {
   padding-left: 15px;
-  font-size: 11px;
+  font-size: 12px;
   color: #999;
   line-height: 1.8;
   text-align: left;
@@ -863,7 +863,8 @@ img.owner-logo {
 }
 
 .btn-collect.active {
-  /*color: #f22f4a;*/
+  background: url("../images/icon-collect-active@3x.png") no-repeat center 5px;
+  background-size: 22px 19px;
 }
 
 .btn-share {
@@ -926,7 +927,7 @@ img.owner-logo {
 #buyPageInner .colflex {
   position: absolute;
   background: #fff;
-  height: 78%;
+  height: 84%;
   z-index: 2;
   bottom: 0;
   left: 0;
@@ -1113,7 +1114,7 @@ img.owner-logo {
   height: 44px;
   line-height: 44px;
   /*margin-bottom: 25px;*/
-  border-radius: 3px;
+  /*border-radius: 3px;*/
   text-align: center;
   color: #fff;
   background: #f22f4a;
@@ -4742,4 +4743,30 @@ li.collection {
   transform: scaleY(0.5);
   -webkit-transform-origin: 0 0;
   transform-origin: 0 0;
+}
+.cart-unit{
+  background: url("../images/N@3x.png") no-repeat center;
+  background-size: 40px 40px;
+  height: 40px;
+  width: 40px;
+  z-index: 199;
+  position: absolute;
+  bottom: 20px;
+  left: 20px;
+  color: #fff;
+  font-size: 12px;
+  text-align: center;
+  line-height: 20px;
+  display: none;
+  opacity: 0.8;
+}
+.totop{
+  background: url("../images/to-top@3x.png") no-repeat center;
+  background-size: 36px 36px;
+  height: 36px;
+  width: 36px;
+  position: fixed;
+  bottom: 70px;
+  right: 15px;
+  display: none;
 }
