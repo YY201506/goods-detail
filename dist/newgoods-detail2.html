@@ -44,7 +44,7 @@
     <div class="content">
         <div class="downloadApp">
             <div class="downloadLeft">
-                <img src="../dist/images/download.png" alt="">
+                <img src="images/download.png" alt="">
                 <div class="colflex">
                     <div class="title">海外购APP</div>
                     <div class="subtitle">有态度的海购分享社区</div>
@@ -59,6 +59,7 @@
                         <div class="swiper-wrapper">
                             <!--细节图-->
                         </div>
+                        <div class="cart-unit"><p style="color: #f00425;">1</p><p>灌装</p></div>
                         <div class="detailPic-swiper-index">0/0</div>
                     </div>
                     <div class="detail-images swiper-container center">
@@ -314,7 +315,7 @@
                     typehtml += '<li class="swiper-slide" data-type="'+[i]+'" data-goodinfoid="'+goodsNew.goods_child_info[i].goods_info_id+'"><img src="'+goodsNew.goods_child_info[i].buy_small_img+'" alt=""></li>';
                 }
                 $(".detail-images .swiper-wrapper").append(typehtml);
-                $(".detail-images .swiper-wrapper li").eq(lowest_index).addClass("pink-border");
+                $(".detail-images .swiper-wrapper li").eq(lowest_index).click();
                 //内容
 
                 $("#nametitle").html(goodsNew.name);

@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no">
+    <title>邀请好友</title>
+    <link rel="stylesheet" href="css/share.min.css"/>
+</head>
+<body>
+    <header>
+        <img src="images/logo.png" alt="" id="logo">
+    </header>
+    <div id="board">
+        <div class="wrap-center">
+            <div class="cong">恭喜您</div>
+            <div class="cong-txt">118元现金礼包<br>已成功存入你的账户</div>
+        </div>
+    </div>
+    <div id="app">
+        <img src="images/app-icon.png" alt="蜜赞APP">
+        <p><a href="#" title="立即下载APP，查看现金礼包">立即下载APP，查看现金礼包</a></p>
+    </div>
+    <div id="record">
+        <h2 class="title">看看朋友们的手气</h2>
+        <div id="record-list">
+            <ul id="js-list">
+                <li>
+                    <p>
+                        <span class="name">钱大大3</span>
+                        <span class="date">2016-01-20</span>
+                        <span class="money">118元</span>
+                    </p>
+                    <p class="description">
+                        领取蜜赞海外购现金礼包
+                    </p>
+                </li>
+                <li>
+                    <p>
+                        <span class="name">钱大大4</span>
+                        <span class="date">2016-01-20</span>
+                        <span class="money">118元</span>
+                    </p>
+                    <p class="description">
+                        领取蜜赞海外购现金礼包
+                    </p>
+                </li>
+                <li>
+                    <p>
+                        <span class="name">钱大大5</span>
+                        <span class="date">2016-01-20</span>
+                        <span class="money">118元</span>
+                    </p>
+                    <p class="description">
+                        领取蜜赞海外购现金礼包
+                    </p>
+                </li>
+                <li>
+                    <p>
+                        <span class="name">钱大大6</span>
+                        <span class="date">2016-01-20</span>
+                        <span class="money">118元</span>
+                    </p>
+                    <p class="description">
+                        领取蜜赞海外购现金礼包
+                    </p>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <footer>
+        <h2>活动说明</h2>
+        <p>
+            1、注册即可获得118元现金礼包，该礼包直接发至我的账户-代金券。<br>2、好友首次下单成功后，24小时内您将获得118元现金礼包。<br>3、此活动仅在APP1.4及以上版本中才有效哦。<br>4、同一手机号，微信号，支付账号，银行卡号，设备号均视为同一用户。
+        </p>
+    </footer>
+    <script>
+        var speed = 50, // 滚动速度，值越小滚动越快
+            scroll = document.getElementById("record-list"),
+            list = document.getElementById('js-list');
+        
+        list.innerHTML += list.innerHTML;
+
+        function scrolling() {
+            scroll.scrollTop += 1;
+            if ( scroll.scrollTop == list.offsetHeight - scroll.offsetHeight){
+                scroll.scrollTop = 0;
+            }
+        }
+
+        window.setInterval(scrolling, speed);
+    </script>
+</body>
+</html>

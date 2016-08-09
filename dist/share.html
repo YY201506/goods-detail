@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no">
+    <title></title>
+    <link rel="stylesheet" href="css/share.min.css"/>
+</head>
+<body>
+    <header>
+        <img src="images/logofont.png" alt="" id="logo">
+    </header>
+    <div id="board">
+        <div class="wrap" style="display: block"><!--1-->
+            <div class="clear-fix">
+                <div class="fl-l">
+                    <div class="num"><i>￥</i><span class="amount">0</span></div>
+                </div>
+                <div class="fl-r">
+                    <div class="yuan">YUAN</div>
+                    <div class="txt">现金礼包</div>
+                    <div class="cash">Cash Gifts</div>
+                </div>
+            </div>
+            <p><span>你的小伙伴在蜜赞下单即可获取</span></p>
+        </div>
+        <div class="wrap-center" style="display: none"><!--2-->
+            <div class="cong">恭喜您</div>
+            <div class="cong-txt"><span class="amount">0</span>元现金礼包<br>已成功存入你的账户</div>
+        </div>
+    </div>
+    <div style="width: 100%;background: #4c51a5;padding: 25px 0">
+        <div class="formdiv" style="display: block"><!--1-->
+            <input type="text" name="phone" placeholder="请输入11位手机号" id="phone-input" onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'')">
+            <div id="btn"><span>领取现金礼包</span></div>
+        </div>
+        <div id="app" style="display: none"><!--2-->
+            <img src="images/app-icon.png" alt="荔赞APP">
+            <p><a href="http://a.app.qq.com/o/simple.jsp?pkgname=com.mizanwang.app" title="立即下载APP，查看现金礼包">立即下载APP，查看现金礼包</a></p>
+        </div>
+    </div>
+    <div id="record">
+        <h2 class="title">看看朋友们的手气</h2>
+        <div id="record-list">
+            <ul id="js-list">
+            </ul>
+        </div>
+    </div>
+    <footer>
+        <h2>活动说明</h2>
+        <p class="faq"></p>
+    </footer>
+    <div class="downloadApp">
+        <div class="downloadLeft">
+            <img src="images/download.png" alt="">
+            <div class="colflex">
+                <div class="title">海外购APP</div>
+                <div class="subtitle">有态度的海购分享社区</div>
+            </div>
+        </div>
+        <a class="btn" href="http://a.app.qq.com/o/simple.jsp?pkgname=com.mizanwang.app">立即下载</a>
+    </div>
+    <script src="http://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
+    <script>
+		function getQueryString(name) {
+            var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
+            var r = window.location.search.substr(1).match(reg);
+            if (r != null) return unescape(r[2]); return null;
+        }
+        var actid = getQueryString("actid");
+        var refcode = getQueryString("refcode");
+        var uid = getQueryString("uid");
+
+        function  useagent(){
+            if(navigator.userAgent.match(/(Android)/i)){
+                //alert("android");
+            }else if(navigator.userAgent.match(/(iPhone|ios)/i)){
+                //alert("ios");
+            }else {
+
+            }
+        }
+        useagent();//识别设备
+        $.ajax({
+            type: "post",
+            url: "../shareactive.php",
+            data:{
+                intertype: 200,
+                actid:actid,
+                uid :uid,
+                refcode :refcode
+            },
+            success: function(data){
+                var info = JSON.parse(data);
+                console.log(info.activity_info);
+                closure(info.activity_info);
+            }
+        });
+        //渲染DOM
+        function closure(obj){
+            $("title").html(obj.title);
+            $(".amount").html(parseInt(obj.amount_all));
+            $(".faq").html(obj.activity_info);
+
+            var list = '';
+            for(var i=0;i<obj.user_receive_log.length;i++){
+                list += '<li><p><span class=name>'+obj.user_receive_log[i].mobile_phone+'</span><span class=date>'+obj.user_receive_log[i].add_time+'</span><span class=money>'+obj.user_receive_log[i].book_amount+'元</span></p><p class=description>领取蜜赞海外购现金礼包</p>';
+            }
+            $("#js-list").empty().append(list);
+        }
+
+        $("#btn").on("click", function () {
+            var phone = $("#phone-input").val();
+            if(phone.length == 11){
+                $.ajax({
+                    type: "POSt",
+                    url: "../shareactive.php",
+                    data:{
+                        intertype: 201,
+                        actid:actid,
+                        uid :uid,
+                        refcode :refcode,
+                        mobileno:$("#phone-input").val()
+                    },
+                    success: function(data){
+                        console.log(data);
+                        var client = JSON.parse(data);
+                        if(client.code == 200){
+                            $(".wrap").hide();
+                            $(".wrap-center").show();
+                            $(".formdiv").hide();
+                            $("#app").show();
+                        }else if(client.code == 203){
+                            alert(client.message);
+                        }else if(client.code == 205){
+                            alert(client.message);
+                        }
+                    }
+                });
+            }else{
+                alert("请输入11位手机号！")
+            }
+
+        });
+
+        var speed = 50, // 滚动速度，值越小滚动越快
+            scroll = document.getElementById("record-list"),
+            list = document.getElementById('js-list');
+        list.innerHTML += list.innerHTML;
+        function scrolling() {
+            scroll.scrollTop += 1;
+            if ( scroll.scrollTop == list.offsetHeight - scroll.offsetHeight){
+                scroll.scrollTop = 0;
+            }
+        }
+        window.setInterval(scrolling, speed);
+    </script>
+</body>
+</html>

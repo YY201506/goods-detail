@@ -1,0 +1,455 @@
+html, body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    font-size: 1em;
+    font-family: Helvetica Neue, "simhei" !important;
+    background-color: #ffffff;
+    -webkit-overflow-scroll: touch
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    font-family: Helvetica Neue, "simhei" !important;
+    box-sizing: border-box
+}
+*:focus { outline: none; }
+.nav, .pagination, .carousel, .panel-title a {
+    cursor: pointer
+}
+
+a {
+    text-decoration: none;
+    cursor: pointer
+}
+
+ul, li {
+    list-style: none
+}
+
+.clear-fix::after {
+    visibility: hidden;
+    display: block;
+    font-size: 0;
+    content: " ";
+    clear: both;
+    height: 0
+}
+
+.clearfix {
+    zoom: 1
+}
+
+body {
+    background: #ffffff
+}
+.cantainer{
+    padding-top: 30px;
+    background: url('../images/ecodeimage/bg_02.jpg') center no-repeat;
+    background-size: 100% 100%;
+}
+.head{
+    height:81.5px;
+    width: 275px;
+    background-image: url('../images/ecodeimage/ecoder_03.png');
+    background-size: 100% 100%;
+    margin: 0 auto 10px;
+}
+#board {
+    position: relative;
+    width: 348px;
+    height: 202px;
+    margin: 0 auto;
+    color: #fff;
+    background-image: url('../images/ecodeimage/board.png');
+    background-size: 100% 100%
+}
+
+#board .wrap {
+    position: absolute;
+    top: 65px;
+    left: 60px;
+    width: 230px;
+    height: 100px;
+    line-height: 1em
+}
+
+#board .wrap-center {
+    position: absolute;
+    top: 70px;
+    left: 50%;
+    width: 170px;
+    margin-left: -85px;
+    text-align: center
+}
+
+#board .cong {
+    font-size: 24px;
+}
+
+#board .cong-txt {
+    font-size: 18px;
+    color: #ffe75f;
+    line-height: 1.5em
+}
+
+.fl-l {
+   display: inline-block;
+    margin-right: 10px
+}
+
+.fl-r {
+    padding-top: 8px;
+    line-height: 20px;
+    display: inline-block;
+}
+.quan{
+    display: table;
+    margin: 0 auto;
+}
+#board .num {
+    position: relative;
+    font-size: 80px;
+    padding-left: 20px;
+    font-weight: bold;
+    line-height: 1em
+}
+
+#board .num i {
+    position: absolute;
+    top: -17px;
+    left: 0;
+    font-size: 16px;
+    color: #fff726;
+}
+#board .num i.first{
+    top: -17px;
+}
+#board .num i.second{
+    top: 0px;
+}
+#board .num i.third{
+    top: 17px;
+    color: #ffffff;
+}
+
+#board .yuan {
+    font-size: 15px;
+    margin-bottom: 2px
+}
+
+#board .txt {
+    font-size: 25px;
+    font-weight: bold
+}
+
+#board .cash {
+    font-size: 15px;
+    color: #ffffff
+}
+
+#board p {
+    width: 100%;
+    font-size: 13px;
+    margin-top: 15px;
+    text-align: center;
+    clear: both
+}
+
+#board p span {
+    border-bottom: 1px dotted #fff
+}
+
+#phone-input {
+    height: 48px;
+    width: 280px;
+    margin-bottom: 15px;
+    line-height: 38px;
+    text-align: center;
+    font-size: 18px;
+    background: #fff;
+    border: 2px solid #080815;
+    border-radius: 10px;
+    -webkit-outline: 0
+}
+
+#btn {
+    position: relative;
+    margin: 0 auto;
+    width: 280px;
+    height: 48px;
+    line-height: 48px;
+    font-size: 18px;
+    outline: none;
+    color: #ffffff;
+    background-color: #cd020d;
+    border-radius: 10px;
+    -webkit-outline: 0
+}
+.formdiv{
+    text-align: center;
+}
+
+@media screen and (max-width: 350px) {
+    #board {
+        position: relative;
+        width: 300px;
+        height: 180px;
+        margin: 0 auto;
+        color: #fff;
+        background-image: url('../images/ecodeimage/board.png');
+        background-size: 100% 100%
+    }
+
+    #board .wrap {
+        top: 50px;
+        left: 51px;
+        width: 196px
+    }
+
+    #board .wrap-center {
+        top: 53px
+    }
+
+    #board .cong {
+        font-size: 22px
+    }
+
+    #board .cong-txt {
+        font-size: 15px
+    }
+
+    .fl-l {
+        display: inline-block;
+        margin-right: 10px
+    }
+
+    .fl-r {
+        padding-top: 8px;
+        display: inline-block;
+    }
+
+    #board .num {
+        font-size: 58px
+    }
+
+    #board .yuan {
+        font-size: 12px;
+        margin-bottom: 0
+    }
+
+    #board .txt {
+        font-size: 16px
+    }
+
+    #board .cash {
+        font-size: 12px
+    }
+
+    #board p {
+        font-size: 12px;
+        margin-top: 10px
+    }
+
+    form {
+        width: 220px;
+        margin: 25px auto
+    }
+
+    form input {
+        display: block;
+        width: 250px
+    }
+
+    #phone-input {
+        width: 240px;
+        height: 45px;
+        outline: none;
+        margin-bottom: 15px;
+        line-height: 38px;
+        text-align: center;
+        font-size: 18px;
+        background: #fff;
+        border: 2px solid #0a0a0a;
+        border-radius: 10px;
+    }
+
+    #btn {
+        position: relative;
+        margin: 0 auto;
+        width: 240px;
+        height: 45px;
+        line-height: 45px;
+        font-size: 18px;
+        outline: none;
+        color: #ffffff;
+        background-color: #cd020d;
+        border-radius: 10px;
+        -webkit-outline: 0
+    }
+    footer img{
+        width: 200px;
+    }
+}
+
+#record .title {
+    position: relative;
+    width: 176px;
+    height: 40px;
+    margin: 0 auto 13px;
+    background-image: url("../images/tip.png");
+    background-size: 100% 100%;
+    text-align: center;
+    line-height: 33px;
+    font-size: 16px;
+    color: #fff
+}
+
+#record {
+    padding-bottom: 20px;
+    background: #4c51a5;
+}
+
+#record .title::after {
+    position: absolute;
+    top: -15px;
+    right: -65px;
+    content: "";
+    width: 35px;
+    height: 45px;
+    background-image: url("../images/y.png");
+    background-size: 100% 100%
+}
+
+#record-list {
+    height: 65px;
+    padding: 0 20px;
+    overflow: hidden
+}
+
+#record-list li {
+    padding-bottom: 15px
+}
+
+#record-list .name {
+    font-size: 16px;
+    color: #fff;
+    margin-right: 5px
+}
+
+#record-list .date {
+    font-size: 12px;
+    color: #252c4d
+}
+
+#record-list .money {
+    float: right;
+    font-size: 16px;
+    color: #fcd20f
+}
+
+#record-list .description {
+    margin-top: 10px;
+    font-size: 14px;
+    color: #fff;
+    clear: both
+}
+
+#app {
+    margin: 0px 0 20px;
+    text-align: center;
+}
+
+#app img {
+    width: 79px;
+    height: 79px;
+    margin-bottom: 10px
+}
+
+#app a {
+    font-size: 14px;
+    color: #ce2721;
+    border-bottom: 1px dotted #ce2721;
+}
+
+footer {
+    position: relative;
+    padding: 20px 0;
+    background-color: #ffffff;
+    text-align: center;
+}
+
+footer::before {
+    position: absolute;
+    top: -9px;
+    left: 0;
+    display: block;
+    width: 100%;
+    height: 25px;
+    content: "";
+    background-image: url("../images/ecodeimage/b_03.jpg");
+    background-position: top;
+    background-repeat: repeat-x
+}
+
+footer img{
+    width: 270.5px;
+    height: 38px;
+}
+a, button, input, textarea {
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+    -webkit-user-modify: read-write-plaintext-only;
+}
+
+input {
+    -webkit-appearance: none;
+}
+.downloadApp {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(255, 255, 255, 0.77);
+    z-index: 200;
+    padding: 8px 12px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.downloadApp .downloadLeft {
+    display: flex;
+}
+
+.downloadApp .downloadLeft > img {
+    width: 38px;
+    height: 38px;
+    margin-right: 12px;
+}
+
+.downloadApp .downloadLeft .title {
+    font-size: 15px;
+    color: #333;
+    font-family: "Microsoft YaHei";
+}
+
+.downloadApp .downloadLeft .subtitle {
+    font-size: 12px;
+    color: #999;
+    font-family: "Microsoft YaHei";
+}
+
+.downloadApp .btn {
+    display: inline-block;
+    width: 76px;
+    height: 26px;
+    line-height: 26px;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+    background: #f22f4a;
+    color: #fff;
+    text-align: center;
+    font-size: 14px;
+}
