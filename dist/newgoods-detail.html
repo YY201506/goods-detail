@@ -5,7 +5,11 @@
     <meta charset="UTF-8">
     <meta http-equiv="refresh" content="600">
     <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"/>
+<<<<<<< HEAD
     <link rel="stylesheet" href="css/main.css?v=32"/>
+=======
+    <link rel="stylesheet" href="css/main.css?v=25"/>
+>>>>>>> 37d67bc42d7fb49c5066b34f58c72a3dc71ffe15
     <link rel="stylesheet" href="css/swiper.min.css?v=7"/>
     <title></title>
     <meta name="Keywords" content=""/>
@@ -34,7 +38,10 @@
                             <!--细节图-->
                         </div>
                         <div class="cart-unit"></div>
+<<<<<<< HEAD
                         <div class="in_stock"></div>
+=======
+>>>>>>> 37d67bc42d7fb49c5066b34f58c72a3dc71ffe15
                         <div class="detailPic-swiper-index">0/0</div>
                     </div>
                     <div class="detail-images swiper-container center">
@@ -141,7 +148,11 @@
                 <div class="selection-items">
                     <div class="selection-title">目前有货</div>
                 </div>
+<<<<<<< HEAD
             </div>-->
+=======
+            </div>
+>>>>>>> 37d67bc42d7fb49c5066b34f58c72a3dc71ffe15
             <a class="items-btnConfirm" href="#">加入购物车</a>
         </div>
     </div>
@@ -168,6 +179,7 @@
                 $(".downloadApp").show();
             }else {
                 $(".downloadApp").hide();
+<<<<<<< HEAD
             }*/
             if(open == null){
                 $(".downloadApp").hide();
@@ -259,6 +271,54 @@
                 });
             }
 
+=======
+            }
+        Ponto.invoke(
+                "Messaging",
+                "getToken",
+                {userLogin:false},
+                function (token) {
+                    $("#token").val(token);
+                    GlobalsaveToken = token;
+                    $.ajax({
+                        type:"POST",
+                        url:"http://115.29.51.240:84/goods_interface.php",
+                        async:true,
+                        data:{
+                            intertype:"100",
+                            id:Val_id,
+                            deviceid:deviceid,
+                            token:GlobalsaveToken,
+                        },
+                        datatype: "jsonp",//"xml", "html", "script", "json", "jsonp", "text".
+                        beforeSend:function(){
+                            $(".loading").show();
+                        },
+                        success:function(data){
+                            $(".loading").hide();
+                            console.log(JSON.parse(data));
+                            coloursgoods(JSON.parse(data).goods);
+                            addOnce(JSON.parse(data).goods);
+                        },
+                        complete: function(XMLHttpRequest, textStatus){
+                            //alert("over");
+                            if( XMLHttpRequest.responseText == "ok" ) {}
+                            else if(XMLHttpRequest.responseText == "errlogin" ) {}
+                            else if(XMLHttpRequest.responseText == "errgoods" ) {}
+                        },
+                        error: function(){
+                            //请求出错处理
+                            Ponto.invoke(
+                                    "Messaging",
+                                    "toast",
+                                    {"title":'网络断了，请稍后再试'},
+                                    null,
+                                    null);
+                        }
+                    });
+                }
+        );
+>>>>>>> 37d67bc42d7fb49c5066b34f58c72a3dc71ffe15
             var chooseIDinfo;
             var onCarGoodsList = new Object(); //已经加入购物车的物品;
             function coloursgoods(goodsNew){
@@ -503,11 +563,14 @@
                 $('#onecTime').append(html);
                 if(obj.cart_goods_unit && obj.cart_number_least >1){
                     $(".cart-unit").html('<p style="color: #f00425;">'+obj.cart_number_least+'</p><p>'+obj.cart_goods_unit+'</p>').show();
+<<<<<<< HEAD
                     $(".unitprice").html(obj.target_unit_promote_price);
                     $(".unitpromot").show();
                     if(obj.target_market_price){
                         $(".brbr").show();
                     }
+=======
+>>>>>>> 37d67bc42d7fb49c5066b34f58c72a3dc71ffe15
                 }
                 var goodsnum =0;
                 if(obj.goods_number_list){
@@ -542,6 +605,7 @@
                 var btncartshop = $('.btn-shoppingCart');
                 lowest = eval(obj.lowest_goods_info_id);
                 if(obj.is_on_sale == 1){
+<<<<<<< HEAD
                     if(obj.is_in_stock == 0){ //抢光
                         btncartshop.css({'background':"#ccc",'border': '1px solid #c4c5c6'});
                         btncartshop.html("商品已抢光");
@@ -616,6 +680,44 @@
                                         error: function(){
                                             //请求出错处理
                                             alert("请从APP端购买！")
+=======
+                    goodsnum;
+                    var canbug = false;
+                    btncartshop.click(function () {
+                        buygoosID = obj.goods_id;
+                        if(lowest>0){
+                            console.log("进入购物车");
+                            alert(Val_id);
+                            if(GlobalsaveToken == null){
+                                alert("请从APP端购买！")
+                                Ponto.invoke(
+                                        "Messaging",
+                                        "toast",
+                                        {"title":'网络断了，请稍后再试'},
+                                        null,
+                                        null);
+                            }else{
+                                $.ajax({
+                                    type: "POST",
+                                    url: "http://115.29.51.240:84/goods_interface.php",
+                                    data:{
+                                        "intertype":102,
+                                        "id":Val_id,
+                                        "deviceid":deviceid,//"867628026358119"
+                                        "token": GlobalsaveToken,//"9468e749e9bc12ea85ab8dd5799aac43"
+                                        /*"deviceid":"867628026358119",
+                                        "token": "9468e749e9bc12ea85ab8dd5799aac43",*/
+                                        "default_goods_info_id":chooseIDinfo
+                                    },
+                                    success: function(data){
+                                        if(JSON.parse(data).code == 200){
+                                            //alert(JSON.parse(data).goods);
+                                            console.log(JSON.parse(data).goods);
+                                            closureselect(JSON.parse(data).goods);
+                                        }
+                                        if(JSON.parse(data).code == 202){
+                                            //token值不匹配
+>>>>>>> 37d67bc42d7fb49c5066b34f58c72a3dc71ffe15
                                             Ponto.invoke(
                                                     "Messaging",
                                                     "toast",
@@ -631,6 +733,7 @@
                                                 {isfresh:false},
                                                 null,
                                                 null);
+<<<<<<< HEAD
                                         Ponto.invoke(
                                                 "Messaging",
                                                 "hideBackBtn",
@@ -671,6 +774,35 @@
                                             }
                                             attributehtml += '</ul></div>';
                                             $("#add_attributeBtn").append(attributehtml);
+=======
+                                    }
+                                });
+                                function closureselect(obj){
+                                    Ponto.invoke(
+                                            "Messaging",
+                                            "refreshable",
+                                            {isfresh:false},
+                                            null,
+                                            null);
+                                    Ponto.invoke(
+                                            "Messaging",
+                                            "hideBackBtn",
+                                            null,
+                                            null,
+                                            null);
+                                    detail.hide();
+                                    $('.number').html(1);
+                                    buyPage.show();
+                                    $("#add_attributeBtn").empty();
+                                    for(var n=0;n<obj.length;n++) {
+                                        var attributehtml = '<div class=selection-items><div class=selection-title>' + obj[n].attr_name + ':</div><ul class="selection-list" data-attrgroup="' + n + '" id="btn_attribute' + n + '">';
+                                        for (var i = 0; i < obj[n].attr_value_info.length; i++) {
+                                            var allowid = [];
+                                            for (var m = 0; m < obj[n].attr_value_info[i].goods_info_list.length; m++) {
+                                                allowid.push(obj[n].attr_value_info[i].goods_info_list[m].goods_info_id)
+                                            } //记录序列号
+                                            attributehtml += '<li class="selection-valid" data-allowid="' + allowid + '" data-xuhao="' + i + '">' + obj[n].attr_value_info[i].attr_value + '</li>';
+>>>>>>> 37d67bc42d7fb49c5066b34f58c72a3dc71ffe15
                                         }
                                         var timearray = new Object(); //临时数组
                                         for(var nn=0; nn<$(".selection-list").size();nn++){
@@ -953,6 +1085,7 @@
                                             }
                                         });
                                     }
+<<<<<<< HEAD
                                 }
                             }else{
                                 //直接添加进购物车post成功后执行+1或2
@@ -1033,6 +1166,163 @@
                                         },
                                         error: function(){
                                             //请求出错处理
+=======
+
+                                    //加减数量
+                                    $('.num-subtract').unbind("click");
+                                    $('.num-subtract').bind("click",function(){
+                                        goodsnum = goodsnum - eval($(".cart_number_least").html());
+                                        if (goodsnum <= 0) {
+                                            goodsnum = 0;
+                                        }
+                                        $('.number').empty().html(goodsnum);
+                                    });
+                                    $('.num-add').unbind("click");
+                                    $('.num-add').bind("click",function(){
+                                        goodsnum = goodsnum + eval($(".cart_number_least").html());
+                                        $('.number').empty().html(goodsnum);
+                                    });
+                                    //关闭购物车
+                                    btnGrayBar.click(function () {
+                                        detail.show();
+                                        buyPage.hide();
+                                        goodsnum=1;
+                                        Ponto.invoke(
+                                                "Messaging",
+                                                "refreshable",
+                                                {isfresh:true},
+                                                null,
+                                                null);
+                                        Ponto.invoke(
+                                                "Messaging",
+                                                "showBackBtn",
+                                                null,
+                                                null,
+                                                null);
+
+                                    });
+                                    //购买加入购物车
+                                    var itembtncfim = $('.items-btnConfirm');
+                                    itembtncfim.unbind("click");
+                                    itembtncfim.bind("click",function () {
+                                        if( $('.number').html() <= 0 ) {
+                                            Ponto.invoke(
+                                                    "Messaging",
+                                                    "toast",
+                                                    {"title":'请添加购买数量！'},
+                                                    null,
+                                                    null);
+                                            return false;
+                                        }
+                                        if(deviceid == null){
+                                            alert("请从APP端购买！");
+                                        }else{
+                                            var buynum = eval($(".number").html());
+                                            for(var t=0;t<onCarGoodsList.length;t++){
+                                                if( eval($("#goods_buy_small_image").data("goodsid")) == eval(onCarGoodsList[t].goods_info_id)){
+                                                    buynum = buynum + eval(onCarGoodsList[t].goods_num);
+                                                }
+                                            }
+                                            $.ajax({
+                                                type: "POST",
+                                                url: "http://115.29.51.240:84/goods_interface.php",
+                                                data:{
+                                                    "intertype":102,
+                                                    "id":buygoosID,
+                                                    "deviceid":deviceid,
+                                                    "token":GlobalsaveToken,
+                                                    "default_goods_info_id":0,
+                                                    "goods_info_id":eval($("#goods_buy_small_image").data("goodsid")),
+                                                    "goods_number":buynum
+                                                },
+                                                success: function(data){
+                                                    if(JSON.parse(data).code == 200){
+                                                        //alert(eval($("#goods_buy_small_image").data("goodsid")));
+                                                        alert(JSON.parse(data).message);
+                                                        detail.show();
+                                                        buyPage.hide();
+                                                        showtag();
+                                                        var tagnum = eval($('.tag-num').html());
+                                                        $('.tag-num').html(eval($(".number").html())+tagnum);
+                                                        Ponto.invoke(
+                                                                "Messaging",
+                                                                "showBackBtn",
+                                                                null,
+                                                                null,
+                                                                null);
+                                                    }else {
+                                                        alert(JSON.parse(data).message);
+                                                        Ponto.invoke(
+                                                                "Messaging",
+                                                                "toast",
+                                                                {"title":JSON.parse(data).message},
+                                                                null,
+                                                                null);
+                                                        return false;
+                                                    }
+                                                },
+                                                error:function(data){
+                                                    alert(JSON.parse(data).message);
+                                                    Ponto.invoke(
+                                                            "Messaging",
+                                                            "toast",
+                                                            {"title":JSON.parse(data).message},
+                                                            null,
+                                                            null);
+                                                    return false;
+                                                }
+                                            });
+                                        }
+                                    });
+                                }
+                            }
+                        }else{
+                            //直接添加进购物车post成功后执行+1或2
+                            if(deviceid ==null ){
+                                alert("无设备号");
+                            }if(GlobalsaveToken == null){
+                                alert("请从APP端购买！")
+                                Ponto.invoke(
+                                        "Messaging",
+                                        "toast",
+                                        {"title":'网络断了，请稍后再试'},
+                                        null,
+                                        null);
+                            }else {
+                                add(eval(obj.cart_number_least));
+                                alert(buygoosID);
+                                $.ajax({
+                                    type: "POST",
+                                    url: "http://115.29.51.240:84/goods_interface.php",
+                                    data:{
+                                        "intertype":102,
+                                        "id":buygoosID,
+                                        "deviceid":deviceid,
+                                        "token":GlobalsaveToken,
+                                        "goods_number":goodsnum
+                                    },
+                                    success: function(data){
+                                        //alert(eval($('.tag-num').html()));
+                                         alert(String(data));//210
+                                         alert(JSON.parse(data).goods_number);
+                                        if(JSON.parse(data).code == 200){
+                                            $('.tag-num').html(JSON.parse(data).goods_number);
+                                            showtag();
+                                            $('.tag-num').html(goodsnum);
+                                        }
+                                        else if(JSON.parse(data).code == 202){
+                                            //token值不匹配
+                                            Ponto.invoke(
+                                                    "Messaging",
+                                                    "getToken",
+                                                    {userLogin:true},
+                                                    function (token) {
+                                                        //$("#token").val(token);
+                                                        //GlobalsaveToken = token;
+                                                    },
+                                                    null);
+                                        }else{
+>>>>>>> 37d67bc42d7fb49c5066b34f58c72a3dc71ffe15
                                             Ponto.invoke(
                                                     "Messaging",
                                                     "toast",
@@ -1091,12 +1381,19 @@
 
             //添加收藏
             var btnCollect = $('.btn-collect');
+<<<<<<< HEAD
             btnCollect.unbind("click");
+=======
+>>>>>>> 37d67bc42d7fb49c5066b34f58c72a3dc71ffe15
             btnCollect.bind("click",function() {
                 if($(this).hasClass('active')){
                     $.ajax({
                         type: "POST",
+<<<<<<< HEAD
                         url: "../goods_interface.php",
+=======
+                        url: "http://115.29.51.240:84/goods_interface.php",
+>>>>>>> 37d67bc42d7fb49c5066b34f58c72a3dc71ffe15
                         data:{
                             "intertype":103,
                             "id":Val_id,
@@ -1118,9 +1415,18 @@
                                 //token值不匹配
                                 Ponto.invoke(
                                         "Messaging",
+<<<<<<< HEAD
                                         "login",
                                         {},
                                         null,
+=======
+                                        "getToken",
+                                        {userLogin:true},
+                                        function (token) {
+                                            //$("#token").val(token);
+                                            //GlobalsaveToken = token;
+                                        },
+>>>>>>> 37d67bc42d7fb49c5066b34f58c72a3dc71ffe15
                                         null);
                             }else{
                                 Ponto.invoke(
@@ -1136,7 +1442,11 @@
                 }else{
                     $.ajax({
                         type: "POST",
+<<<<<<< HEAD
                         url: "../goods_interface.php",
+=======
+                        url: "http://115.29.51.240:84/goods_interface.php",
+>>>>>>> 37d67bc42d7fb49c5066b34f58c72a3dc71ffe15
                         data:{
                             "intertype":103,
                             "id":Val_id,
@@ -1158,9 +1468,18 @@
                                 //token值不匹配
                                 Ponto.invoke(
                                         "Messaging",
+<<<<<<< HEAD
                                         "login",
                                         {},
                                         null,
+=======
+                                        "getToken",
+                                        {userLogin:true},
+                                        function (token) {
+                                            //$("#token").val(token);
+                                            //GlobalsaveToken = token;
+                                        },
+>>>>>>> 37d67bc42d7fb49c5066b34f58c72a3dc71ffe15
                                         null);
                             }else{
                                 Ponto.invoke(

@@ -4770,6 +4770,7 @@ li.collection {
   bottom: 70px;
   right: 15px;
   display: none;
+<<<<<<< HEAD
 }
 .in_stock{
   background: url("../images/none@3x.png") no-repeat center;
@@ -4782,4 +4783,6 @@ li.collection {
   right: 40px;
   opacity: 0.8;
   display: none;
+=======
+>>>>>>> 37d67bc42d7fb49c5066b34f58c72a3dc71ffe15
 }
